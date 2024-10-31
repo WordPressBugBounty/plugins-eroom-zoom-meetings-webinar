@@ -5,7 +5,7 @@ Donate link: https://stylemixthemes.com
 Tags: zoom, video conference, zoom conference, google meet
 Requires at least: 4.6
 Tested up to: 6.4
-Stable tag: 1.4.21
+Stable tag: 1.4.22
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -187,6 +187,10 @@ Yes, you should be registered in Zoom. Also, on the plan you are using there dep
 You can do it, just use the URL link of the video, so users could watch it later. In addition to this, with eRoom purchasable meetings plugin you will be able even to sell your webinars and meetings. Learn more: [https://stylemixthemes.com/zoom-meetings-webinar-plugin/](https://stylemixthemes.com/zoom-meetings-webinar-plugin/)
 
 == Changelog ==
+
+= 1.4.22 =
+* Fix: Resolved an issue with the incorrect display of timezones when two widgets are added to the same page.
+* Fix: Corrected the timezone and time display when adding a meeting to Google Calendar.
 
 = 1.4.21 =
 * Fix: Minor bugs

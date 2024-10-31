@@ -463,10 +463,9 @@ class StmZoom {
 								<span><?php ( $webinar ) ? esc_html_e( 'Webinar date', 'eroom-zoom-meetings-webinar' ) : esc_html_e( 'Meeting date', 'eroom-zoom-meetings-webinar' ); ?> </span>
 								<b>
 									<?php
-									$format = $date_format . ' ' . $time_format;
-									$date   = strtotime( $meeting_start );
-									$date   = date_i18n( $format, $date );
-									echo esc_html( $date );
+									$date           = new DateTime( $meeting_start );
+									$formatted_date = $date->format( 'F j, Y g:i a' );
+									echo esc_html( $formatted_date );
 									?>
 								</b>
 							</div>

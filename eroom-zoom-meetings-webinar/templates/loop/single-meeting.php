@@ -76,23 +76,25 @@ if ( ! empty( $_post_id ) ) {
 						$start_time = get_post_meta( $_post_id, 'stm_start_time', true );
 					}
 
-
 					if ( ! empty( $start_date ) ) {
-						$meeting_start = strtotime( 'today', ( apply_filters( 'eroom_sanitize_stm_date', (int) $start_date ) / 1000 ) );
+						$meeting_start = (int) $start_date / 1000;
+
 						if ( ! empty( $start_time ) ) {
 							$time = explode( ':', $start_time );
 							if ( is_array( $time ) && count( $time ) === 2 ) {
+								// Modify the timestamp by adding hours and minutes
 								$meeting_start = strtotime( "+{$time[0]} hours +{$time[1]} minutes", $meeting_start );
 							}
 						}
-						$meeting_start = gmdate( 'Y-m-d H:i:s', $meeting_start );
-						$date_format   = get_option( 'date_format', 'd M Y H:i' );
-						$time_format   = get_option( 'time_format', 'H:i' );
-						$format        = $date_format . ' ' . $time_format;
-						$date          = strtotime( $meeting_start );
-						$date          = date_i18n( $format, $date );
-						echo esc_html( $date );
+						$date     = new DateTime();
+						$date->setTimestamp( $meeting_start );
+						$date->setTimezone( new DateTimeZone( 'UTC' ) ); // Adjust timezone as needed
+
+						$formatted_date = $date->format( 'F j, Y g:i a' );
+
+						echo esc_html( $formatted_date );
 					}
+
 					?>
 					<?php
 					$price = '';
