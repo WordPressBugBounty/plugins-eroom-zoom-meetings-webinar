@@ -91,8 +91,10 @@ function get_freemius_info() {
 }
 
 $freemius_info = get_freemius_info();
-$deadline      = new DateTime( '08th January 2024' );
-$is_promotion  = time() < $deadline->format( 'U' );
+$start_date    = new DateTime( '14th November 2024' );
+$deadline      = new DateTime( '10th December 2024' );
+$current_time  = time();
+$is_promotion  = $current_time >= $start_date->format( 'U' ) && $current_time < $deadline->format( 'U' );
 
 if ( $is_promotion ) {
 	$freemius_info['plan']['licenses_5000']->annual_price   = 199.99;
@@ -125,9 +127,7 @@ if ( $is_promotion ) {
 				</p>
 			</div>
 			<?php if ( $is_promotion ) : ?>
-				<div class="stm-discount">
-					<a href="https://stylemixthemes.com/cost-calculator-plugin/pricing/?utm_source=wpadmin&utm_medium=newyear&utm_campaign=eroom" target="_blank"></a>
-				</div>
+				<div class="stm-discount"><a href="https://stylemixthemes.com/deal/?utm_source=wpadmin&utm_medium=gopro&utm_campaign=bfcampaign24" target="_blank"></a></div>
 			<?php endif; ?>
 
 			<?php if ( isset( $freemius_info['plan'] ) ) : ?>
@@ -155,16 +155,18 @@ if ( $is_promotion ) {
 										?>
 										<sup>$</sup>
 										<span class="stm_price__value"
-											data-price-annual="<?php echo esc_attr( number_format( $plan->annual_price * 0.70, 2, '.', '' ) ); ?>"
-											data-price-lifetime="<?php echo esc_attr( number_format( $plan->lifetime_price * 0.70, 2, '.', '' ) ); ?>"
+											data-price-annual="<?php echo esc_attr( number_format( $plan->annual_price * 0.50, 2, '.', '' ) ); ?>"
+											data-price-lifetime="<?php echo esc_attr( number_format( $plan->lifetime_price * 0.50, 2, '.', '' ) ); ?>"
 											data-price-old-annual="<?php echo esc_attr( $plan->annual_price ); ?>"
 											data-price-old-lifetime="<?php echo esc_attr( $plan->lifetime_price ); ?>"
 										>
-											<?php echo esc_html( number_format( $plan->annual_price * 0.70, 2, '.', '' ) ); ?>
+											<?php echo esc_html( number_format( $plan->annual_price * 0.50, 2, '.', '' ) ); ?>
 										</span>
 										<div class="discount">
 											<p>$</p>
-											<span>
+											<span class="stm_price__value" style="font-size: 20px;"
+												data-price-annual="<?php echo esc_attr( $plan->annual_price ); ?>"
+												data-price-lifetime="<?php echo esc_attr( $plan->lifetime_price ); ?>">
 												<?php echo esc_html( $plan->annual_price ); ?>
 											</span>
 										</div>

@@ -60,14 +60,14 @@ class StmZoomPostTypes {
 		$time = time() * 1000 - 30000;
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 		$data = base64_encode( $api_key . $meeting_number . $time . $role );
-
 		$hash = hash_hmac( 'sha256', $data, $api_secret, true );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 		$_sig = $api_key . '.' . $meeting_number . '.' . $time . '.' . $role . '.' . base64_encode( $hash );
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-		$res     = rtrim( strtr( base64_encode( $_sig ), '+/', '-_' ), '=' );
-		$results = array( $res );
-		echo wp_json_encode( $results );
+		$res = rtrim( strtr( base64_encode( $_sig ), '+/', '-_' ), '=' );
+
+		echo wp_json_encode( array( $res ) );
+
 		wp_die();
 	}
 
@@ -75,7 +75,8 @@ class StmZoomPostTypes {
 	 * @param $post_id
 	 */
 	public function change_date_if_empty( $post_id ) {
-		$post_type = ! empty( $_POST['post_type'] ) ? sanitize_text_field( $_POST['post_type'] ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$post_type = sanitize_text_field( $_POST['post_type'] ?? '' );
 
 		if ( empty( $post_type ) ) {
 			$post_type = get_post_type( $post_id );
@@ -83,17 +84,21 @@ class StmZoomPostTypes {
 
 		if ( 'stm-zoom' === $post_type || 'stm-zoom-webinar' === $post_type ) {
 			$provider = get_post_meta( $post_id, 'stm_select_gm_zoom', true );
-			$timezone = ! empty( $_POST['stm_timezone'] ) ? sanitize_text_field( $_POST['stm_timezone'] ) : '';
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$timezone = sanitize_text_field( $_POST['stm_timezone'] ?? '' );
 			if ( empty( $provider ) || 'zoom' === $provider ) {
-				$start_date = ! empty( $_POST['stm_date'] ) ? apply_filters( 'eroom_sanitize_stm_date', $_POST['stm_date'] ) : '';
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$start_date = apply_filters( 'eroom_sanitize_stm_date', $_POST['stm_date'] ?? '' );
 				$start_date = $this->current_date( $start_date, $timezone );
 				update_post_meta( $post_id, 'stm_date', $start_date );
 			} else {
-				$start_date = ! empty( $_POST['stm_start_date'] ) ? apply_filters( 'eroom_sanitize_stm_start_date', $_POST['stm_start_date'] ) : '';
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$start_date = apply_filters( 'eroom_sanitize_stm_start_date', $_POST['stm_start_date'] ?? '' );
 				$start_date = $this->current_date( $start_date, $timezone );
 				update_post_meta( $post_id, 'stm_start_date', $start_date );
 
-				$end_date = ! empty( $_POST['stm_end_date'] ) ? apply_filters( 'eroom_sanitize_stm_end_date', $_POST['stm_end_date'] ) : '';
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
+				$end_date = apply_filters( 'eroom_sanitize_stm_end_date', $_POST['stm_end_date'] ?? '' );
 				$end_date = $this->current_date( $end_date, $timezone );
 				update_post_meta( $post_id, 'stm_end_date', $end_date );
 			}
@@ -217,11 +222,9 @@ class StmZoomPostTypes {
 		add_filter(
 			'stm_wpcfto_fields',
 			function( $fields ) {
-
 				$country_list = self::stm_get_countries_code();
 
 				$fields['stm_zoom_meeting'] = array(
-
 					'tab_1' => array(
 						'name'   => esc_html__( 'Meeting settings', 'eroom-zoom-meetings-webinar' ),
 						'fields' => array(
@@ -323,11 +326,9 @@ class StmZoomPostTypes {
 							),
 						),
 					),
-
 				);
 
 				$fields['stm_zoom_webinar'] = array(
-
 					'tab_1' => array(
 						'name'   => esc_html__( 'Webinar settings', 'eroom-zoom-meetings-webinar' ),
 						'fields' => array(
@@ -395,7 +396,6 @@ class StmZoomPostTypes {
 							),
 						),
 					),
-
 				);
 
 				return $fields;
@@ -442,6 +442,7 @@ class StmZoomPostTypes {
 	public static function webinar_info_template( $post, $meta ) {
 		$webinar_data = get_post_meta( $post->ID, 'stm_zoom_data', true );
 		$html         = '';
+
 		if ( ! empty( $webinar_data ) && ! empty( $webinar_data['id'] ) ) {
 			$html .= '<p>' . esc_html__( 'Webinar shortcode', 'eroom-zoom-meetings-webinar' ) . '</p>';
 			$html .= '<p><strong>[stm_zoom_webinar post_id="' . esc_html( $post->ID ) . '"]</strong></p>';
@@ -450,6 +451,7 @@ class StmZoomPostTypes {
 			$html .= wp_kses_post( apply_filters( 'stm_zoom_escape_output', $webinar_data['message'] ) );
 			$html .= '</strong></p>';
 		}
+
 		echo wp_kses_post( apply_filters( 'stm_add_webinar_recurring_meeting_data_occurrences_html', $html, $post ) );
 		do_action( 'stm_add_zoom_recurring_meeting_data_occurrences', $webinar_data );
 	}
@@ -514,7 +516,7 @@ class StmZoomPostTypes {
 					),
 					'stm_host'       => $host_id,
 					'stm_date'       => $appointment->date_timestamp * 1000,
-					'stm_time'       => date( 'H:i', $appointment->start_time ),
+					'stm_time'       => gmdate( 'H:i', $appointment->start_time ),
 					'stm_timezone'   => get_current_timezone(),
 					'stm_duration'   => intval( abs( $appointment->start_time - $appointment->end_time ) / 60 ),
 				),
@@ -557,7 +559,8 @@ class StmZoomPostTypes {
 						$meeting_start = strtotime( "+{$time[0]} hours +{$time[1]} minutes", $meeting_start );
 					}
 				}
-				$meeting_start = date( 'Y-m-d\TH:i:s', $meeting_start );
+
+				$meeting_start = gmdate( 'Y-m-d\TH:i:s', $meeting_start );
 				$data          = array(
 					'topic'      => $title,
 					'type'       => 2,
@@ -602,7 +605,7 @@ class StmZoomPostTypes {
 					}
 
 					if ( ! empty( $customer->email ) ) {
-						$message  = sprintf( /* translators: %s: string, number */ esc_html__( 'Hello, your meeting will begin at: %1$s, %2$s', 'eroom-zoom-meetings-webinar' ), $meeting['meta_input']['stm_time'], date( 'F j, Y', $appointment->date_timestamp ) ) . '<br>';
+						$message  = sprintf( /* translators: %s: string, number */ esc_html__( 'Hello, your meeting will begin at: %1$s, %2$s', 'eroom-zoom-meetings-webinar' ), $meeting['meta_input']['stm_time'], gmdate( 'F j, Y', $appointment->date_timestamp ) ) . '<br>';
 						$message .= esc_html__( 'Your meeting url: ', 'eroom-zoom-meetings-webinar' );
 						$message .= '<a href="https://zoom.us/j/' . esc_attr( $meeting_id ) . '" >' . esc_html( 'https://zoom.us/j/' . $meeting_id ) . '</a><br>';
 						$message .= sprintf( /* translators: %s: string */ esc_html__( 'Your meeting password: %s', 'eroom-zoom-meetings-webinar' ), $password );
@@ -612,7 +615,7 @@ class StmZoomPostTypes {
 						wp_mail( $customer->email, sprintf( /* translators: %s: string */ esc_html__( 'Meeting Notification: %s', 'eroom-zoom-meetings-webinar' ), $title ), $message, $headers );
 					}
 					if ( ! empty( $new_meeting['host_email'] ) ) {
-						$message  = sprintf( /* translators: %s: string */ esc_html__( 'Hello, new meeting will begin at: %1$s, %2$s', 'eroom-zoom-meetings-webinar' ), $meeting['meta_input']['stm_time'], date( 'F j, Y', $appointment->date_timestamp ) ) . '<br>';
+						$message  = sprintf( /* translators: %s: string */ esc_html__( 'Hello, new meeting will begin at: %1$s, %2$s', 'eroom-zoom-meetings-webinar' ), $meeting['meta_input']['stm_time'], gmdate( 'F j, Y', $appointment->date_timestamp ) ) . '<br>';
 						$message .= esc_html__( 'Meeting url: ', 'eroom-zoom-meetings-webinar' );
 						$message .= '<a href="https://zoom.us/j/' . esc_attr( $meeting_id ) . '" >' . esc_html( 'https://zoom.us/j/' . $meeting_id ) . '</a><br>';
 						$message .= sprintf( /* translators: %s: string */ esc_html__( 'Meeting password: %s', 'eroom-zoom-meetings-webinar' ), $password );
@@ -620,7 +623,6 @@ class StmZoomPostTypes {
 						$headers[] = 'Content-Type: text/html; charset=UTF-8';
 
 						wp_mail( $new_meeting['host_email'], sprintf( /* translators: %s: string */ esc_html__( 'Meeting Notification: %s', 'eroom-zoom-meetings-webinar' ), $title ), $message, $headers );
-
 					}
 				}
 			}
@@ -633,7 +635,13 @@ class StmZoomPostTypes {
 	 * @param $post_id
 	 */
 	public function update_meeting( $post_id ) {
-		$post_type = ! empty( $_POST['post_type'] ) ? sanitize_text_field( $_POST['post_type'] ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$post_type   = ! empty( $_POST['post_type'] ) ? sanitize_text_field( $_POST['post_type'] ) : '';
+		$is_revision = wp_is_post_revision( $post_id );
+
+		if ( ! empty( $is_revision ) ) {
+			$post_id = $is_revision;
+		}
 
 		if ( empty( $post_type ) ) {
 			$post_type = get_post_type( $post_id );
@@ -647,20 +655,20 @@ class StmZoomPostTypes {
 			$auth_client_id     = ! empty( $settings['auth_client_id'] ) ? $settings['auth_client_id'] : '';
 			$auth_client_secret = ! empty( $settings['auth_client_secret'] ) ? $settings['auth_client_secret'] : '';
 
-			$host_id                   = ! empty( $_POST['stm_host'] ) ? sanitize_text_field( $_POST['stm_host'] ) : '';
-			$title                     = ! empty( $_POST['post_title'] ) ? sanitize_text_field( $_POST['post_title'] ) : '';
-			$agenda                    = ! empty( $_POST['stm_agenda'] ) ? sanitize_text_field( $_POST['stm_agenda'] ) : '';
-			$start_date                = ! empty( $_POST['stm_date'] ) ? apply_filters( 'eroom_sanitize_stm_date', $_POST['stm_date'] ) : '';
-			$start_time                = ! empty( $_POST['stm_time'] ) ? sanitize_text_field( $_POST['stm_time'] ) : '';
-			$timezone                  = ! empty( $_POST['stm_timezone'] ) ? sanitize_text_field( $_POST['stm_timezone'] ) : '';
-			$duration                  = ! empty( $_POST['stm_duration'] ) ? intval( $_POST['stm_duration'] ) : 60;
-			$password                  = ! empty( $_POST['stm_password'] ) ? sanitize_text_field( $_POST['stm_password'] ) : '';
-			$waiting_room              = ! empty( $_POST['stm_waiting_room'] ) ? true : false;
-			$join_before_host          = ! empty( $_POST['stm_join_before_host'] ) ? true : false;
-			$host_join_start           = ! empty( $_POST['stm_host_join_start'] ) ? true : false;
-			$start_after_participantst = ! empty( $_POST['stm_start_after_participants'] ) ? true : false;
-			$mute_participants         = ! empty( $_POST['stm_mute_participants'] ) ? true : false;
-			$enforce_login             = ! empty( $_POST['stm_enforce_login'] ) ? true : false;
+			$host_id                   = sanitize_text_field( $_POST['stm_host'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$title                     = sanitize_text_field( $_POST['post_title'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$agenda                    = sanitize_text_field( $_POST['stm_agenda'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$start_date                = apply_filters( 'eroom_sanitize_stm_date', sanitize_text_field( $_POST['stm_date'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$start_time                = sanitize_text_field( $_POST['stm_time'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$timezone                  = sanitize_text_field( $_POST['stm_timezone'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$duration                  = intval( $_POST['stm_duration'] ?? 60 ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$password                  = sanitize_text_field( $_POST['stm_password'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$waiting_room              = ! empty( $_POST['stm_waiting_room'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$join_before_host          = ! empty( $_POST['stm_join_before_host'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$host_join_start           = ! empty( $_POST['stm_host_join_start'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$start_after_participantst = ! empty( $_POST['stm_start_after_participants'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$mute_participants         = ! empty( $_POST['stm_mute_participants'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$enforce_login             = ! empty( $_POST['stm_enforce_login'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			if ( empty( $password ) ) {
 				$generate_password = ! empty( $settings['generate_password'] ) ? $settings['generate_password'] : false;
@@ -672,10 +680,9 @@ class StmZoomPostTypes {
 
 			$start_date = $this->current_date( $start_date, $timezone );
 
-			$alternative_hosts = '';
-			if ( ! empty( $_POST['stm_alternative_hosts'] ) ) {
-				$alternative_hosts = sanitize_text_field( $_POST['stm_alternative_hosts'] );
-			}
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$alternative_hosts = sanitize_text_field( $_POST['stm_alternative_hosts'] ?? '' );
+
 			if ( is_array( $alternative_hosts ) && ! empty( $alternative_hosts ) ) {
 				$alternative_hosts = implode( ',', $alternative_hosts );
 			}
@@ -687,7 +694,7 @@ class StmZoomPostTypes {
 					$meeting_start = strtotime( "+{$time[0]} hours +{$time[1]} minutes", $meeting_start );
 				}
 			}
-			$meeting_start                 = date( 'Y-m-d\TH:i:s', $meeting_start );
+			$meeting_start                 = gmdate( 'Y-m-d\TH:i:s', $meeting_start );
 			$stm_approved_denied_countries = self::stm_approved_denied_countries();
 			$data                          = array(
 				'topic'      => $title,
@@ -732,6 +739,7 @@ class StmZoomPostTypes {
 					unset( $option_recurring_ids[ $key ] );
 				}
 
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing
 				if ( isset( $_POST['stm_recurring_enabled'] ) && ( 'on' === $_POST['stm_recurring_enabled'] ) ) {
 					$option_recurring_ids[] = $post_id;
 				}
@@ -743,8 +751,7 @@ class StmZoomPostTypes {
 					update_post_meta( $post_id, 'stm_zoom_data', $new_meeting );
 					do_action( 'stm_zoom_after_create_meeting', $post_id );
 				} else {
-					$meeting_id = $meeting_data['id'];
-
+					$meeting_id     = $meeting_data['id'];
 					$update_meeting = $zoom_endpoint->update( $meeting_id, $data );
 
 					if ( isset( $update_meeting['code'] ) && ( 204 === $update_meeting['code'] ) ) {
@@ -776,12 +783,12 @@ class StmZoomPostTypes {
 			$auth_client_secret = ! empty( $settings['auth_client_secret'] ) ? $settings['auth_client_secret'] : '';
 
 			if ( ( ( ! empty( $api_key ) && ! empty( $api_secret ) ) || ( ! empty( $auth_account_id ) && ! empty( $auth_client_id ) && ! empty( $auth_client_secret ) ) ) && ! empty( $meeting_data['id'] ) ) {
-
 				if ( 'stm-zoom' === $post_type ) {
 					$zoom_endpoint = new \Zoom\Endpoint\Meetings();
 				} elseif ( 'stm-zoom-webinar' === $post_type ) {
 					$zoom_endpoint = new \Zoom\Endpoint\Webinars();
 				}
+
 				$zoom_endpoint->remove( $meeting_data['id'] );
 			}
 		}
@@ -798,11 +805,11 @@ class StmZoomPostTypes {
 		}
 
 		$settings           = get_option( 'stm_zoom_settings', array() );
-		$api_key            = ! empty( $settings['api_key'] ) ? $settings['api_key'] : '';
-		$api_secret         = ! empty( $settings['api_secret'] ) ? $settings['api_secret'] : '';
-		$auth_account_id    = ! empty( $settings['auth_account_id'] ) ? $settings['auth_account_id'] : '';
-		$auth_client_id     = ! empty( $settings['auth_client_id'] ) ? $settings['auth_client_id'] : '';
-		$auth_client_secret = ! empty( $settings['auth_client_secret'] ) ? $settings['auth_client_secret'] : '';
+		$api_key            = $settings['api_key'] ?? '';
+		$api_secret         = $settings['api_secret'] ?? '';
+		$auth_account_id    = $settings['auth_account_id'] ?? '';
+		$auth_client_id     = $settings['auth_client_id'] ?? '';
+		$auth_client_secret = $settings['auth_client_secret'] ?? '';
 		$meeting_ids        = array();
 		$zoom_type          = 'meetings';
 
@@ -831,12 +838,12 @@ class StmZoomPostTypes {
 				$timezone                  = sanitize_text_field( get_post_meta( $post_id, 'stm_timezone', true ) );
 				$duration                  = ! empty( get_post_meta( $post_id, 'stm_duration', true ) ) ? intval( get_post_meta( $post_id, 'stm_duration', true ) ) : 60;
 				$password                  = sanitize_text_field( get_post_meta( $post_id, 'stm_password', true ) );
-				$waiting_room              = ! empty( get_post_meta( $post_id, 'stm_waiting_room', true ) ) ? true : false;
-				$join_before_host          = ! empty( get_post_meta( $post_id, 'stm_join_before_host', true ) ) ? true : false;
-				$host_join_start           = ! empty( get_post_meta( $post_id, 'stm_host_join_start', true ) ) ? true : false;
-				$start_after_participantst = ! empty( get_post_meta( $post_id, 'stm_start_after_participants', true ) ) ? true : false;
-				$mute_participants         = ! empty( get_post_meta( $post_id, 'stm_mute_participants', true ) ) ? true : false;
-				$enforce_login             = ! empty( get_post_meta( $post_id, 'stm_enforce_login', true ) ) ? true : false;
+				$waiting_room              = ! empty( get_post_meta( $post_id, 'stm_waiting_room', true ) );
+				$join_before_host          = ! empty( get_post_meta( $post_id, 'stm_join_before_host', true ) );
+				$host_join_start           = ! empty( get_post_meta( $post_id, 'stm_host_join_start', true ) );
+				$start_after_participantst = ! empty( get_post_meta( $post_id, 'stm_start_after_participants', true ) );
+				$mute_participants         = ! empty( get_post_meta( $post_id, 'stm_mute_participants', true ) );
+				$enforce_login             = ! empty( get_post_meta( $post_id, 'stm_enforce_login', true ) );
 				$host_id                   = sanitize_text_field( get_post_meta( $post_id, 'stm_host', true ) );
 				$alternative_hosts         = sanitize_text_field( get_post_meta( $post_id, 'stm_alternative_hosts', true ) );
 
@@ -851,7 +858,7 @@ class StmZoomPostTypes {
 						$meeting_start = strtotime( "+{$time[0]} hours +{$time[1]} minutes", $meeting_start );
 					}
 				}
-				$meeting_start = date( 'Y-m-d\TH:i:s', $meeting_start );
+				$meeting_start = gmdate( 'Y-m-d\TH:i:s', $meeting_start );
 
 				$data = array(
 					'topic'      => $title,
@@ -923,7 +930,7 @@ class StmZoomPostTypes {
 
 					update_post_meta( $new_post_id, 'stm_zoom_data', $zoom_meeting );
 					update_post_meta( $new_post_id, 'stm_agenda', $zoom_meeting['agenda'] );
-					update_post_meta( $new_post_id, 'stm_date', intval( strtotime( date( 'Y-m-d 00:00:00', strtotime( $zoom_meeting['start_time'] ) ) ) * 1000 ) );
+					update_post_meta( $new_post_id, 'stm_date', intval( strtotime( gmdate( 'Y-m-d 00:00:00', strtotime( $zoom_meeting['start_time'] ) ) ) * 1000 ) );
 					update_post_meta( $new_post_id, 'stm_time', $stm_time->format( 'H:i' ) );
 					update_post_meta( $new_post_id, 'stm_timezone', $zoom_meeting['timezone'] );
 					update_post_meta( $new_post_id, 'stm_duration', $zoom_meeting['duration'] );
@@ -1007,7 +1014,7 @@ class StmZoomPostTypes {
 				$end_date_time = get_post_meta( $post_id, 'stm_recurring_end_date_time', true );
 
 				$meeting_end                         = strtotime( 'today', ( ( $end_date_time ) / 1000 ) );
-				$data['recurrence']['end_date_time'] = date( 'Y-m-d\TH:i:s\Z', $meeting_end );
+				$data['recurrence']['end_date_time'] = gmdate( 'Y-m-d\TH:i:s\Z', $meeting_end );
 			}
 		} elseif ( 'no_fixed_time' === $recurring_type ) {
 			$data['type'] = ( 'webinars' === $zoom_type ) ? StmZoomAPITypes::TYPE_WEBINAR_NO_FIXED : StmZoomAPITypes::TYPE_MEETING_NO_FIXED;
@@ -1047,7 +1054,7 @@ class StmZoomPostTypes {
 			}
 			if ( isset( $zoom_meeting['recurrence']['end_date_time'] ) ) {
 				update_post_meta( $new_post_id, 'stm_recurring_end_time_type', 'by_date' );
-				update_post_meta( $new_post_id, 'stm_recurring_end_date_time', intval( strtotime( date( 'Y-m-d 00:00:00', strtotime( $zoom_meeting['recurrence']['end_date_time'] ) ) ) * 1000 ) );
+				update_post_meta( $new_post_id, 'stm_recurring_end_date_time', intval( strtotime( gmdate( 'Y-m-d 00:00:00', strtotime( $zoom_meeting['recurrence']['end_date_time'] ) ) ) * 1000 ) );
 			} elseif ( isset( $zoom_meeting['recurrence']['end_times'] ) ) {
 				update_post_meta( $new_post_id, 'stm_recurring_end_time_type', 'by_occurrences' );
 				update_post_meta( $new_post_id, 'stm_recurring_end_times', $zoom_meeting['recurrence']['end_times'] );
@@ -1061,12 +1068,16 @@ class StmZoomPostTypes {
 
 		$return = array();
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! empty( $_POST['stm_multiselect_approved'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$approved = sanitize_text_field( $_POST['stm_multiselect_approved'] );
 			$approved = json_decode( str_replace( array( '\\' ), '', $approved ) );
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! empty( $_POST['stm_multiselect_denied'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$denied = sanitize_text_field( $_POST['stm_multiselect_denied'] );
 			$denied = json_decode( str_replace( array( '\\' ), '', $denied ) );
 		}
@@ -1098,7 +1109,8 @@ class StmZoomPostTypes {
 	}
 
 	public static function stm_get_countries_code() {
-		$countries = wp_json_file_decode( STM_ZOOM_PATH . '/contry_list.json', array( 'associative' => true ) );
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$countries = json_decode( file_get_contents( STM_ZOOM_PATH . '/contry_list.json' ), true );
 
 		if ( empty( $countries ) || ! count( $countries ) ) {
 			return array();
