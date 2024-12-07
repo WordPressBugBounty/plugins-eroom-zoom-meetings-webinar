@@ -92,7 +92,7 @@ function get_freemius_info() {
 
 $freemius_info = get_freemius_info();
 $start_date    = new DateTime( '14th November 2024' );
-$deadline      = new DateTime( '10th December 2024' );
+$deadline      = new DateTime( '7th December 2024' );
 $current_time  = time();
 $is_promotion  = $current_time >= $start_date->format( 'U' ) && $current_time < $deadline->format( 'U' );
 
