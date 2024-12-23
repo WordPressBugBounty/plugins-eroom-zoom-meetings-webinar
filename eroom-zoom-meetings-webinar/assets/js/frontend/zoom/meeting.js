@@ -1,101 +1,90 @@
-window.addEventListener(
-	'DOMContentLoaded',
-	function(event) {
-		websdkready();
-	}
-);
-
-function websdkready() {
-	var testTool      = window.testTool;
-	var meetingConfig = {
-		apiKey: API_KEY,
-		secretKey: SECRET_KEY,
-		meetingNumber: meeting_id,
-		userName: username,
-		passWord: meeting_password,
-		leaveUrl: leaveUrl,
-		role: 0, //0-Attendee,1-Host,5-Assistant
-		userEmail: email,
-		lang: lang,
-		signature: "",
-		china: 0,//0-GLOBAL, 1-China
-	};
-
-	if (testTool.isMobileDevice()) {
-		vConsole = new VConsole();
-	}
-
-	ZoomMtg.preLoadWasm();
-	ZoomMtg.prepareJssdk();
-
-	ZoomMtg.inMeetingServiceListener(
-		'onUserJoin',
-		function (data) {}
-	);
-
-	ZoomMtg.inMeetingServiceListener(
-		'onUserLeave',
-		function (data) {}
-	);
-
-	ZoomMtg.inMeetingServiceListener(
-		'onUserIsInWaitingRoom',
-		function (data) {}
-	);
-
-	ZoomMtg.inMeetingServiceListener(
-		'onMeetingStatus',
-		function (data) {}
-	);
-
-	ZoomMtg.preLoadWasm();
-	ZoomMtg.prepareJssdk();
-	function beginJoin() {
-		var signature = ZoomMtg.generateSDKSignature(
-			{
-				meetingNumber: meetingConfig.meetingNumber,
-				sdkKey: meetingConfig.apiKey,
-				sdkSecret: meetingConfig.secretKey,
-				role: meetingConfig.role,
-				success: function (res) {
-					meetingConfig.signature = res.result;
-					meetingConfig.sdkKey    = meetingConfig.apiKey;
-				},
-			}
-		);
-		ZoomMtg.init(
-			{
-				leaveUrl: meetingConfig.leaveUrl,
-				disableCORP: ! window.crossOriginIsolated,
-				webEndpoint: meetingConfig.webEndpoint,
-				success: function () {
-					ZoomMtg.i18n.load( meetingConfig.lang );
-					ZoomMtg.i18n.reload( meetingConfig.lang );
-					let data = {
-						meetingNumber: meetingConfig.meetingNumber,
-						userName: meetingConfig.userName,
-						signature: signature,
-						sdkKey: meetingConfig.apiKey,
-						userEmail: meetingConfig.userEmail,
-						passWord: meetingConfig.passWord,
-						success: function (res) {
-							ZoomMtg.getAttendeeslist( {} );
-							ZoomMtg.getCurrentUser(
-								{
-									success: function (res) {},
-								}
-							);
-						},
-						error: function (res) {},
-					};
-					if (enforce_login && tk) {
-						data.tk = tk;
-					}
-					ZoomMtg.join( data );
-				},
-				error: function (res) {},
-			}
-		);
-	}
-	beginJoin();
+var meetingConfig = {
+	sdkKey: API_KEY,
+	secretKey: SECRET_KEY,
+	meetingNumber: meeting_id,
+	userName: username,
+	passWord: meeting_password,
+	leaveUrl: leaveUrl,
+	role: 0, //0-Attendee,1-Host,5-Assistant
+	userEmail: email,
+	lang: lang,
+	signature: "",
+	china: 0,//0-GLOBAL, 1-China
 };
+meetingConfig.signature = ZoomMtg.generateSDKSignature({
+	meetingNumber: meetingConfig.meetingNumber,
+	sdkKey: meetingConfig.sdkKey,
+	sdkSecret: meetingConfig.secretKey,
+	role: meetingConfig.role,
+	success: function (res) {
+		console.log(res);
+	},
+});
+console.log(JSON.stringify(ZoomMtg.checkSystemRequirements()));
+
+// it's option if you want to change the MeetingSDK-Web dependency link resources. setZoomJSLib must be run at first
+// ZoomMtg.setZoomJSLib("https://source.zoom.us/{VERSION}/lib", "/av"); // default, don't need call it
+if (meetingConfig.china)
+	ZoomMtg.setZoomJSLib("https://jssdk.zoomus.cn/3.10.0/lib", "/av"); // china cdn option
+
+ZoomMtg.preLoadWasm();
+ZoomMtg.prepareWebSDK();
+
+function beginJoin(signature) {
+	ZoomMtg.i18n.load(meetingConfig.lang);
+	ZoomMtg.init({
+		leaveUrl: meetingConfig.leaveUrl,
+		disableCORP: !window.crossOriginIsolated, // default true
+		// disablePreview: false, // default false
+		externalLinkPage: meetingConfig.webEndpoint,
+		success: function () {
+			console.log(meetingConfig);
+			console.log("signature", signature);
+			ZoomMtg.join({
+				meetingNumber: meetingConfig.meetingNumber,
+				userName: meetingConfig.userName,
+				signature: signature,
+				sdkKey: meetingConfig.sdkKey,
+				userEmail: meetingConfig.userEmail,
+				passWord: meetingConfig.passWord,
+				success: function (res) {
+					console.log(username);
+					console.log("join meeting success");
+					console.log("get attendeelist");
+					ZoomMtg.getAttendeeslist({});
+					ZoomMtg.getCurrentUser({
+					success: function (res) {
+						console.log("success getCurrentUser", res.result.currentUser);
+					},
+					});
+				},
+				error: function (res) {
+					console.log(res);
+				},
+			});
+		},
+		error: function (res) {
+			console.log(res);
+		},
+	});
+	
+	ZoomMtg.inMeetingServiceListener("onUserJoin", function (data) {
+		console.log("inMeetingServiceListener onUserJoin", data);
+	});
+	
+	ZoomMtg.inMeetingServiceListener("onUserLeave", function (data) {
+		console.log("inMeetingServiceListener onUserLeave", data);
+	});
+	
+	ZoomMtg.inMeetingServiceListener("onUserIsInWaitingRoom", function (data) {
+		console.log("inMeetingServiceListener onUserIsInWaitingRoom", data);
+	});
+	
+	ZoomMtg.inMeetingServiceListener("onMeetingStatus", function (data) {
+		console.log("inMeetingServiceListener onMeetingStatus", data);
+	});
+	
+}
+
+beginJoin(meetingConfig.signature);
+

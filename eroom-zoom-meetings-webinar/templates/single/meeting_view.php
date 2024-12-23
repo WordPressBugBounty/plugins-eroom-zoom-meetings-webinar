@@ -70,7 +70,6 @@ if ( $enforce_login ) {
 <head>
 	<title><?php the_title(); ?></title>
 	<meta charset="utf-8"/>
-	<link rel="stylesheet" href="<?php echo esc_url( $assets ); // @codingStandardsIgnoreLine ?>css/frontend/zoom/vendor.css"/>
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
 </head>
@@ -190,7 +189,6 @@ if ( ! $registration_form ) :
 	// @codingStandardsIgnoreStart
 	?>
 	<script src="<?php echo esc_url( $assets ); ?>js/frontend/zoom/vendor.js"></script>
-	<script src="<?php echo esc_url( $assets ); ?>js/frontend/zoom/tool.js"></script>
 	<script src="<?php echo esc_url( $assets ); ?>js/frontend/zoom/meeting.js"></script>
 <?php
 	// @codingStandardsIgnoreEnd
