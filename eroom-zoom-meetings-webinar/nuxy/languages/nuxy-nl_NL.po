@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: NUXY\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-23 06:46+0000\n"
-"PO-Revision-Date: 2022-06-14 05:17+0000\n"
+"PO-Revision-Date: 2025-02-03 07:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
@@ -19,7 +19,7 @@ msgstr ""
 msgid "Add image"
 msgstr "Afbeelding toevoegen"
 
-#: metaboxes/metabox.php:250
+#: metaboxes/metabox.php:258
 msgid "Backup Font Family"
 msgstr "Backup maken van lettertypefamilie"
 
@@ -47,19 +47,23 @@ msgstr ""
 msgid "Center"
 msgstr ""
 
-#: settings/settings.php:90
+#: settings/settings.php:97
 msgid "Choose Page"
 msgstr "Kies pagina"
 
-#: metaboxes/metabox.php:34
+#: metaboxes/metabox.php:42
 msgid "Choose User"
 msgstr "Kies gebruiker"
 
-#: metaboxes/metabox.php:256
+#: metaboxes/fields/text.php:28
+msgid "Copied"
+msgstr "Gekopieerd"
+
+#: metaboxes/metabox.php:264
 msgid "Copy settings"
 msgstr "Instellingen kopiëren"
 
-#: metaboxes/metabox.php:260
+#: metaboxes/metabox.php:268
 msgid "Couldn't copy settings"
 msgstr "Kon de instellingen niet kopiëren"
 
@@ -79,39 +83,65 @@ msgstr "Dagen"
 msgid "Default"
 msgstr ""
 
+#: metaboxes/metabox.php:277
+msgid "Delete"
+msgstr ""
+
 #: taxonomy_meta/fields/image.php:13
 msgid "Delete image"
 msgstr "Afbeelding verwijderen"
+
+#: metaboxes/metabox.php:276
+msgid ""
+"Download and store Google Fonts locally. Set the fonts in the typography."
+msgstr ""
+
+#: metaboxes/metabox.php:275
+msgid "Download Google Fonts"
+msgstr ""
 
 #: metaboxes/fields/duration.php:24
 msgid "duration"
 msgstr "duur"
 
-#: helpers/file_upload.php:22
+#: metaboxes/fields/repeater.php:25 metaboxes/fields/text.php:27
+#: metaboxes/fields/textarea.php:25
+msgid "Enter"
+msgstr "Invoeren"
+
+#: metaboxes/fields/number.php:22
+msgid "Enter numbers..."
+msgstr "Voer nummers in..."
+
+#: helpers/file_upload.php:21
 msgid "Error occurred, please try again"
 msgstr "Er is een fout opgetreden, probeer het nogmaals"
 
-#: metaboxes/metabox.php:261
+#: metaboxes/metabox.php:269
 msgid "Export options"
 msgstr "Opties exporteren"
 
-#: metaboxes/metabox.php:254
+#: metaboxes/metabox.php:262
 msgid "Font Color"
 msgstr "Letterkleur"
 
-#: metaboxes/metabox.php:249
+#: metaboxes/metabox.php:257
 msgid "Font Family"
 msgstr "Lettertypefamilie"
 
-#: metaboxes/metabox.php:245
+#: metaboxes/metabox.php:253
 msgid "Font size"
 msgstr "Lettergrootte"
 
-#: metaboxes/metabox.php:252
+#: metaboxes/metabox.php:260
 msgid "Font Subsets"
 msgstr "Lettertype subsets"
 
-#: metaboxes/metabox.php:251
+#: metaboxes/metabox.php:273
+msgid "Font Synchronize"
+msgstr ""
+
+#: metaboxes/metabox.php:259
 msgid "Font Weignt & Style"
 msgstr "Lettertype gewicht en stijl"
 
@@ -129,13 +159,17 @@ msgstr "Uur"
 
 #. Author URI of the plugin
 msgid "https://stylemixthemes.com"
-msgstr "https://stylemixthemes.com"
+msgstr ""
 
-#: metaboxes/metabox.php:262
+#: metaboxes/fields/image.php:24
+msgid "Image URL"
+msgstr "Afbeeldings-URL"
+
+#: metaboxes/metabox.php:270
 msgid "Import options"
 msgstr "Opties importeren"
 
-#: metaboxes/metabox.php:257
+#: metaboxes/metabox.php:265
 msgid "Import settings"
 msgstr "Instellingen importeren"
 
@@ -143,7 +177,7 @@ msgstr "Instellingen importeren"
 msgid "Import/Export"
 msgstr "Importeren/Exporteren"
 
-#: helpers/file_upload.php:63
+#: helpers/file_upload.php:65
 msgid "Invalid file extension"
 msgstr "Ongeldige bestandsextensie"
 
@@ -159,7 +193,7 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: metaboxes/metabox.php:248
+#: metaboxes/metabox.php:256
 msgid "Letter spacing"
 msgstr "Letterafstand"
 
@@ -171,7 +205,7 @@ msgstr ""
 msgid "Light 300 italic"
 msgstr ""
 
-#: metaboxes/metabox.php:246
+#: metaboxes/metabox.php:254
 msgid "Line height"
 msgstr "Lijnhoogte"
 
@@ -197,11 +231,19 @@ msgstr ""
 
 #. Name of the plugin
 msgid "NUXY"
-msgstr "NUXY"
+msgstr ""
+
+#: settings/settings.php:165
+msgid "Oops, something went wrong"
+msgstr ""
 
 #: helpers/file_upload.php:53
 msgid "Please, select file"
 msgstr "Kies een bestand"
+
+#: metaboxes/metabox.php:278
+msgid "Preview"
+msgstr ""
 
 #: metaboxes/google_fonts.php:16
 msgid "Regular 400"
@@ -211,39 +253,72 @@ msgstr ""
 msgid "Regular 400 italic"
 msgstr ""
 
+#: metaboxes/fields/image.php:27
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: metaboxes/fields/image.php:26
+msgid "Replace"
+msgstr "Vervangen"
+
+#: settings/view/header.php:45
+msgid "Results not found"
+msgstr "Geen resultaten gevonden"
+
 #: metaboxes/google_fonts.php:44
 msgid "Right"
 msgstr ""
 
-#: settings/view/header.php:54
+#: settings/view/header.php:79
 msgid "Save Settings"
 msgstr "Instellingen opslaan"
 
-#: settings/view/header.php:47
-msgid "Search"
-msgstr "Zoeken"
+#: settings/settings.php:161
+msgid "Saved!"
+msgstr ""
+
+#: settings/view/header.php:45
+msgid "Search..."
+msgstr "Zoeken..."
 
 #: taxonomy_meta/fields/image.php:45
 msgid "Select or Upload Media Of Your Chosen Persuasion"
 msgstr "Selecteer of upload media van jouw keuze"
 
-#: metaboxes/metabox.php:259
+#: settings/settings.php:162
+msgid "Settings are changed"
+msgstr ""
+
+#: settings/settings.php:166
+msgid "Settings are not changed"
+msgstr ""
+
+#: metaboxes/metabox.php:267
 msgid "Settings copied to buffer"
 msgstr "Instellingen gekopieerd naar buffer"
 
-#: metaboxes/metabox.php:263
+#: metaboxes/metabox.php:271
 msgid "Sorry, no matching options."
 msgstr "Sorry, geen overeenkomende opties."
 
 #. Author of the plugin
 msgid "StylemixThemes"
-msgstr "StylemixThemes"
+msgstr ""
 
-#: metaboxes/metabox.php:253
+#: metaboxes/metabox.php:274
+msgid ""
+"Sync and update your fonts if they are displayed incorrectly on your website."
+msgstr ""
+
+#: metaboxes/metabox.php:272
+msgid "Synchronize"
+msgstr ""
+
+#: metaboxes/metabox.php:261
 msgid "Text Align"
 msgstr "Tekstuitlijning"
 
-#: metaboxes/metabox.php:255
+#: metaboxes/metabox.php:263
 msgid "Text transform"
 msgstr "Tekstomvorming"
 
@@ -254,6 +329,10 @@ msgstr ""
 #: metaboxes/google_fonts.php:13
 msgid "Thin 100 italic"
 msgstr ""
+
+#: metaboxes/fields/image.php:25
+msgid "Upload"
+msgstr "Uploaden"
 
 #: metaboxes/google_fonts.php:51
 msgid "Uppercase"
@@ -267,16 +346,16 @@ msgstr "Gebruik deze media"
 msgid "Vietnamese"
 msgstr ""
 
-#: metaboxes/metabox.php:258
+#: metaboxes/metabox.php:266
 msgid ""
 "WARNING! This will overwrite all existing option values, please proceed with "
 "caution!"
 msgstr "WAARSCHUWING! Dit zal alle bestaande optiewaarden overschrijven, ga "
 
-#: metaboxes/metabox.php:247
+#: metaboxes/metabox.php:255
 msgid "Word spacing"
 msgstr "Woordafstand"
 
 #. Description of the plugin
 msgid "WordPress Custom Fields & Theme Options with Vue.js."
-msgstr "WordPress aangepaste velden en thema-opties met Vue.js."
+msgstr ""

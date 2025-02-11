@@ -1,9 +1,13 @@
 <?php
-
 class StmZoom {
 	/**
 	 * @return StmZoom constructor.
 	 */
+	protected array $meeting_shortcode_sql = array(
+		'where' => '',
+		'join'  => '',
+	);
+
 	public function __construct() {
 		register_activation_hook( STM_ZOOM_FILE, array( $this, 'plugin_activation_hook' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue' ) );
@@ -127,6 +131,15 @@ class StmZoom {
 	 * @return string
 	 */
 	public function add_meeting_grid_shortcode( $atts ) {
+		global $wpdb;
+
+		$this->meeting_shortcode_sql = array(
+			'where' => '',
+			'join'  => '',
+		);
+
+		$meta_sql = array();
+
 		$atts = shortcode_atts(
 			array(
 				'count'     => '3',
@@ -176,6 +189,23 @@ class StmZoom {
 			'post__not_in'   => $exclude_ids,
 		);
 
+		$sql_post_types = array_map(
+			function ( $item ) {
+				return "'" . $item . "'";
+			},
+			$post_type
+		);
+
+		if ( count( $sql_post_types ) ) {
+			$this->meeting_shortcode_sql['where'] .= ' AND ' . $wpdb->prefix . 'posts.post_type IN (' . implode( ', ', $sql_post_types ) . ')';
+		}
+
+		if ( count( $exclude_ids ) ) {
+			$this->meeting_shortcode_sql['where'] .= ' AND ' . $wpdb->prefix . 'posts.ID NOT IN (' . implode( ', ', $exclude_ids ) . ')';
+		}
+
+		$this->meeting_shortcode_sql['join'] = ' LEFT JOIN ' . $wpdb->prefix . 'postmeta AS pm1 ON ' . $wpdb->prefix . 'posts.ID = pm1.post_id';
+
 		if ( $recurring ) {
 			$args['meta_query'] = array(
 				array(
@@ -185,6 +215,8 @@ class StmZoom {
 				),
 			);
 
+			$meta_sql[] = "(pm1.meta_key = 'stm_recurring_enabled' AND pm1.meta_value = 'on')";
+
 			if ( in_array( 'product', $post_type, true ) ) {
 				$option_recurring_ids           = get_option( 'stm_recurring_meeting_ids', array() );
 				$args['meta_query']['relation'] = 'OR';
@@ -192,6 +224,11 @@ class StmZoom {
 					'key'     => '_meeting_id',
 					'value'   => $option_recurring_ids,
 					'compare' => 'IN',
+				);
+				$meta_sql[]                     = 'OR';
+				$meta_sql[]                     = '(pm1.meta_key = "_meeting_id" AND pm1.meta_value IN (' . implode( ', ', $option_recurring_ids ) . '))';
+				$meta_sql                       = array(
+					'(' . implode( ' ', $meta_sql ) . ')',
 				);
 			}
 		} elseif ( in_array( 'product', $post_type, true ) ) {
@@ -207,6 +244,8 @@ class StmZoom {
 					'compare' => 'EXISTS',
 				),
 			);
+
+			$meta_sql[] = "((pm1.meta_key = '_meeting_id' AND pm1.meta_value != '') OR (pm1.meta_key = 'stm_waiting_room'))";
 		}
 
 		if ( ! empty( $atts['category'] ) ) {
@@ -221,6 +260,9 @@ class StmZoom {
 					'operator' => 'IN',
 				),
 			);
+
+			$this->meeting_shortcode_sql['join']  .= ' LEFT JOIN ON ' . $wpdb->prefix . 'term_relationships AS tr1 ON ' . $wpdb->prefix . 'posts.ID = tr1.object_id';
+			$this->meeting_shortcode_sql['where'] .= ' AND tr1.term_taxonomy_id IN (' . implode( ', ', $category ) . ')';
 		}
 
 		$args['meta_query'][] = array(
@@ -236,9 +278,19 @@ class StmZoom {
 			),
 		);
 
+		$meta_sql[] = '((pm1.meta_key = "stm_select_gm_zoom" AND pm1.meta_value = "zoom") OR NOT EXISTS ( SELECT mt3.post_id FROM ' . $wpdb->prefix . 'postmeta AS mt3 WHERE mt3.post_id = ' . $wpdb->prefix . 'posts.ID AND mt3.meta_key = "stm_select_gm_zoom" ))';
+
+		$this->meeting_shortcode_sql['where'] .= ' AND (' . implode( ' AND ', $meta_sql ) . ')';
+
 		ob_start();
 
+		add_filter( 'posts_where', array( $this, 'posts_where' ), 10 );
+		add_filter( 'posts_join', array( $this, 'posts_join' ), 10 );
+
 		$q = new WP_Query( $args );
+
+		remove_filter( 'posts_where', array( $this, 'posts_where' ), 10 );
+		remove_filter( 'posts_join', array( $this, 'posts_join' ), 10 );
 
 		if ( $q->have_posts() ) {
 			$users = self::stm_zoom_get_users();
@@ -262,6 +314,14 @@ class StmZoom {
 		$content = ob_get_clean();
 
 		return $content;
+	}
+
+	public function posts_where() {
+		return $this->meeting_shortcode_sql['where'];
+	}
+
+	public function posts_join() {
+		return $this->meeting_shortcode_sql['join'];
 	}
 
 	/**

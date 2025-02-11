@@ -15,8 +15,6 @@ class STM_Metaboxes {
 
 		add_action( 'admin_enqueue_scripts', array( self::class, 'wpcfto_scripts' ) );
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'wpcfto_front_scripts' ) );
-
 		add_action( 'save_post', array( $this, 'wpcfto_save' ), 10, 3 );
 
 		add_action( 'wp_ajax_wpcfto_search_posts', 'STM_Metaboxes::search_posts' );
@@ -28,11 +26,11 @@ class STM_Metaboxes {
 
 	public function enqueue() {
 		$assets = STM_WPCFTO_URL . 'metaboxes/assets';
-		wp_enqueue_style( 'ctrumbowyg', $assets . '/vendors/trumbowyg/ctrumbowyg.css', false, '' );
-		wp_enqueue_style( 'color-trumbowyg', $assets . '/vendors/trumbowyg/color-trumbowyg.css', false, '' );
-		wp_enqueue_script( 'strumbowyg', $assets . '/vendors/trumbowyg/strumbowyg.js', array( 'jquery', ), '', true );
-		wp_enqueue_script( 'vtrumbowyg', $assets . '/vendors/trumbowyg/vtrumbowyg.js', array( 'jquery', ), '', true );
-		wp_enqueue_script( 'color-trumbowyg', $assets . '/vendors/trumbowyg/color-trumbowyg.js', array( 'jquery', ), '', true );
+		wp_enqueue_style( 'ctrumbowyg', $assets . '/vendors/trumbowyg/ctrumbowyg.css', array(), STM_WPCFTO_VERSION );
+		wp_enqueue_style( 'color-trumbowyg', $assets . '/vendors/trumbowyg/color-trumbowyg.css', array(), STM_WPCFTO_VERSION );
+		wp_enqueue_script( 'strumbowyg', $assets . '/vendors/trumbowyg/strumbowyg.js', array( 'jquery' ), STM_WPCFTO_VERSION, true );
+		wp_enqueue_script( 'vtrumbowyg', $assets . '/vendors/trumbowyg/vtrumbowyg.js', array( 'jquery' ), STM_WPCFTO_VERSION, true );
+		wp_enqueue_script( 'color-trumbowyg', $assets . '/vendors/trumbowyg/color-trumbowyg.js', array( 'jquery' ), STM_WPCFTO_VERSION, true );
 	}
 
 	public function boxes() {
@@ -78,11 +76,13 @@ class STM_Metaboxes {
 					$field_modified = '';
 
 					if ( isset( $_POST[ $field_name ] ) ) {
-
-						if ( 'editor' === $field['type'] || 'curriculum' === $field['type'] ) {
-							$field_modified = ( is_array( $_POST[ $field_name ] ) ) ? filter_var_array( $_POST[ $field_name ] ) : $_POST[ $field_name ];
+						if ( 'editor' === $field['type'] ) {
+							$field_modified = wp_kses_post( $_POST[ $field_name ] );
 						} else {
-							$field_modified = ( is_array( $_POST[ $field_name ] ) ) ? filter_var_array( $_POST[ $field_name ], FILTER_SANITIZE_STRING ) : sanitize_text_field( $_POST[ $field_name ] );
+							$field_modified = is_array( $_POST[ $field_name ] )
+								// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+								? $this->wpcfto_sanitize_array_field( $_POST[ $field_name ] )
+								: sanitize_text_field( $_POST[ $field_name ] );
 						}
 
 						if ( method_exists( 'STM_Metaboxes', "wpcfto_field_sanitize_{$field['type']}" ) ) {
@@ -96,16 +96,46 @@ class STM_Metaboxes {
 						}
 
 						$field_modified = call_user_func( array( $this, $sanitize ), $field_modified, $field_name );
+					}
+					
+					$field_modified_array = array();
 
+					if ( is_string( $field_modified ) ) {
+						$decoded = json_decode( wp_unslash( $field_modified ), true );
+
+						if ( json_last_error() === JSON_ERROR_NONE ) {
+							$field_modified_array = $decoded;
+						}
+					}
+
+					if ( ! empty( $field_modified_array ) && ! empty( $field_modified_array['font-data']['family'] ) ) {
+						$font = new WPCFTO_WebFont_Loader( $field_modified_array, $field_name . '_' . $post_id );
+						$field_modified_array['font-data']['local_url'] = $font->get_url();
+						$field_modified                                 = json_encode( wp_slash( $field_modified_array ) );
 					}
 
 					$fields[ $field_name ] = $field_modified;
-
 				}
 			}
 		}
 
 		return $fields;
+	}
+
+	public function wpcfto_sanitize_array_field( $value ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $key => &$val ) {
+				if ( is_array( $val ) ) {
+					$val = $this->wpcfto_sanitize_array_field( $val );
+				} else {
+					$val = 'isTrue' === $key
+						? rest_sanitize_boolean( $val )
+						: sanitize_text_field( $val );
+				}
+			}
+		}
+
+		return $value;
 	}
 
 	public function wpcfto_field_sanitize_repeater( $value ) {
@@ -132,40 +162,6 @@ class STM_Metaboxes {
 		return $value;
 	}
 
-	public function wpcfto_sanitize_curriculum( $value ) {
-		$value = str_replace( 'stm_lms_amp', '&', $value );
-
-		return esc_html( $value );
-	}
-
-	public function wpcfto_sanitize_editor( $value ) {
-
-		global $wpcfto_allowed_html;
-
-		$wpcfto_allowed_html = array(
-			'a'          => array(
-				'href'  => array(),
-				'style' => array(),
-			),
-			'p'          => array( 'style' => array() ),
-			'br'         => array(),
-			'span'       => array( 'style' => array() ),
-			'strong'     => array( 'style' => array() ),
-			'h1'         => array(),
-			'h2'         => array(),
-			'h3'         => array(),
-			'h4'         => array(),
-			'h5'         => array(),
-			'h6'         => array(),
-			'ol'         => array( 'style' => array() ),
-			'ul'         => array( 'style' => array() ),
-			'li'         => array( 'style' => array() ),
-			'blockquote' => array(),
-		);
-		$value               = wp_kses( $value, $wpcfto_allowed_html );
-
-		return $value;
-	}
 
 	public static function add_safe_style( $tags ) {
 		$allowed = array(
@@ -254,32 +250,43 @@ class STM_Metaboxes {
 
 	public static function translations() {
 		return array(
-			'font_size'           => esc_html__( 'Font size', 'nuxy' ),
-			'line_height'         => esc_html__( 'Line height', 'nuxy' ),
-			'word_spacing'        => esc_html__( 'Word spacing', 'nuxy' ),
-			'letter_spacing'      => esc_html__( 'Letter spacing', 'nuxy' ),
-			'font_family'         => esc_html__( 'Font Family', 'nuxy' ),
-			'backup_font_family'  => esc_html__( 'Backup Font Family', 'nuxy' ),
-			'font_weight'         => esc_html__( 'Font Weignt & Style', 'nuxy' ),
-			'font_subset'         => esc_html__( 'Font Subsets', 'nuxy' ),
-			'text_align'          => esc_html__( 'Text Align', 'nuxy' ),
-			'font_color'          => esc_html__( 'Font Color', 'nuxy' ),
-			'text-transform'      => esc_html__( 'Text transform', 'nuxy' ),
-			'export'              => esc_html__( 'Copy settings', 'nuxy' ),
-			'import'              => esc_html__( 'Import settings', 'nuxy' ),
-			'import_notice'       => esc_html__( 'WARNING! This will overwrite all existing option values, please proceed with caution!', 'nuxy' ),
-			'exported_data'       => esc_html__( 'Settings copied to buffer', 'nuxy' ),
-			'exported_data_error' => esc_html__( 'Couldn\'t copy settings', 'nuxy' ),
-			'export_data_label'   => esc_html__( 'Export options', 'nuxy' ),
-			'import_data_label'   => esc_html__( 'Import options', 'nuxy' ),
-			'vue_select_notice'   => esc_html__( 'Sorry, no matching options.', 'nuxy' ),
+			'font_size'                          => esc_html__( 'Font size', 'nuxy' ),
+			'line_height'                        => esc_html__( 'Line height', 'nuxy' ),
+			'word_spacing'                       => esc_html__( 'Word spacing', 'nuxy' ),
+			'letter_spacing'                     => esc_html__( 'Letter spacing', 'nuxy' ),
+			'font_family'                        => esc_html__( 'Font Family', 'nuxy' ),
+			'backup_font_family'                 => esc_html__( 'Backup Font Family', 'nuxy' ),
+			'font_weight'                        => esc_html__( 'Font Weignt & Style', 'nuxy' ),
+			'font_subset'                        => esc_html__( 'Font Subsets', 'nuxy' ),
+			'text_align'                         => esc_html__( 'Text Align', 'nuxy' ),
+			'font_color'                         => esc_html__( 'Font Color', 'nuxy' ),
+			'text-transform'                     => esc_html__( 'Text transform', 'nuxy' ),
+			'export'                             => esc_html__( 'Copy settings', 'nuxy' ),
+			'import'                             => esc_html__( 'Import settings', 'nuxy' ),
+			'import_notice'                      => esc_html__( 'WARNING! This will overwrite all existing option values, please proceed with caution!', 'nuxy' ),
+			'exported_data'                      => esc_html__( 'Settings copied to buffer', 'nuxy' ),
+			'exported_data_error'                => esc_html__( 'Couldn\'t copy settings', 'nuxy' ),
+			'export_data_label'                  => esc_html__( 'Export options', 'nuxy' ),
+			'import_data_label'                  => esc_html__( 'Import options', 'nuxy' ),
+			'vue_select_notice'                  => esc_html__( 'Sorry, no matching options.', 'nuxy' ),
+			'regenerate_fonts_btn'               => esc_html__( 'Synchronize', 'nuxy' ),
+			'regenerate_fonts_title'             => esc_html__( 'Font Synchronize', 'nuxy' ),
+			'regenerate_fonts_notice'            => esc_html__( 'Sync and update your fonts if they are displayed incorrectly on your website.', 'nuxy' ),
+			'fonts_download_setting_label'       => esc_html__( 'Download Google Fonts', 'nuxy' ),
+			'fonts_download_setting_description' => esc_html__( 'Download and store Google Fonts locally. Set the fonts in the typography.', 'nuxy' ),
+			'delete'                             => esc_html__( 'Delete', 'nuxy' ),
+			'preview'                            => esc_html__( 'Preview', 'nuxy' ),
 		);
 	}
 
 	public static function wpcfto_scripts() {
-		$v      = time();
+		if ( is_customize_preview() ) {
+			return;
+		}
+
+		$v      = STM_WPCFTO_VERSION;
 		$base   = STM_WPCFTO_URL . 'metaboxes/assets/';
-		$assets = STM_WPCFTO_URL . 'metaboxes/assets';
+		$assets = STM_WPCFTO_URL . 'metaboxes/assets/';
 
 		wp_enqueue_media();
 		wp_enqueue_script( 'vue.js', $base . 'js/vue.min.js', array( 'jquery' ), $v, true );
@@ -292,6 +299,7 @@ class STM_Metaboxes {
 		wp_enqueue_script( 'vue-draggable.js', $base . 'js/vue-draggable.min.js', array( 'sortable.js' ), $v, true );
 		wp_enqueue_script( 'wpcfto_mixins.js', $base . 'js/mixins.js', array( 'vue.js' ), $v, true );
 		wp_enqueue_script( 'wpcfto_metaboxes.js', $base . 'js/metaboxes.js', array( 'vue.js' ), $v, true );
+		wp_enqueue_script( 'wpcfto_search-by-settings.js', $base . 'js/search-by-settings.js', array( 'vue.js' ), $v, true );
 
 		wp_add_inline_script( 'wpcfto_metaboxes.js', 'const WPCFTO_EventBus = new Vue();' );
 
@@ -311,8 +319,8 @@ class STM_Metaboxes {
 
 		wp_enqueue_style( 'wpcfto-metaboxes.css', $base . 'css/main.css', array(), $v );
 		wp_enqueue_style( 'linear-icons', $base . 'css/linear-icons.css', array( 'wpcfto-metaboxes.css' ), $v );
-		wp_enqueue_style( 'font-awesome-min', $assets . '/vendors/font-awesome.min.css', null, $v, 'all' );
-		wp_enqueue_style( 'vue-multiselect-min', $assets . '/vendors/vue-multiselect.min.css', null, $v, 'all' );
+		wp_enqueue_style( 'font-awesome-min', $assets . 'vendors/font-awesome.min.css', null, $v, 'all' );
+		wp_enqueue_style( 'vue-multiselect-min', $assets . 'vendors/vue-multiselect.min.css', null, $v, 'all' );
 
 		if ( is_rtl() ) {
 			wp_enqueue_style( 'nuxy-rtl', $base . 'css/rtl.css', array( 'wpcfto-metaboxes.css' ), $v );
@@ -343,6 +351,7 @@ class STM_Metaboxes {
 			'button_group',
 			'button_list',
 			'image_select',
+			'data_select',
 			'spacing',
 			'link_color',
 			'multi_checkbox',
@@ -377,6 +386,14 @@ class STM_Metaboxes {
 			true
 		);
 
+		wp_enqueue_script(
+			'wpcfto_multiselect_add_term_component',
+			STM_WPCFTO_URL . '/metaboxes/general_components/js/multiselect_add_term.js',
+			array( 'wpcfto_metaboxes.js' ),
+			$v,
+			true
+		);
+
 		$icons        = array();
 		$font_awesome = stm_wpcfto_new_fa_icons();
 		array_walk(
@@ -400,23 +417,6 @@ class STM_Metaboxes {
 		);
 
 		do_action( 'wpcfto_enqueue_scripts' );
-	}
-
-	public function wpcfto_front_scripts() {
-		$v      = time();
-		$base   = STM_WPCFTO_URL . 'metaboxes/assets/';
-		$assets = STM_WPCFTO_URL . 'metaboxes/assets';
-
-		wp_enqueue_style( 'font-awesome-min', $assets . '/vendors/font-awesome.min.css', null, $v, 'all' );
-		wp_enqueue_script( 'wpcfto_metaboxes.js', $base . 'js/metaboxes.js', array( 'vue.js' ), $v, true );
-
-		wp_localize_script(
-			'wpcfto_metaboxes.js',
-			'wpcfto_global_settings',
-			array(
-				'translations' => self::translations(),
-			)
-		);
 	}
 
 	public function wpcfto_post_types() {
@@ -601,6 +601,10 @@ function wpcfto_metaboxes_deps( $field, $section_name ) {
 		$dependency = "v-bind:class=\"{'wpcfto-field-disabled' : true}\"";
 	}
 
+	if ( ! empty( $field['dependency_mode'] ) && 'sorted' === $field['dependency_mode'] ) {
+		return '';
+	}
+
 	if ( empty( $field['dependency'] ) ) {
 		return $dependency;
 	}
@@ -661,7 +665,7 @@ function wpcfto_metaboxes_generate_deps( $section_name, $dep ) {
 	return $dependency;
 }
 
-function wpcfto_metaboxes_display_single_field( $section, $section_name, $field, $field_name ) {
+function wpcfto_metaboxes_display_single_field( $section, $section_name, $field, $field_name, $metabox_id = null ) {
 	$dependency  = wpcfto_metaboxes_deps( $field, $section_name );
 	$width       = 'column-1';
 	$is_pro      = ( ! empty( $field['pro'] ) ) ? 'is_pro' : 'not_pro';
@@ -732,6 +736,7 @@ function wpcfto_metaboxes_display_single_field( $section, $section_name, $field,
 			$field_label    = "{$field}['label']";
 			$field_id       = $section_name . '-' . $field_name;
 			$field_readonly = isset( $field_data['readonly'] ) ? 'true' : 'false';
+			$option_id      = $metabox_id;
 
 			$file = apply_filters( "wpcfto_field_{$field_type}", STM_WPCFTO_PATH . '/metaboxes/fields/' . $field_type . '.php' );
 
@@ -747,18 +752,25 @@ function wpcfto_metaboxes_display_single_field( $section, $section_name, $field,
 
 function wpcfto_metaboxes_display_group_field( $section, $section_name, $field, $field_name ) {
 	if ( 'started' === $field['group'] ) :
+
+		$group_data = '';
+
+		if ( ! empty( $field['dependency_mode'] ) && 'sorted' === $field['dependency_mode'] ) {
+			$group_data = 'data-dependency=' . json_encode( $field['dependency'] );
+		}
+
 		$group_classes = array( 'wpcfto-box wpcfto_group_started column-1' );
 		if ( ! empty( $field['submenu'] ) ) {
 			$group_classes[] = sanitize_title( "{$section_name}_{$field['submenu']}" );
 		}
 		?>
-		<div class="<?php echo esc_attr( implode( ' ', $group_classes ) ); ?>">
+		<div class="<?php echo esc_attr( implode( ' ', $group_classes ) ); ?>" <?php echo esc_attr( $group_data ); ?> >
 		<div class="container">
 		<div class="row">
 		<?php if ( isset( $field['group_title'] ) && ! empty( $field['group_title'] ) ) { ?>
 		<div class="wpcfto_group_title"><?php echo esc_html( $field['group_title'] ); ?></div>
 	<?php } ?>
-	<?php
+		<?php
 	endif;
 
 	wpcfto_metaboxes_display_single_field( $section, $section_name, $field, $field_name );
@@ -766,7 +778,7 @@ function wpcfto_metaboxes_display_group_field( $section, $section_name, $field, 
 	if ( 'ended' === $field['group'] ) :
 		?>
 		</div></div></div>
-	<?php
+		<?php
 	endif;
 }
 

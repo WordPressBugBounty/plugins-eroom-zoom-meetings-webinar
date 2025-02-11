@@ -7,14 +7,14 @@
  * Author: StylemixThemes
  * Author URI: https://stylemixthemes.com/
  * Text Domain: eroom-zoom-meetings-webinar
- * Version: 1.4.25
+ * Version: 1.4.26
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } //Exit if accessed directly
 
-define( 'STM_ZOOM_VERSION', '1.4.25' );
+define( 'STM_ZOOM_VERSION', '1.4.26' );
 define( 'STM_ZOOM_DB_VERSION', '1.2.9' );
 define( 'STM_ZOOM_FILE', __FILE__ );
 define( 'STM_ZOOM_DIR', __DIR__ );

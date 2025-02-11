@@ -182,8 +182,53 @@ class StmZoomAdminMenus {
 					'shortcodes' => array(
 						'name'   => esc_html__( 'Shortcodes', 'eroom-zoom-meetings-webinar' ),
 						'fields' => array(
-							'shortcodes' => array(
-								'type' => 'shortcodes',
+							'sc_meeting'                  => array(
+								'label'    => esc_html__( 'Single Meeting', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_conference post_id="{post_id}"]',
+							),
+							'sc_webinar'                  => array(
+								'label'    => esc_html__( 'Single Webinar', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_webinar post_id="{post_id}"]',
+							),
+							'sc_meetings_grid'            => array(
+								'label'    => esc_html__( 'Meetings Grid', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_conference_grid post_type="stm-zoom" count="3" per_row="3"]',
+							),
+							'sc_webinar_grid'             => array(
+								'label'    => esc_html__( 'Webinar Grid', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_conference_grid post_type="stm-zoom-webinar" count="3" per_row="3"]',
+							),
+							'sc_recurring_meeting'        => array(
+								'label'    => esc_html__( 'Recurring Meeting Grid (Pro version)', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_conference_grid post_type="product" recurring="1" count="3" per_row="3"]',
+							),
+							'sc_product_grid'             => array(
+								'label'    => esc_html__( 'Meeting Product Grid (Pro version)', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_conference_grid post_type="product" count="3" per_row="3"]',
+							),
+							'sc_product_grid_by_category' => array(
+								'label'    => esc_html__( 'Meeting Product Grid by category (Pro version)', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_conference_grid post_type="product" category="{category_id}, {category_id}" count="3" per_row="3"]',
+							),
+							'sc_general_grid'             => array(
+								'label'    => esc_html__( 'General Grid (stm-zoom, stm-zoom-webinar, product in a single grid)', 'eroom-zoom-meetings-webinar' ),
+								'type'     => 'text',
+								'readonly' => 'false',
+								'value'    => '[stm_zoom_conference_grid post_type="stm-zoom, stm-zoom-webinar, product" count="3" per_row="3"]',
 							),
 						),
 					),

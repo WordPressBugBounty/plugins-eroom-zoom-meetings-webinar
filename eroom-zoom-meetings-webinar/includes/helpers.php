@@ -152,8 +152,10 @@ function stm_zoom_get_timezone_options() {
 	$zones_array = array();
 
 	foreach ( $time_zone as $key => $item ) {
-		$dt                  = new DateTimeImmutable( gmdate( 'Y-m-d 00:00:00' ), new DateTimeZone( $key ) );
-		$zones_array[ $key ] = '(GMT' . $dt->format( 'P' ) . ')' . $item;
+		if ( in_array( $key, timezone_identifiers_list(), true ) ) {
+			$dt                  = new DateTimeImmutable( gmdate( 'Y-m-d 00:00:00' ), new DateTimeZone( $key ) );
+			$zones_array[ $key ] = '(GMT' . $dt->format( 'P' ) . ')' . $item;
+		}
 	}
 
 	return $zones_array;

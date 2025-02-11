@@ -10,14 +10,6 @@ class StmZoomAdminNotices {
 
 		add_action( 'wp_ajax_stm_zoom_ajax_add_feedback', array( $this, 'add_feedback' ) );
 
-		// Add Shortcodes Tab under Zoom Settings
-		add_filter(
-			'wpcfto_field_shortcodes',
-			function () {
-				return STM_ZOOM_PATH . '/includes/additional_fields/shortcodes.php';
-			}
-		);
-
 		// Add Pro Banner under Zoom Settings
 		add_action(
 			'wpcfto_settings_screen_stm_zoom_settings_after',

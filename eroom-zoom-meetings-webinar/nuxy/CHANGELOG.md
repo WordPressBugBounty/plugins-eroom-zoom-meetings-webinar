@@ -1,3 +1,47 @@
+## 4.4.34
+- **New:** Available search by settings
+## 4.4.33
+- **Fix:** Fixed Import/Export options.
+## 4.4.32
+- **Fix:** Fixed minor bug.
+## 4.4.31
+- **Fix:** Fixed type string.
+## 4.4.30
+- **Enhancement:** Introduced the ability to add new features directly to the Multiselect Control.
+## 4.4.29
+- **Fix:** Added a fallback to handle missing "position" values.
+## 4.4.28
+- **Fix:** Fixed script error in WordPress Customizer.
+## 4.4.27
+- **Fix:** Add string translate for options.
+## 4.4.26
+- **Fix:** Fixed minor bug.
+## 4.4.25
+- **Fix:** Fixed minor bug.
+## 4.4.24
+- **Fix:** Fixed repeater field props.
+## 4.4.23
+- **Fix:** Added text variable for image upload button.
+## 4.4.22
+- **Fix:** Translation support for settings.
+## 4.4.21
+- **Fix:** Fixed minor bugs.
+## 4.4.20
+- **New:** Google fonts are uploaded on the server.
+## 4.4.19
+- **Fix:** Coding improvement.
+## 4.4.18
+- **Fix:** Added processing unslash to variable $_POST for field type 'editor' & 'curriculum'.
+## 4.4.17
+- **Fix:** Fixed minor bugs.
+## 4.4.16
+- **New:** Preview button in new field "data_select"
+## 4.4.15
+- **New:** Added new field "data_select"
+## 4.4.14
+- **Fix:** Frontend Enqueues removed
+## 4.4.13
+- **Fix:** Using Quotes in Label issues fixed
 ## 4.4.12
 - **Fix:** Fixed missing authorization for better data protection.
 ## 4.4.11

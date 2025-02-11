@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: NUXY\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-23 06:46+0000\n"
-"PO-Revision-Date: 2024-03-16 23:52+0200\n"
-"Last-Translator: Irina\n"
+"PO-Revision-Date: 2025-02-03 08:03+0000\n"
+"Last-Translator: \n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
@@ -12,15 +12,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
 "n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
-"X-Generator: Poedit 3.4.2\n"
-"X-Loco-Version: 2.6.2; wp-6.0\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.14; wp-6.7.1\n"
 "X-Domain: nuxy\n"
 
 #: taxonomy_meta/fields/image.php:10
 msgid "Add image"
 msgstr "Добавить изображение"
 
-#: metaboxes/metabox.php:250
+#: metaboxes/metabox.php:258
 msgid "Backup Font Family"
 msgstr "Семейство шрифтов Backup"
 
@@ -48,19 +48,23 @@ msgstr "Заглавные буквы"
 msgid "Center"
 msgstr "По центру"
 
-#: settings/settings.php:90
+#: settings/settings.php:97
 msgid "Choose Page"
 msgstr "Выбрать страницу"
 
-#: metaboxes/metabox.php:34
+#: metaboxes/metabox.php:42
 msgid "Choose User"
 msgstr "Выбрать пользователя"
 
-#: metaboxes/metabox.php:256
+#: metaboxes/fields/text.php:28
+msgid "Copied"
+msgstr "Скопировано"
+
+#: metaboxes/metabox.php:264
 msgid "Copy settings"
 msgstr "Копировать настройки"
 
-#: metaboxes/metabox.php:260
+#: metaboxes/metabox.php:268
 msgid "Couldn't copy settings"
 msgstr "Не удалось скопировать настройки"
 
@@ -80,39 +84,66 @@ msgstr "Дни"
 msgid "Default"
 msgstr "По умолчанию"
 
+#: metaboxes/metabox.php:277
+msgid "Delete"
+msgstr "Удалить"
+
 #: taxonomy_meta/fields/image.php:13
 msgid "Delete image"
 msgstr "Удалить изображение"
+
+#: metaboxes/metabox.php:276
+msgid ""
+"Download and store Google Fonts locally. Set the fonts in the typography."
+msgstr ""
+"Загрузите и сохраните Google Fonts локально. Установите шрифты в типографике."
+
+#: metaboxes/metabox.php:275
+msgid "Download Google Fonts"
+msgstr "Загрузить Google Шрифты"
 
 #: metaboxes/fields/duration.php:24
 msgid "duration"
 msgstr "длительность"
 
-#: helpers/file_upload.php:22
+#: metaboxes/fields/repeater.php:25 metaboxes/fields/text.php:27
+#: metaboxes/fields/textarea.php:25
+msgid "Enter"
+msgstr "Введите"
+
+#: metaboxes/fields/number.php:22
+msgid "Enter numbers..."
+msgstr "Введите числа..."
+
+#: helpers/file_upload.php:21
 msgid "Error occurred, please try again"
 msgstr "Произошла ошибка, попробуйте еще раз"
 
-#: metaboxes/metabox.php:261
+#: metaboxes/metabox.php:269
 msgid "Export options"
 msgstr "Экспорт параметров"
 
-#: metaboxes/metabox.php:254
+#: metaboxes/metabox.php:262
 msgid "Font Color"
 msgstr "Цвет шрифта"
 
-#: metaboxes/metabox.php:249
+#: metaboxes/metabox.php:257
 msgid "Font Family"
 msgstr "Семейство шрифтов"
 
-#: metaboxes/metabox.php:245
+#: metaboxes/metabox.php:253
 msgid "Font size"
 msgstr "Размер шрифта"
 
-#: metaboxes/metabox.php:252
+#: metaboxes/metabox.php:260
 msgid "Font Subsets"
 msgstr "Подмножества шрифтов"
 
-#: metaboxes/metabox.php:251
+#: metaboxes/metabox.php:273
+msgid "Font Synchronize"
+msgstr "Синхронизация шрифтов"
+
+#: metaboxes/metabox.php:259
 msgid "Font Weignt & Style"
 msgstr "Толщина и стиль шрифта"
 
@@ -132,11 +163,15 @@ msgstr "Часы"
 msgid "https://stylemixthemes.com"
 msgstr "https://stylemixthemes.com"
 
-#: metaboxes/metabox.php:262
+#: metaboxes/fields/image.php:24
+msgid "Image URL"
+msgstr "URL изображения"
+
+#: metaboxes/metabox.php:270
 msgid "Import options"
 msgstr "Импорт параметров"
 
-#: metaboxes/metabox.php:257
+#: metaboxes/metabox.php:265
 msgid "Import settings"
 msgstr "Импорт настроек"
 
@@ -144,7 +179,7 @@ msgstr "Импорт настроек"
 msgid "Import/Export"
 msgstr "Импорт/экспорт"
 
-#: helpers/file_upload.php:63
+#: helpers/file_upload.php:65
 msgid "Invalid file extension"
 msgstr "Недопустимое расширение файла"
 
@@ -160,7 +195,7 @@ msgstr "Латиница расширенная"
 msgid "Left"
 msgstr "Слева"
 
-#: metaboxes/metabox.php:248
+#: metaboxes/metabox.php:256
 msgid "Letter spacing"
 msgstr "Межбуквенный интервал"
 
@@ -172,7 +207,7 @@ msgstr "Лёгкий 300"
 msgid "Light 300 italic"
 msgstr "Лёгкий 300 курсив"
 
-#: metaboxes/metabox.php:246
+#: metaboxes/metabox.php:254
 msgid "Line height"
 msgstr "Высота строки"
 
@@ -200,9 +235,17 @@ msgstr "Обычный"
 msgid "NUXY"
 msgstr "NUXY"
 
+#: settings/settings.php:165
+msgid "Oops, something went wrong"
+msgstr "Упс, что-то пошло не так"
+
 #: helpers/file_upload.php:53
 msgid "Please, select file"
 msgstr "Выберите файл"
+
+#: metaboxes/metabox.php:278
+msgid "Preview"
+msgstr "Просмотр"
 
 #: metaboxes/google_fonts.php:16
 msgid "Regular 400"
@@ -212,27 +255,51 @@ msgstr "Обычный 400"
 msgid "Regular 400 italic"
 msgstr "Обычный 400 курсив"
 
+#: metaboxes/fields/image.php:27
+msgid "Remove"
+msgstr "Удалить"
+
+#: metaboxes/fields/image.php:26
+msgid "Replace"
+msgstr "Заменить"
+
+#: settings/view/header.php:45
+msgid "Results not found"
+msgstr "Результаты не найдены"
+
 #: metaboxes/google_fonts.php:44
 msgid "Right"
 msgstr "Справа"
 
-#: settings/view/header.php:54
+#: settings/view/header.php:79
 msgid "Save Settings"
 msgstr "Сохранить настройки"
 
-#: settings/view/header.php:47
-msgid "Search"
-msgstr "Поиск"
+#: settings/settings.php:161
+msgid "Saved!"
+msgstr "Сохранено!"
+
+#: settings/view/header.php:45
+msgid "Search..."
+msgstr "Поиск..."
 
 #: taxonomy_meta/fields/image.php:45
 msgid "Select or Upload Media Of Your Chosen Persuasion"
 msgstr "Выберите или загрузите медиа файлы по вашему выбору"
 
-#: metaboxes/metabox.php:259
+#: settings/settings.php:162
+msgid "Settings are changed"
+msgstr "Настройки изменены"
+
+#: settings/settings.php:166
+msgid "Settings are not changed"
+msgstr "Настройки не изменены"
+
+#: metaboxes/metabox.php:267
 msgid "Settings copied to buffer"
 msgstr "Настройки скопированы в буфер"
 
-#: metaboxes/metabox.php:263
+#: metaboxes/metabox.php:271
 msgid "Sorry, no matching options."
 msgstr "Извините, нет подходящих вариантов."
 
@@ -240,11 +307,22 @@ msgstr "Извините, нет подходящих вариантов."
 msgid "StylemixThemes"
 msgstr "StylemixThemes"
 
-#: metaboxes/metabox.php:253
+#: metaboxes/metabox.php:274
+msgid ""
+"Sync and update your fonts if they are displayed incorrectly on your website."
+msgstr ""
+"Синхронизируйте и обновите шрифты, если они отображаются на вашем сайте "
+"некорректно."
+
+#: metaboxes/metabox.php:272
+msgid "Synchronize"
+msgstr "Синхронизировать"
+
+#: metaboxes/metabox.php:261
 msgid "Text Align"
 msgstr "Выравнивание текста"
 
-#: metaboxes/metabox.php:255
+#: metaboxes/metabox.php:263
 msgid "Text transform"
 msgstr "Преобразование текста"
 
@@ -255,6 +333,10 @@ msgstr "Тонкий 100"
 #: metaboxes/google_fonts.php:13
 msgid "Thin 100 italic"
 msgstr "Тонкий 100 курсив"
+
+#: metaboxes/fields/image.php:25
+msgid "Upload"
+msgstr "Загрузить"
 
 #: metaboxes/google_fonts.php:51
 msgid "Uppercase"
@@ -268,7 +350,7 @@ msgstr "Используйте эти медиа файлы"
 msgid "Vietnamese"
 msgstr "Вьетнамский"
 
-#: metaboxes/metabox.php:258
+#: metaboxes/metabox.php:266
 msgid ""
 "WARNING! This will overwrite all existing option values, please proceed with "
 "caution!"
@@ -276,10 +358,10 @@ msgstr ""
 "ВНИМАНИЕ! Это приведет к перезаписи всех существующих значений параметров, "
 "действуйте осторожно!"
 
-#: metaboxes/metabox.php:247
+#: metaboxes/metabox.php:255
 msgid "Word spacing"
 msgstr "Интервал между словами"
 
 #. Description of the plugin
 msgid "WordPress Custom Fields & Theme Options with Vue.js."
-msgstr "Пользовательские поля и параметры темы WordPress с Vue.js."
+msgstr "Пользовательские поля и параметры темы WordPress с помощью Vue.js."
