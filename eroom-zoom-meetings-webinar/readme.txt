@@ -5,7 +5,7 @@ Donate link: https://stylemixthemes.com
 Tags: zoom, video conference, zoom conference, google meet
 Requires at least: 4.6
 Tested up to: 6.7
-Stable tag: 1.4.27
+Stable tag: 1.4.28
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,11 +133,10 @@ The plugin allows you to use all the features provided by Zoom, such as:
 
 ## More Awesome Free Plugins by Stylemix
 
-⭐ [Cost Calculator & Price Estimation Plugin](https://wordpress.org/plugins/cost-calculator-builder/)
-⭐ [Zoom Meetings and Webinars Plugin — eRoom](https://wordpress.org/plugins/eroom-zoom-meetings-webinar/)
-⭐ [BookIt - a free booking calendar plugin](https://wordpress.org/plugins/bookit/)
 ⭐ [MasterStudy - All-in-One WordPress LMS Plugin](https://wordpress.org/plugins/masterstudy-lms-learning-management-system/)
-⭐ [Free Classifieds and Listings Plugin - uListing](https://wordpress.org/plugins/ulisting/)
+⭐ [Cost Calculator & Price Estimation Plugin](https://wordpress.org/plugins/cost-calculator-builder/)
+⭐ [Motors – Car Dealership & Classified Listings Plugin](https://wordpress.org/plugins/motors-car-dealership-classified-listings/)
+⭐ [Zoom Meetings and Webinars Plugin — eRoom](https://wordpress.org/plugins/eroom-zoom-meetings-webinar/)
 
 
 == Installation ==
@@ -186,7 +185,14 @@ Yes, you should be registered in Zoom. Also, on the plan you are using there dep
 
 You can do it, just use the URL link of the video, so users could watch it later. In addition to this, with eRoom purchasable meetings plugin you will be able even to sell your webinars and meetings. Learn more: [https://stylemixthemes.com/zoom-meetings-webinar-plugin/](https://stylemixthemes.com/zoom-meetings-webinar-plugin/)
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/vdp/eroom-zoom-meetings-webinar). 
+
 == Changelog ==
+
+= 1.4.28 =
+* Fix: Minor bugs
 
 = 1.4.27 =
 * Fix: Minor bugs

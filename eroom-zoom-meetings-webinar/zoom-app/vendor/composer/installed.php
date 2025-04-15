@@ -3,7 +3,7 @@
         'name' => 'zoom/zoom',
         'pretty_version' => 'dev-release',
         'version' => 'dev-release',
-        'reference' => '6e197b09aa9b0088bd789a8507ed6cc7f5923998',
+        'reference' => '342f57a9923196dc525d9b80131ec532a4fd4684',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -112,7 +112,7 @@
         'zoom/zoom' => array(
             'pretty_version' => 'dev-release',
             'version' => 'dev-release',
-            'reference' => '6e197b09aa9b0088bd789a8507ed6cc7f5923998',
+            'reference' => '342f57a9923196dc525d9b80131ec532a4fd4684',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
