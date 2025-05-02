@@ -36,8 +36,8 @@ $img = empty($thumbnail_url) ? 'not-image' : ''
 					<?php echo esc_html( $button_text_post ); ?>
 					</a>
 				<?php } ?>
-				<a href="#" data-id="<?php echo esc_attr( $post_id ); ?>" class="not-show-again">
-					Not show me again
+				<a data-id="<?php echo esc_attr( $post_id ); ?>" class="not-show-again">
+					Don't show me again
 				</a>
 			</div>
 		</div>

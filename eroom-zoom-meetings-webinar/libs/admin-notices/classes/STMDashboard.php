@@ -85,7 +85,7 @@ class STMDashboard {
 			$transient_name  = ( ! empty( $this->product_name ) ) ? $this->product_name . '_notices' : 'product_notices';
 			$this->json_data = get_transient( $transient_name );
 
-			if ( false === $this->json_data || get_option('_transient_timeout_' . $transient_name ) < current_time( 'timestamp' ) ) {
+			if ( false === $this->json_data ) {
 				$json_response   = wp_remote_get( $this->json_file_path );
 				$this->json_data = array();
 				$json_data       = json_decode( wp_remote_retrieve_body( $json_response ), true );

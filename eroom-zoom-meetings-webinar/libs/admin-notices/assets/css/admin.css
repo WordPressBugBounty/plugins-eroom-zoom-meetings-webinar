@@ -386,6 +386,7 @@ body.about-php .stm-notice, body.credits-php .stm-notice, body.freedoms-php .stm
   width: max-content;
 }
 .wp-core-ui .popup-dash-promo-content-item .popup-dash-actions .not-show-again {
+  cursor: pointer;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;

@@ -34,7 +34,7 @@ class STMNoticesInit {
 		wp_localize_script( 'stm-admin-notice-js', 'stmNotices', array(
 			'ajax_url'      => admin_url( 'admin-ajax.php' ),
 			'nonce'         => wp_create_nonce( 'notices-nonce' ),
-			'api_fetch_url' => defined('STM_DEV')  ? 'http://stylemixnotification.local' : 'https://promo-dashboard.stylemixthemes.com',
+			'api_fetch_url' => defined('STM_DEV')  ? 'https://promo.stmdev.net' : 'https://promo-dashboard.stylemixthemes.com',
 		));
 	}
 }

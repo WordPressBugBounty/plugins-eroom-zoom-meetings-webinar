@@ -11,6 +11,8 @@ class AdminbarItem {
 	}
 
 	public static function addAdminbarItem( $admin_bar ) {
+		$product_name = get_product_name();
+		$plugin_name  = isset( $product_name['plugin_name'] ) ? $product_name['plugin_name'] : '';
 
 		$admin_bar->add_group(
 			array(
@@ -24,7 +26,7 @@ class AdminbarItem {
 			array(
 				'id'     => 'admin-notification-popup',
 				'parent' => 'admin-notification',
-				'title'  => '<span><i class="ab-icon dashicons dashicons-bell' . $hasNew . '"></i>Notifications</span>',
+				'title'  => '<span><i class="ab-icon dashicons dashicons-bell' . $hasNew . '"></i>' . esc_html__( 'Notifications', $plugin_name ) . '</span>',
 				'meta'   => array(
 					'class' => 'menupop',
 					'html'  => NotificationPopupHtml::popup_html(),

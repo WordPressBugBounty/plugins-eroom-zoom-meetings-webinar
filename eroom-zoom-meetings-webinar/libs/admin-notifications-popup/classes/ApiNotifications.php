@@ -23,7 +23,7 @@ class ApiNotifications {
 		$transient_name       = ( ! empty( self::$text_domain ) ) ? self::$text_domain . '_notification' : 'product_notification';
 		$transient_data       = get_transient( $transient_name );
 
-		if ( false === $transient_data || get_option('_transient_timeout_' . $transient_name ) < current_time( 'timestamp' ) ) {
+		if ( false === $transient_data ) {
 			$json_response        = self::get_notice_data_from_json();
 			self::$json_file_data = self::$json_file_data ?? array();
 
