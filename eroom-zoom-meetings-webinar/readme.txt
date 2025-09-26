@@ -1,11 +1,10 @@
 === eRoom - Zoom Meetings & Webinars ===
 
-Contributors: Stylemix
-Donate link: https://stylemixthemes.com
+Contributors: Çağdaş Dağ
 Tags: zoom, video conference, zoom conference, google meet
 Requires at least: 4.6
 Tested up to: 6.7
-Stable tag: 1.4.30
+Stable tag: 1.4.31
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -190,6 +189,9 @@ You can do it, just use the URL link of the video, so users could watch it later
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/vdp/eroom-zoom-meetings-webinar). 
 
 == Changelog ==
+
+= 1.4.31 =
+* Fixed: Minor bug fix
 
 = 1.4.30 =
 * Fix: Minor bugfixes

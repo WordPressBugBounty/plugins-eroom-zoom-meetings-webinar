@@ -26,15 +26,6 @@
 
 			$( body ).on(
 				'click',
-				'.eroom-feedback-button',
-				function (e) {
-					e.preventDefault();
-					$( feedback_modal ).fadeIn( 200 );
-				}
-			);
-
-			$( body ).on(
-				'click',
 				'.feedback-modal-close',
 				function (e) {
 					e.preventDefault();
@@ -106,17 +97,6 @@
 					$( '.feedback-review-text, .feedback-thank-you' ).show();
 					$( '.feedback-extra, .feedback-submit' ).hide();
 
-					/** Remove Feedback Button */
-					$.ajax(
-						{
-							url: ajaxurl,
-							type: 'GET',
-							data: 'action=stm_zoom_ajax_add_feedback',
-							success: function (data) {
-								$( '.eroom-feedback-button' ).remove();
-							}
-						}
-					);
 				}
 			);
 
