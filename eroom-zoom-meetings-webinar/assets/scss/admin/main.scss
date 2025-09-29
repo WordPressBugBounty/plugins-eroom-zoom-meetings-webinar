@@ -1,0 +1,419 @@
+@import 'components/topbar';
+@import 'components/feedback';
+
+.stm_zoom_table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    .stm_zoom_table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        min-width: 1000px;
+        margin-bottom: 30px;
+        th, td {
+            padding: 8px 10px;
+            border-bottom: 1px #ccc solid;
+        }
+    }
+}
+.eroom-notice {
+  min-width: 80%;
+}
+
+.button.load_button {
+    border-radius: 50px !important;
+}
+
+#stm_zoom_add_user {
+    .form-group {
+        margin-bottom: 30px;
+        label {
+            width: 150px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        input,
+        select {
+            width: 300px;
+        }
+    }
+}
+
+.report_wrap {
+    padding: 30px;
+    background-color: #fff;
+    margin: 30px 15px;
+	&.wpcfto-settings {
+		.button.load_button {
+			float: right;
+			height: 36px;
+			padding: 8px 18px;
+		}
+	}
+    table {
+        margin-top: 20px;
+    }
+    h1 {
+        margin-bottom: 40px;
+    }
+    a {
+        text-decoration: none;
+        font-weight: 700;
+    }
+}
+
+.assign_host_page {
+    padding: 30px;
+    background-color: #fff;
+    margin: 30px 15px;
+    overflow: hidden;
+    .stm-lms-tab {
+        padding: 30px 0 0 0;
+    }
+    h1 {
+        margin-bottom: 40px;
+    }
+    input {
+        margin-bottom: 0 !important;
+    }
+}
+
+.add_zoom_user_page {
+    padding: 30px;
+    background-color: #fff;
+    margin: 30px 15px;
+    h1 {
+        margin-bottom: 40px;
+    }
+    .stm-lms-tab {
+        padding: 30px 0 0 0;
+    }
+}
+
+.stm_zoom_nonce {
+    padding: 20px;
+    border-left: 3px solid transparent;
+    margin-left: 0 !important;
+    &.error {
+        border-left-color: #d30c5c;
+    }
+    &.success {
+        border-left-color: green;
+    }
+}
+
+.stm_zoom_reports {
+    padding: 30px;
+    background-color: #fff;
+    margin: 30px 15px;
+    h1 {
+        margin-bottom: 40px;
+    }
+    table {
+        margin-top: 30px;
+    }
+    .stm_zoom_nonce {
+        margin-top: 30px;
+    }
+}
+
+body.post-type-stm-zoom,
+body.post-type-stm-zoom-webinar {
+    .zoom_top_bar {
+        margin: 60px 15px 30px 0;
+    }
+    #sync_meetings {
+        color: #4a8cff;
+        border: 1px solid #4a8cff;
+        margin-left: 10px;
+    }
+}
+
+.eroom-get-pro {
+    font-weight: bold;
+}
+
+.eroom_page_stm_zoom_settings {
+    #wpbody-content {
+        display: flex;
+        flex-wrap: wrap;
+        h1 {
+            width: 100%;
+        }
+        .stm-lms-settings {
+            margin-right: 30px;
+            #shortcodes {
+                width: 740px;
+                max-width: 100%;
+            }
+        }
+    }
+}
+#wpbody-content {
+  &>.zoom_popup {
+    position: relative;
+    height: 100%;
+    left: 0;
+    transform: none;
+    top: 0;
+    margin-top: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  }
+}
+
+@-webkit-keyframes gradientAnimation {
+    0%{background-position:9% 0%}
+    50%{background-position:92% 100%}
+    100%{background-position:9% 0%}
+}
+@-moz-keyframes gradientAnimation {
+    0%{background-position:9% 0%}
+    50%{background-position:92% 100%}
+    100%{background-position:9% 0%}
+}
+@keyframes gradientAnimation {
+    0%{background-position:9% 0%}
+    50%{background-position:92% 100%}
+    100%{background-position:9% 0%}
+}
+.hidden {
+    display: none;
+}
+
+[data-field="wpcfto_addon_option_stm_alternative_hosts"] .wpcfto_generic_field  .dropdown-menu {
+  top: auto !important;
+  box-shadow: 0 -3px 6px 0 rgba(0,0,0,.15) !important;
+  border-radius: 4px 4px 0 0 !important;
+  border-top: 1px solid rgba(0,0,0,.26) !important;
+  border-bottom: none !important;
+  bottom: calc(100% - 1px);
+}
+
+.eroom_page_stm_zoom_settings {
+  .wpcfto-settings{
+    width: 100%;
+  }
+  .shortcode_list {
+    width: 100%;
+    padding: 20px;
+    &>div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      justify-content: center;
+      label {
+        width: 40%;
+        padding-right: 2rem;
+      }
+    }
+  }
+}
+
+.stm_zoom_users_pagination ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  li {
+    margin: 0;
+    padding: 0;
+  }
+  span, a {
+    font-weight: 400;
+    text-decoration:none;
+    margin-right: 4px;
+    padding: 4px 8px;
+    color: #157ffc;
+    font-size: 12px;
+    background-color: #fff;
+    border: #157ffc 1px solid;
+  }
+  span.current, a:hover{
+    background-color: #157ffc;
+    color: #fff;
+  }
+}
+
+.zoom_popup{
+  .tns-nav {
+    padding-top: 28px;
+  }
+
+  button{
+    width: 8px;
+    height: 8px;
+    margin: 0 6.5px;
+    padding: 0;
+    background-color: rgba(#000000, 0.2);
+    border: none;
+    border-radius: 50%;
+    &.tns-nav-active {
+      background-color: #4891fd;
+    }
+  }
+}
+
+.stm-zoom-icon{
+	background-image: url("../../images/report/zoom-icon.svg");
+}
+.stm-google-meet-icon{
+	background-image: url("../../images/report/google-meet-icon.svg");
+}
+.stm-zoom-icon,
+.stm-google-meet-icon{
+	height: 24px;
+	width: 24px;
+	display: inline-block;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+.fixed .column-provider {
+	width: 10%;
+}
+.go_to_pro_link {
+	text-decoration: none;
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	box-shadow: none !important;
+	span {
+		font-size: 14px;
+		font-weight: bold;
+		position: absolute;
+		top: 0;
+		right: -30px;
+		height: 22px;
+		left: auto;
+		border: 1px solid;
+		border-radius: 6px;
+		padding: 1px 5px;
+		background-color: #adff2f;
+	}
+}
+
+.reports-filter-wr {
+	form {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+	}
+
+	select[name=year],
+	select[name=month] {
+		display: flex;
+		height: 40px;
+		padding: 8px 10px;
+		align-items: center;
+		gap: 8px;
+		color: black;
+		font-size: 15px;
+		font-weight: 400;
+		word-wrap: break-word;
+		border-radius: 6px;
+		border: 1px solid #D8DFE7;
+		line-height: 24px;
+	}
+
+	select[name=year] {
+		width: 127px;
+	}
+
+	.button.button-primary {
+		display: flex;
+		width: 77px;
+		height: 40px;
+		padding: 8px 12px;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		border-radius: 6px;
+		border: 1px solid #246BF6;
+		background: #2271B1;
+	}
+
+	select[name=month] {
+		width: 189px;
+	}
+}
+.reports-table-wr {
+	table {
+		width: 100%;
+		max-width: 1020px;
+		border-collapse: collapse;
+		thead {
+			th {
+				background: #F3F3F3;
+				color: #000;
+				font-size: 15px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: normal;
+				height: 44px;
+				text-align: left;
+				padding: 0 8px;
+			}
+		}
+		tbody {
+			td {
+				color: #000;
+				font-size: 15px;
+				font-style: normal;
+				font-weight: 500;
+				line-height: normal;
+				border-bottom: 1px solid #D8DFE7;
+				height: 44px;
+				padding: 0 8px;
+				i {
+					height: 24px;
+					width: 24px;
+					display: inline-block;
+					vertical-align: middle;
+					background-repeat: no-repeat;
+					background-position: center;
+					background-size: contain;
+					&.report-chevron-close{
+						background-image: url("../../images/report/chevron_right_open.svg");
+					}
+					&.report-chevron-open{
+						background-image: url("../../images/report/chevron_right_close.svg");
+					}
+					&.report-calendar-icon{
+						background-image: url("../../images/report/calendar_month.svg");
+					}
+					&.report-zoom-icon{
+						background-image: url("../../images/report/zoom-icon.svg");
+					}
+					&.report-gm-icon{
+						background-image: url("../../images/report/google-meet-icon.svg");
+					}
+					&.report-meeting-icon{
+						background-image: url("../../images/report/report_meetings.svg");
+					}
+					&.report-meeting-icon-active{
+						background-image: url("../../images/report/meeting_icon.svg");
+					}
+					&.report-participants-icon{
+						background-image: url("../../images/report/report_users.svg");
+					}
+				}
+				a:focus,
+				a:active {
+					outline: none;
+					box-shadow: none;
+				}
+				span {
+					vertical-align: middle;
+					&.report-empty-field{
+						color: #D8DFE7;
+					}
+				}
+			}
+
+		}
+	}
+}

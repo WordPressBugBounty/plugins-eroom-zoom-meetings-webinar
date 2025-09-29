@@ -30,7 +30,6 @@
 		<p class="feedback-review-text" style="display: none;"></p>
 		<div class="feedback-extra">
 			<textarea id="feedback-review" rows="5" placeholder="Please enter your Review..."></textarea>
-			<small>Found a bug in the plugin? <a href="<?php echo esc_url( stm_zoom_get_ticket_url() ); ?>" target="_blank">Click here</a> to report it.</small>
 		</div>
 		<a href="https://bit.ly/3eC3tT0" class="feedback-submit" target="_blank">
 			Submit

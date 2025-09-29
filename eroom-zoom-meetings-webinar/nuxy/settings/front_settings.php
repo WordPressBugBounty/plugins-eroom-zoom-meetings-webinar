@@ -21,7 +21,7 @@ class WPCFTO_Front_Settings {
 		$option_name      = $options['option_name'];
 		$wpcfto_title     = ( ! empty( $options['title'] ) ) ? $options['title'] : '';
 		$wpcfto_sub_title = ( ! empty( $options['sub_title'] ) ) ? $options['sub_title'] : '';
-		$wpcfto_logo      = ( ! empty( $options['logo'] ) ) ? $options['logo'] : STM_WPCFTO_URL . '/metaboxes/assets/images/stm-logo.svg';
+		$wpcfto_logo      = ( ! empty( $options['logo'] ) ) ? $options['logo'] : STM_WPCFTO_URL . '/metaboxes/assets/images/eroom-logo.png';
 		$settings         = get_option( $option_name, array() );
 		$metabox          = apply_filters( $option_name, array(
 			'id'   => $option_name,

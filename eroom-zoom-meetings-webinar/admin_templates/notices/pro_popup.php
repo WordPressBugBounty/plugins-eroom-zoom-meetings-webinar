@@ -42,9 +42,9 @@
 
 		<div class="popup_footer">
 			<div class="text">
-				<a href="https://stylemixthemes.com/zoom-meetings-webinar-plugin/?utm_source=admin&utm_medium=promo&utm_campaign=2020" target="_blank">Get eRoom PRO</a> today and stay connected anywhere at any time!
+				<a href="https://eroomwp.com/?utm_source=admin&utm_medium=promo&utm_campaign=2020" target="_blank">Get eRoom PRO</a> today and stay connected anywhere at any time!
 			</div>
-			<a href="https://stylemixthemes.com/zoom-meetings-webinar-plugin/?utm_source=admin&utm_medium=promo&utm_campaign=2020" class="pro_button" target="_blank">
+			<a href="https://eroomwp.com/?utm_source=admin&utm_medium=promo&utm_campaign=2020" class="pro_button" target="_blank">
 				More Details
 			</a>
 		</div>

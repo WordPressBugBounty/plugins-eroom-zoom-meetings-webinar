@@ -17,6 +17,3 @@ else if(!empty($_GET['page']) && $_GET['page'] === 'stm_zoom_reports') {
 else if(!empty($_GET['page']) && $_GET['page'] === 'stm_zoom_assign_host_id') {
     require_once STM_ZOOM_PATH . '/admin_templates/assign_host.php';
 }
-else if ( ! empty( $_GET['page'] ) && ( $_GET['page'] === 'stm_zoom_go_pro' ) && ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
-	require_once STM_ZOOM_PATH . '/admin_templates/go_pro.php';
-}

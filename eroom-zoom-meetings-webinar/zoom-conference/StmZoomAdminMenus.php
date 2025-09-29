@@ -14,9 +14,7 @@ class StmZoomAdminMenus {
 			},
 			100
 		);
-
-		add_action( 'admin_menu', array( $this, 'admin_submenu_pages_gopro' ), 10001 );
-
+		
 		if ( is_admin() ) {
 			self::admin_settings_page();
 			add_filter(
@@ -99,7 +97,7 @@ class StmZoomAdminMenus {
 		foreach ( $pages as $page ) {
 			/* Create Submenu */
 			add_submenu_page(
-				isset( $page['hidden'] ) && $page['hidden'] ? null : 'stm_zoom',
+				isset( $page['hidden'] ) && $page['hidden'] ? '' : 'stm_zoom',
 				$page['label'],
 				$page['label'],
 				'manage_options',
@@ -112,19 +110,6 @@ class StmZoomAdminMenus {
 		remove_submenu_page( 'stm_zoom', 'stm_zoom' );
 
 		do_action( 'stm_zoom_admin_submenu_pages' );
-	}
-
-	public static function admin_submenu_pages_gopro() {
-		if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
-			add_submenu_page(
-				'stm_zoom',
-				esc_html__( 'Upgrade', 'eroom-zoom-meetings-webinar' ),
-				'<span style="color: #adff2f;"><span style="font-size: 15px;text-align: left;" class="dashicons dashicons-star-filled stm_go_pro_menu"></span>' . esc_html__( 'Upgrade', 'eroom-zoom-meetings-webinar' ) . '</span>',
-				'manage_options',
-				'stm_zoom_go_pro',
-				'admin_pages'
-			);
-		}
 	}
 
 	/**
@@ -149,7 +134,7 @@ class StmZoomAdminMenus {
 								'type'        => 'text',
 								'label'       => esc_html__( 'Client ID', 'eroom-zoom-meetings-webinar' ),
 								'value'       => '',
-								'description' => sprintf( '%1s <a href="https://docs.stylemixthemes.com/eroom/getting-started/how-to-obtain-apis#server-to-server-oauth-credentials" target="_blank">%2s</a>  %3s ', esc_html__( 'Please follow this ', 'eroom-zoom-meetings-webinar' ), esc_html__( 'guide', 'eroom-zoom-meetings-webinar' ), esc_html__( ' to generate API values from Zoom App Marketplace using your Zoom account.', 'eroom-zoom-meetings-webinar' ) ),
+								'description' => sprintf( '%1s <a href="https://eroomwp.com/docs/how-to-obtain-apis#meeting-sdk-credentials" target="_blank">%2s</a>  %3s ', esc_html__( 'Please follow this ', 'eroom-zoom-meetings-webinar' ), esc_html__( 'guide', 'eroom-zoom-meetings-webinar' ), esc_html__( ' to generate API values from Zoom App Marketplace using your Zoom account.', 'eroom-zoom-meetings-webinar' ) ),
 							),
 							'auth_client_secret' => array(
 								'type'  => 'text',
@@ -163,7 +148,7 @@ class StmZoomAdminMenus {
 								'type'        => 'text',
 								'label'       => esc_html__( 'Client ID', 'eroom-zoom-meetings-webinar' ),
 								'value'       => '',
-								'description' => sprintf( '%1s <a href="https://docs.stylemixthemes.com/eroom/getting-started/how-to-obtain-apis#meeting-sdk-credentials" target="_blank">%2s</a> ', esc_html__( 'To make Join in Browser option work please generate API following this', 'eroom-zoom-meetings-webinar' ), esc_html__( 'guide', 'eroom-zoom-meetings-webinar' ) ),
+								'description' => sprintf( '%1s <a href="https://eroomwp.com/docs/how-to-obtain-apis#meeting-sdk-credentials" target="_blank">%2s</a> ', esc_html__( 'To make Join in Browser option work please generate API following this', 'eroom-zoom-meetings-webinar' ), esc_html__( 'guide', 'eroom-zoom-meetings-webinar' ) ),
 							),
 							'sdk_secret'         => array(
 								'type'  => 'text',
@@ -300,10 +285,6 @@ class StmZoomAdminMenus {
 	public function plugin_action_links( $links ) {
 		$settings_link = sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'admin.php?page=stm_zoom_settings' ), esc_html__( 'Settings', 'eroom-zoom-meetings-webinar' ) );
 		array_unshift( $links, $settings_link );
-
-		if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
-			$links['get_pro'] = sprintf( '<a href="%1$s" target="_blank" class="eroom-get-pro">%2$s</a>', esc_url( 'https://stylemixthemes.com/zoom-meetings-webinar-plugin/?utm_source=admin&utm_medium=promo&utm_campaign=2020' ), esc_html__( 'Upgrade to Pro', 'eroom-zoom-meetings-webinar' ) );
-		}
 
 		return $links;
 	}

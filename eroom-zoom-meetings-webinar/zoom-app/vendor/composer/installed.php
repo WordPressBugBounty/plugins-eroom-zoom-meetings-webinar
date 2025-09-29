@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'zoom/zoom',
-        'pretty_version' => 'dev-release',
-        'version' => 'dev-release',
-        'reference' => 'b2dd5cbbbb89710af6407f970c16c72899bf8241',
+        'pretty_version' => '1.5.0',
+        'version' => '1.5.0.0',
+        'reference' => '1eafe5dae75124aeb4b0e0269073e7ef210fdb1d',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -110,9 +110,9 @@
             'dev_requirement' => false,
         ),
         'zoom/zoom' => array(
-            'pretty_version' => 'dev-release',
-            'version' => 'dev-release',
-            'reference' => 'b2dd5cbbbb89710af6407f970c16c72899bf8241',
+            'pretty_version' => '1.5.0',
+            'version' => '1.5.0.0',
+            'reference' => '1eafe5dae75124aeb4b0e0269073e7ef210fdb1d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

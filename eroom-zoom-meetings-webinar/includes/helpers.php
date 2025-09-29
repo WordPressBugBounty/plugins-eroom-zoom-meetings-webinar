@@ -411,13 +411,3 @@ function stm_eroom_generate_ics_calendar_build( $config, $recurring_data ) {
 
 	return implode( "\r\n", $ics_props );
 }
-
-/**
- * Return Support Ticket URL
- * @return string
- */
-function stm_zoom_get_ticket_url() {
-	$type = defined( 'STM_ZOOM_PRO_PATH' ) ? 'support' : 'pre-sale';
-
-	return "https://support.stylemixthemes.com/tickets/new/{$type}?item_id=27";
-}

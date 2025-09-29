@@ -46,7 +46,7 @@ class WPCFTO_Settings {
 
 	public function admin_bar_button( $wp_admin_bar ) {
 		$url         = add_query_arg( 'page', $this->setup['page']['menu_slug'], admin_url() );
-		$wpcfto_logo = ( ! empty( $this->setup['logo'] ) ) ? $this->setup['logo'] : STM_WPCFTO_URL . '/metaboxes/assets/images/stm-logo.svg';
+		$wpcfto_logo = ( ! empty( $this->setup['logo'] ) ) ? $this->setup['logo'] : STM_WPCFTO_URL . '/metaboxes/assets/images/eroom-logo.png';
 		$title       = $this->setup['admin_bar_title'];
 		$menu        = "<img src='{$wpcfto_logo}' /> {$title}";
 
@@ -154,7 +154,7 @@ class WPCFTO_Settings {
 
 		$wpcfto_title           = ( ! empty( $this->setup['title'] ) ) ? $this->setup['title'] : '';
 		$wpcfto_sub_title       = ( ! empty( $this->setup['sub_title'] ) ) ? $this->setup['sub_title'] : '';
-		$wpcfto_logo            = ( ! empty( $this->setup['logo'] ) ) ? $this->setup['logo'] : STM_WPCFTO_URL . '/metaboxes/assets/images/stm-logo.svg';
+		$wpcfto_logo            = ( ! empty( $this->setup['logo'] ) ) ? $this->setup['logo'] : STM_WPCFTO_URL . '/metaboxes/assets/images/eroom-logo.png';
 		$wpcfto_settings_alert  = ( ! empty( $this->setup['save_settings_alert'] ) ) ? $this->setup['save_settings_alert'] : array(
 			'position'      => 'top_right',
 			'success_alert' => array(

@@ -10,7 +10,7 @@ require_once STM_ZOOM_PATH . '/zoom-conference/StmZoomAPITypes.php';
 //call callback updates
 StmZoomUpdates::init();
 
-// Create objects
+//// Create objects
 new StmZoom;
 new StmZoomAdminMenus;
 new StmZoomAdminNotices;

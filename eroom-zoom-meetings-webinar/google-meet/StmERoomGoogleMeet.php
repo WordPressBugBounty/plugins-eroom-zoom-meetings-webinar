@@ -29,7 +29,7 @@ class StmERoomGoogleMeet {
 						'label'   => esc_html__( 'Provider', 'eroom-zoom-meetings-webinar' ),
 						'options' => array(
 							'zoom' => esc_html__( 'Zoom', 'eroom-zoom-meetings-webinar' ),
-							'gm'   => esc_html__( 'Google Meet', 'eroom-zoom-meetings-webinar' ) . "&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom_go_pro' ) . "'><span>PRO</span></a>",
+							'gm'   => esc_html__( 'Google Meet', 'eroom-zoom-meetings-webinar' ) . "&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom-pricing' ) . "'><span>PRO</span></a>",
 						),
 						'default' => 'zoom',
 						'disable' => 1,
@@ -48,7 +48,7 @@ class StmERoomGoogleMeet {
 				'go_pro' => array(
 					'type'  => 'notice_banner',
 					'label' => esc_html__( 'To use Google Meetings and other advanced features, upgrade to PRO plugin', 'eroom-zoom-meetings-webinar' ) .
-						"&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom_go_pro' ) . "'><span>PRO</span></a>",
+						"&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom-pricing' ) . "'><span>PRO</span></a>",
 				),
 			),
 		);

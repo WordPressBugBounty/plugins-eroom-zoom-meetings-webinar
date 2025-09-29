@@ -1,27 +1,26 @@
 === eRoom - Zoom Meetings & Webinars ===
+Contributors: wpcenter, cagdasdag, orkunaybek
+Plugin link: https://eroomwp.com
+Tags: zoom, video conference, zoom conference, google meet, webinar
+Requires at least: 5.8
+Tested up to: 6.8.2
+Stable tag: 1.5.0
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Contributors: Çağdaş Dağ
-Tags: zoom, video conference, zoom conference, google meet
-Requires at least: 4.6
-Tested up to: 6.7
-Stable tag: 1.4.31
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+eRoom is the best WordPress Zoom Meeting and Webinar Plugin. eRoom Zoom WordPress plugin enables direct integration with Zoom and Google Meet. 
 
 == Description ==
+
+### Best Zoom Meeting and Webinar Plugin
 
 This Zoom Meeting WordPress Plugin provides you with great functionality of managing Zoom meetings, webinars, scheduling options, and users directly from your WP dashboard. eRoom Zoom WordPress plugin enables direct integration of Zoom with your WordPress website.
 Video conferences, online meetings, and chat sessions play a significant role in providing and maintaining communication between participants and contribute to smooth collaboration in terms of distance interaction.
 
-To make the process even more convenient, StylemixThemes developed eRoom - Zoom Meetings & Webinar WordPress Plugin to ensure you have a strong tool supporting your business.
+To make the process even more convenient, WPCenter developed eRoom - Zoom Meetings & Webinar WordPress Plugin to ensure you have a strong tool supporting your business.
 
-⭐ [Upgrade to eRoom Pro Features](https://stylemixthemes.com/zoom-meetings-webinar-plugin/?utm_source=wporg-eroom&utm_medium=en&utm_campaign=2021)
-⭐ [eRoom Documentation](https://docs.stylemixthemes.com/eroom/)
 
-eRoom plugin is natively integrated into bestselling WordPress themes:
-⭐ [MasterStudy — Education WordPress Theme](https://themeforest.net/item/masterstudy-education-center-wordpress-theme/12170274)
-⭐ [Consulting — Business & Corporate WordPress Theme](https://themeforest.net/item/consulting-business-finance-wordpress-theme/14740561)
-
+**[eRoom Pro ⭐](https://eroomwp.com/pricing/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)** | **[Demos](https://demo.eroomwp.com/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)** | **[Documentation](https://eroomwp.com/docs/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)** | **[Contact Us](https://eroomwp.com/contact/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)**
 
 ## Introducing eRoom - Zoom Meetings & Webinar WordPress Plugin
 
@@ -89,13 +88,13 @@ Creating Google Meet meetings within your WordPress website with eRoom is super 
 Plan and participate in Google Meet sessions within your WordPress dashboard. Get rid of the need to switch between platforms. You can plan the meetings in one place and manage the participants.
 
 ## eRoom purchasable meetings
-For those who want to monetize the meetings or offer the customers something new, you can always upgrade eRoom plugin with the paid addon — [eRoom purchasable meetings](https://stylemixthemes.com/zoom-meetings-webinar-plugin/).
+For those who want to monetize the meetings or offer the customers something new, you can always upgrade eRoom plugin with the paid addon — [eRoom purchasable meetings](https://eroomwp.com/).
 
 eRoom purchasable meetings will add more value to your business. With this tool, you can make your video conferences and webinars available for purchase as WooCommerce products. A great way to monetize your services in a digital format. Offer your customers consultations, and training as live sessions or recorded webinars and let them choose and buy the favorite product.
 
 ## Recurring Meetings
 
-[Recurring meetings and webinars](https://eroom.stylemixthemes.com/product/how-to-a-series-of-events-for-startups/) is another paid add-on that gives you the ability to create Zoom meetings with recurrency.
+[Recurring meetings and webinars](https://demo.eroomwp.com/product/how-to-a-series-of-events-for-startups/) is another paid add-on that gives you the ability to create Zoom meetings with recurrency.
 It is enough to create a single meeting and each occurrence will be using the same meeting ID and settings.
 
 Recurring events Increase engagement and productivity. It is especially beneficial for managers and team leads. It also allows holding regular check-ins making sure every user or customer is involved.
@@ -129,14 +128,6 @@ The plugin allows you to use all the features provided by Zoom, such as:
 * Live chat
 * Screen sharing option
 * Full-screen mode
-
-## More Awesome Free Plugins by Stylemix
-
-⭐ [MasterStudy - All-in-One WordPress LMS Plugin](https://wordpress.org/plugins/masterstudy-lms-learning-management-system/)
-⭐ [Cost Calculator & Price Estimation Plugin](https://wordpress.org/plugins/cost-calculator-builder/)
-⭐ [Motors – Car Dealership & Classified Listings Plugin](https://wordpress.org/plugins/motors-car-dealership-classified-listings/)
-⭐ [Zoom Meetings and Webinars Plugin — eRoom](https://wordpress.org/plugins/eroom-zoom-meetings-webinar/)
-
 
 == Installation ==
 This section describes how to install the plugin and get it working.
@@ -182,7 +173,7 @@ Yes, you should be registered in Zoom. Also, on the plan you are using there dep
 
 = What if I want to save the webinar? =
 
-You can do it, just use the URL link of the video, so users could watch it later. In addition to this, with eRoom purchasable meetings plugin you will be able even to sell your webinars and meetings. Learn more: [https://stylemixthemes.com/zoom-meetings-webinar-plugin/](https://stylemixthemes.com/zoom-meetings-webinar-plugin/)
+You can do it, just use the URL link of the video, so users could watch it later. In addition to this, with eRoom purchasable meetings plugin you will be able even to sell your webinars and meetings. Learn more: [https://eroomwp.com/](https://eroomwp.com/)
 
 = How can I report security bugs? =
 
@@ -283,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 1.4.5 =
 * New: Server-to-Server OAuth App to replace the functionality of a JWT App, since it will be deprecated on June 1, 2023. For more details see [JWT App Type Deprecation FAQ.](https://marketplace.zoom.us/docs/guides/build/jwt-app/jwt-faq/)
-* New: Migration wizard added to smooth the transition from JWT app to Server-to-Server OAuth App. Server-to-Server OAuth API credentials can be get following the [manual.](https://docs.stylemixthemes.com/eroom/getting-started/how-to-obtain-apis#server-to-server-oauth-credentials)
+* New: Migration wizard added to smooth the transition from JWT app to Server-to-Server OAuth App. Server-to-Server OAuth API credentials can be get following the [manual.](https://eroomwp.com/docs/)
 
 = 1.4.4 =
 * Fixed: Deprecated functions of Elementor are replaced with actual ones
@@ -390,9 +381,6 @@ New: MailChimp Integration. The notification with options to add the user's data
 * fixed:  Enforce Login and Join Before Host issues fixed
 * improvement: Join in browser 2nd step deleted - the users participate the meeting directly after clicking Join in browser button as attendee
 * improvement: Waiting room option added to Webinar and Meeting
-
-= 1.1.8 =
-- **added**: Stylemix announcements in admin dashboard
 
 = 1.1.7 =
 * fixed: time zone changes according to zoom

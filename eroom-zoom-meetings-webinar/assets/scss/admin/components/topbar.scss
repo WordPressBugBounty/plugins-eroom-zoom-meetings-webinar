@@ -1,0 +1,205 @@
+
+.zoom_top_bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 30px 15px;
+  background-color: #3c3d4a;
+  color: #fff;
+  border-radius: 5px;
+  padding: 9px;
+  align-items: center;
+  .free {
+    display: flex;
+    align-items: center;
+    img {
+      margin-right: 13px;
+    }
+    .zoom_title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-right: 20px;
+    }
+    .zoom_subtitle {
+      opacity: 0.7;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 300;
+    }
+  }
+  .pro {
+    .eroom-feedback-button {
+      color: #ffffff;
+      font-size: 14px;
+
+      text-transform: none;
+      margin-right: 10px;
+      padding: 10px 18px 10px 20px;
+      background-image: linear-gradient(180deg, #54a0ff 0%, #3d83fb 100%);
+      &:focus,
+      &:active {
+        outline: 0;
+        box-shadow: none;
+      }
+      img {
+        margin-left: 3px;
+        vertical-align: bottom;
+      }
+    }
+    a {
+      color: #fff;
+      border-radius: 5px;
+      background: linear-gradient(315deg, #ff003c, #9600ff);
+      background-size: 400% 400%;
+
+      -webkit-animation: gradientAnimation 7s ease infinite;
+      -moz-animation: gradientAnimation 7s ease infinite;
+      animation: gradientAnimation 7s ease infinite;
+      padding: 11px 22px;
+      display: inline-block;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+  }
+}
+
+.stm_zoom_pro_popup {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  .zoom_overlay {
+    background: rgba(0, 0, 0, .5);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+  .zoom_close {
+    position: absolute;
+    z-index: 3;
+    right: -34px;
+    top: 2px;
+    width: 23px;
+    height: 23px;
+    cursor: pointer;
+    &:before {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 5px;
+      height: 25px;
+      background-color: #fff;
+      transform: rotate(45deg);
+      top: 0;
+      left: 9px;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 5px;
+      height: 25px;
+      background-color: #fff;
+      transform: rotate(-45deg);
+      top: 0;
+      left: 9px;
+    }
+    @media screen and (max-width: 900px) {
+      top: 10px;
+      right: 10px;
+      &:before, &:after{
+        background-color: #000;
+      }
+    }
+    @media screen and (max-width: 500px) {
+      top: 20px;
+    }
+  }
+}
+
+.zoom_popup {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  width: 738px;
+  max-width: 100%;
+  z-index: 3;
+  text-align: center;
+  @media screen and (max-width: 500px) {
+    max-width: 98%;
+    max-height: 98%;
+  }
+  .popup_title {
+    h2 {
+      font-size: 30px;
+      line-height: 30px;
+      font-weight: 700;
+      padding-top: 15px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      @media screen and (max-width: 320px) {
+        font-size: 20px;
+        line-height: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .popup_subtitle {
+    font-size: 15px;
+    line-height: 24px;
+    color: rgba(#333333, .6);
+    margin-bottom: 35px;
+    width: 390px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .popup_footer {
+    background: #f2f4f5;
+    padding: 18px 25px 8px;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    color: #333;
+    border-radius: 0 0 5px 5px;
+    justify-content: space-between;
+    align-items: center;
+    a {
+      font-weight: 700;
+      color: #333;
+      text-decoration: none;
+    }
+    .text {
+      margin-right: 15px;
+      margin-bottom: 10px;
+    }
+    .pro_button {
+      color: #fff;
+      border-radius: 5px;
+      background-image: -moz-linear-gradient( 90deg, rgb(59,130,251) 0%, rgb(84,161,255) 100%);
+      background-image: -webkit-linear-gradient( 90deg, rgb(59,130,251) 0%, rgb(84,161,255) 100%);
+      background-image: -ms-linear-gradient( 90deg, rgb(59,130,251) 0%, rgb(84,161,255) 100%);
+      box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
+      background-color: #4a94fd;
+      padding: 8px 25px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+  }
+	.popup_image {
+		.google-meet {
+			max-height:303px;
+		}
+	}
+}

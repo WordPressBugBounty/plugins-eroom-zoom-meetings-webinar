@@ -1,0 +1,151 @@
+.wpcfto-box-group_title {
+    .wpcfto_generic_field {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+
+        .fa {
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .wpcfto-field-aside {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
+            label {
+                font-size: 18px;
+                font-weight: 700;
+                line-height: 22px;
+            }
+
+            .wpcfto-field-description {
+                width: 100%;
+            }
+        }
+
+        &.preview_bottom .wpcfto-field-aside {
+            .wpcfto_preview {
+                .wpcfto_preview__popup {
+                    visibility: hidden;
+                    top: 100%;
+                    bottom: unset;
+                    left: 50%;
+                    padding: 5px;
+                    max-width: 297px;
+                    background-color: #fff;
+                    overflow: hidden;
+                    border-radius: 15px;
+                    transform: translateX(-50%);
+                    box-shadow: 0 5px 25px rgb(0 0 0 / 16%);
+                    z-index: 101;
+                    margin-top: 17px;
+                }
+
+                &:after {
+                    content: "";
+                    border: 15px solid transparent;
+                    border-bottom-color: #fff;
+                    left: 0;
+                    right: 0;
+                    display: inline-block;
+                    margin: 0 auto;
+                    bottom: -17px;
+                    width: 0;
+                    height: 0;
+                    z-index: 109;
+                }
+
+                &:hover{
+                    .wpcfto_preview__popup {
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+        .wpcfto-group-title-wrapper {
+            display: flex;
+            justify-content: space-between;
+            .wpcfto_preview {
+                margin-left: 0;
+                margin-top: 5px;
+                &::after {
+                    transform: rotate(0);
+                    top: 5px;
+                    bottom: unset;
+                }
+            }
+            .wpcfto-group-title-button-container {
+                position: relative;
+                .wpcfto-group-title-button {
+                    position: relative;
+                    display: block;
+                    background-color: #2985F7;
+                    color: #fff;
+                    padding: 12px 18px;
+                    border-radius: 4px;
+                    margin-top: 5px;
+                    text-transform: uppercase;
+                    transition: all 0.2s;
+                    line-height: 0;
+                    cursor: pointer;
+                    box-shadow: none;
+                    outline: none;
+                    i {
+                        margin-right: 5px;
+                        font-size: 14px;
+                    }
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                    &.tooltip-exists {
+                        background-color: rgba(41, 133, 247, 0.4);
+                        color: rgba(255, 255, 255, 0.9);
+                        &:hover {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+        .wpcfto-group-title-button-tooltip-content {
+            display: none;
+            width: 250px;
+            text-transform: none;
+            line-height: 16px;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(35, 40, 45, 1);
+            color: #fff;
+            padding: 10px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            z-index: 10;
+            &::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                border: 5px solid transparent;
+                border-top-color: rgba(35, 40, 45, 1);
+                transform: translateX(-50%);
+            }
+        }
+
+        .wpcfto-group-title-button-tooltip-content.show-tooltip {
+            display: block;
+        }
+    }
+}
+.stm_metaboxes_grid.stm_metaboxes_grid--tooltip-hover {
+    position: relative;
+    z-index: 1000;
+}

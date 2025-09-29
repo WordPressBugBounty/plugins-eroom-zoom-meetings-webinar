@@ -44,7 +44,7 @@ class StmZoomUpdates {
 				}
 			}
 		}
-		update_option( 'eroom_db_updates', sanitize_text_field( STM_ZOOM_DB_VERSION ), true );
+		update_option( 'eroom_db_updates', sanitize_text_field( STM_ZOOM_VERSION ), true );
 	}
 
 }
