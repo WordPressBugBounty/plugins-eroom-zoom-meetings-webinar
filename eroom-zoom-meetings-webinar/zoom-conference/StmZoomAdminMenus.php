@@ -271,6 +271,7 @@ class StmZoomAdminMenus {
 	public function admin_head() { ?>
 		<script type="text/javascript">
 			var stm_zoom_ajaxurl = "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>";
+			var eroom_notice_nonce = "<?php echo wp_create_nonce( 'eroom_ajax_nonce' ); ?>";
 		</script>
 		<?php
 	}

@@ -1,0 +1,89 @@
+/**
+ * eRoom Admin Notices Styles
+ * Based on AffiliateX notification system
+ */
+
+.eroom-notice {
+    display: flex;
+
+    &__content {
+        font-family: Inter, "sans-serif";
+
+        h2 {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
+    }
+
+    &__content_description {
+        margin-top: 10px;
+    }
+
+    &__icon {
+        margin-right: 24px;
+    }
+
+    &__options {
+        align-items: center;
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    &__button {
+        background: #2670ff;
+        border: none;
+        border-radius: 3px;
+        box-sizing: border-box;
+        color: #fff;
+        display: inline-flex;
+        font-family: Inter, "sans-serif";
+        font-size: 13px;
+        line-height: 2.15384615;
+        margin: 0;
+        min-height: 30px;
+        outline: none;
+        padding: 5px 15px !important;
+        text-decoration: none;
+        text-shadow: none;
+        transition: all .3s ease;
+        vertical-align: top;
+        white-space: nowrap;
+
+        &:focus,
+        &:hover {
+            background: #2655ff;
+            box-shadow: none;
+            color: #fff;
+        }
+
+        &:active {
+            color: #fff;
+            transform: scale(.9);
+        }
+    }
+
+    &__link {
+        font-family: Inter, "sans-serif";
+        margin-left: 15px;
+        text-decoration: none;
+    }
+}
+
+.notice-eroom-plugin {
+    border: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 0 16px 24px rgba(0, 0, 0, .1), inset 4px 0 0 #2670ff;
+    box-sizing: border-box;
+    margin: 15px;
+    padding: 24px;
+    position: relative;
+}

@@ -100,6 +100,43 @@
 				}
 			);
 
+			/**
+			 * eRoom Notice System - Handle notice dismissal
+			 */
+			$( document ).on(
+				'click',
+				'.notice-eroom-plugin .eroom-notice--dismiss, .notice-eroom-plugin .notice-dismiss',
+				function(e) {
+					e.preventDefault();
+					e.stopPropagation();
+					
+					const $notice = $( this ).closest( '.notice-eroom-plugin' );
+					const noticeName = $notice.data( 'notice' );
+					
+					if ( typeof stm_zoom_ajaxurl !== 'undefined' && typeof eroom_notice_nonce !== 'undefined' ) {
+						$.ajax({
+							type: 'POST',
+							url: stm_zoom_ajaxurl,
+							data: {
+								action: 'eroom_notice_dismissed',
+								notice: noticeName,
+								security: eroom_notice_nonce
+							},
+							dataType: 'JSON',
+							success: function( response ) {
+								if ( response.success === true ) {
+									$notice.slideUp( 200, () => {
+										$notice.remove();
+									});
+								}
+							}
+						});
+					}
+					
+					return false;
+				}
+			);
+
 		}
 	);
 })( jQuery );

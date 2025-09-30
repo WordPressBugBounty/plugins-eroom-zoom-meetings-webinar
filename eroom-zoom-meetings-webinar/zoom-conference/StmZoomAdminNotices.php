@@ -10,16 +10,6 @@ class StmZoomAdminNotices {
 
 		add_action( 'wp_ajax_stm_zoom_ajax_add_feedback', array( $this, 'add_feedback' ) );
 
-		// Add Pro Banner under Zoom Settings
-		add_action(
-			'wpcfto_settings_screen_stm_zoom_settings_after',
-			function() {
-				if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
-					include STM_ZOOM_PATH . '/admin_templates/notices/pro_banner.php';
-				}
-			}
-		);
-
 		add_action( 'stm_zoom_after_create_meeting', array( $this, 'stm_zoom_after_create_meeting' ) );
 
 		add_action( 'stm_admin_notice_rate_eroom-zoom-meetings-webinar_single', array( $this, 'stm_zoom_admin_notice_single' ) );

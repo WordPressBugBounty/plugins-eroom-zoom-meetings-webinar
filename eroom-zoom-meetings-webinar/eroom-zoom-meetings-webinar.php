@@ -8,7 +8,7 @@
  * Text Domain: eroom-zoom-meetings-webinar
  * Author: WPCenter
  * Author URI: https://profiles.wordpress.org/wpcenter/
- * Version:         1.5.0
+ * Version:         1.5.1
  * Requires at least: 5.8
  * Requires PHP:      7.4
  *
@@ -52,7 +52,7 @@ if ( !function_exists( 'eroom_fs' ) ) {
     // Signal that SDK was initiated.
     do_action( 'eroom_fs_loaded' );
     if ( !defined( 'STM_ZOOM_VERSION' ) ) {
-        define( 'STM_ZOOM_VERSION', '1.5.0' );
+        define( 'STM_ZOOM_VERSION', '1.5.1' );
     }
     if ( !defined( 'STM_ZOOM_FILE' ) ) {
         define( 'STM_ZOOM_FILE', __FILE__ );
@@ -93,6 +93,8 @@ if ( !function_exists( 'eroom_fs' ) ) {
         require_once STM_ZOOM_PATH . '/includes/migration/migration.php';
         require_once STM_ZOOM_PATH . '/admin_templates/notices/required_fields.php';
         require_once STM_ZOOM_PATH . '/google-meet/StmERoomGoogleMeet.php';
+        // Load notification system
+        require_once STM_ZOOM_PATH . '/includes/notice/NoticeHandler.php';
         new StmERoomGoogleMeet();
     }
 }
