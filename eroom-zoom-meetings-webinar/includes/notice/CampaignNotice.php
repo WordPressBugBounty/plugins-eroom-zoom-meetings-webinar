@@ -77,8 +77,18 @@ class CampaignNotice extends NoticeBase{
     }
 
     /**
+     * Get priority for campaign notices (higher priority than review notices)
+     *
+     * @return int
+     */
+    public function get_priority() : int
+    {
+        return 5;
+    }
+
+    /**
      * Check if notice is applicable
-     * 
+     *
      * Apply Logic: If start and end date is set and current time is between them, it'll be displayed
      *
      * @return boolean
@@ -87,11 +97,11 @@ class CampaignNotice extends NoticeBase{
     {
         $start_date = isset($this->props['start']) ? $this->props['start'] : null;
         $end_date = isset($this->props['end']) ? $this->props['end'] : null;
-        
+
         if(is_null($start_date) || is_null($end_date)){
             return false;
         }
-        
+
         if(strtotime($start_date) >= time() || strtotime($end_date) <= time()){
             return false;
         }

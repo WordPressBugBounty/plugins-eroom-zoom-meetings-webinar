@@ -252,7 +252,6 @@ class StmZoomAdminMenus {
 	 */
 	public function admin_enqueue() {
 		wp_enqueue_style( 'stm_zoom_admin', STM_ZOOM_URL . 'assets/css/admin/main.css', false, STM_ZOOM_VERSION );
-		wp_enqueue_style( 'stm_conflux_admin', STM_ZOOM_URL . 'assets/css/admin/conflux.css', false, STM_ZOOM_VERSION );
 
 		if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
 			wp_enqueue_style( 'stm_zoom_admin_gopro', STM_ZOOM_URL . 'assets/css/admin/gopro.css', false, STM_ZOOM_VERSION );

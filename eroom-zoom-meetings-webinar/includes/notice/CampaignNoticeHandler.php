@@ -109,13 +109,19 @@ class CampaignNoticeHandler{
                 return;
             }
 
-            new CampaignNotice(
+            $campaign_notice = new CampaignNotice(
                 $notice['name'],
                 $notice['title'],
                 $notice['description'],
                 $notice['option_buttons'],
                 $notice['props']
             );
+
+			// Add campaign notice to the global notices array
+			add_filter('eroom_all_notices', function($all_notices) use ($campaign_notice){
+				$all_notices[] = $campaign_notice;
+				return $all_notices;
+			});
         }
     }
 }

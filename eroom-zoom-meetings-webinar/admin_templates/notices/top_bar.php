@@ -6,13 +6,16 @@
     <div class="free">
         <img src="<?php echo esc_url(STM_ZOOM_URL . 'assets/images/zoom_icon.png') ?>" width="40"/>
         <div class="zoom_title">eRoom</div>
-        <div class="zoom_subtitle"><?php echo esc_html( sprintf( __( 'v %s', 'eroom-zoom-meetings-webinar' ), STM_ZOOM_VERSION ) ); ?></div>
+        <div class="zoom_subtitle"><?php echo esc_html( sprintf( __( 'v%s', 'eroom-zoom-meetings-webinar' ), STM_ZOOM_VERSION ) ); ?></div>
     </div>
-    <div class="pro">
-        <?php if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) { ?>
-            <a href="#" class="show_pro_features" target="_blank">Pro features</a>
-        <?php } ?>
-    </div>
+	<div class="pro-wrapper">
+		<a href="https://eroom.sleekplan.app/" class="suggest_feature" target="_blank">Suggest a Feature</a>
+		<div class="pro">
+			<?php if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) { ?>
+				<a href="#" class="show_pro_features" target="_blank">Pro Features</a>
+			<?php } ?>
+		</div>
+	</div>
 </div>
 <script>
     (function ($) {

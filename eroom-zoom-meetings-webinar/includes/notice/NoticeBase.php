@@ -19,6 +19,17 @@ abstract class NoticeBase {
 	}
 
 	/**
+	 * Get notice priority (lower number = higher priority)
+	 * Override this method in child classes to set custom priority
+	 *
+	 * @return int
+	 */
+	public function get_priority() : int
+	{
+		return 10; // Default priority
+	}
+
+	/**
 	 * Return the unique notice name
 	 *
 	 * @return string
@@ -107,7 +118,54 @@ abstract class NoticeBase {
 			return;
 		}
 
+		// Check if a notice with higher priority should be shown instead
+		if($this->should_skip_for_higher_priority()){
+			return;
+		}
+
 		include plugin_dir_path( EROOM_PLUGIN_FILE ) . '/templates/admin/notices/notice-default.php';
+	}
+
+	/**
+	 * Check if this notice should be skipped because a higher priority notice is applicable
+	 *
+	 * @return bool
+	 */
+	private function should_skip_for_higher_priority() : bool
+	{
+		static $notices_checked = [];
+
+		// Get all registered notices
+		$all_notices = apply_filters('eroom_all_notices', []);
+
+		// If no notices registered yet, allow this one
+		if(empty($all_notices)){
+			return false;
+		}
+
+		// Check if any notice with higher priority (lower number) is applicable
+		foreach($all_notices as $notice){
+			// Skip self
+			if($notice === $this){
+				continue;
+			}
+
+			// Skip if already checked to prevent infinite loops
+			$notice_key = get_class($notice) . '_' . $notice->get_name();
+			if(in_array($notice_key, $notices_checked)){
+				continue;
+			}
+			$notices_checked[] = $notice_key;
+
+			// If this notice has higher priority (lower number) and is applicable and not dismissed
+			if($notice->get_priority() < $this->get_priority()
+				&& !$notice->is_dismissed()
+				&& $notice->is_applicable()){
+				return true; // Skip current notice
+			}
+		}
+
+		return false;
 	}
 
 	/**

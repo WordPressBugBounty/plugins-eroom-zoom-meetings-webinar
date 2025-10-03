@@ -27,21 +27,23 @@
   font-size: 15px;
   font-weight: 300;
 }
-.zoom_top_bar .pro .eroom-feedback-button {
+.zoom_top_bar .pro-wrapper {
+  display: flex;
+  align-items: center;
+}
+.zoom_top_bar .pro-wrapper .suggest_feature {
   color: #ffffff;
   font-size: 14px;
+  text-decoration: none;
   text-transform: none;
   margin-right: 10px;
-  padding: 10px 18px 10px 20px;
+  padding: 11px 22px;
+  border-radius: 5px;
   background-image: linear-gradient(180deg, #54a0ff 0%, #3d83fb 100%);
 }
-.zoom_top_bar .pro .eroom-feedback-button:focus, .zoom_top_bar .pro .eroom-feedback-button:active {
+.zoom_top_bar .pro-wrapper .suggest_feature:focus, .zoom_top_bar .pro-wrapper .suggest_feature:active {
   outline: 0;
   box-shadow: none;
-}
-.zoom_top_bar .pro .eroom-feedback-button img {
-  margin-left: 3px;
-  vertical-align: bottom;
 }
 .zoom_top_bar .pro a {
   color: #fff;
@@ -52,7 +54,7 @@
   animation: gradientAnimation 7s ease infinite;
   padding: 11px 22px;
   display: inline-block;
-  text-transform: uppercase;
+  text-transform: none;
   text-decoration: none;
 }
 
