@@ -1,0 +1,199 @@
+.stm_metaboxes_grid .stm_metaboxes_grid__inner {
+    // Remove background from wrapper for auth_box
+    .wpcfto-box-auth_box {
+        background: transparent !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .wpcfto_generic_field__auth_box {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 18px 22px;
+        margin: 15px 0 25px 0;
+        border-radius: 6px;
+        border: 1px solid;
+        border-left-width: 5px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        min-height: auto;
+        transition: box-shadow 0.2s ease;
+
+        &:hover {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        // Error state (red) - Not authenticated
+        &.auth-box-error {
+            border-color: #e74c3c;
+            border-left-color: #c0392b;
+            background: linear-gradient(to right, #ffecea 0%, #ffffff 100%);
+
+            .auth_box_icon i {
+                color: #c0392b;
+            }
+
+            .auth_box_title {
+                color: #c0392b;
+            }
+        }
+
+        // Success state (green) - Authenticated
+        &.auth-box-success {
+            border-color: #27ae60;
+            border-left-color: #229954;
+            background: linear-gradient(to right, #eafaf1 0%, #ffffff 100%);
+
+            .auth_box_icon i {
+                color: #229954;
+            }
+
+            .auth_box_title {
+                color: #229954;
+            }
+        }
+
+        // Warning state (orange)
+        &.auth-box-warning {
+            border-color: #f39c12;
+            border-left-color: #d68910;
+            background: linear-gradient(to right, #fef5e7 0%, #ffffff 100%);
+
+            .auth_box_icon i {
+                color: #d68910;
+            }
+
+            .auth_box_title {
+                color: #b9770e;
+            }
+        }
+
+        // Info state (blue)
+        &.auth-box-info {
+            border-color: #3498db;
+            border-left-color: #2980b9;
+            background: linear-gradient(to right, #ebf5fb 0%, #ffffff 100%);
+
+            .auth_box_icon i {
+                color: #2980b9;
+            }
+
+            .auth_box_title {
+                color: #2471a3;
+            }
+        }
+
+        .wpcfto_auth_box__content {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+
+            .auth_box_icon {
+                flex-shrink: 0;
+                font-size: 28px;
+                line-height: 1;
+                padding-top: 3px;
+
+                i {
+                    display: block;
+                }
+            }
+
+            .auth_box_text {
+                flex: 1;
+                min-width: 0;
+
+                .auth_box_title {
+                    font-size: 15px;
+                    font-weight: 600;
+                    line-height: 1.3;
+                    margin: 0 0 6px 0;
+                    letter-spacing: 0.01em;
+                }
+
+                .auth_box_description {
+                    font-size: 13px;
+                    line-height: 1.6;
+                    color: #5a5a5a;
+                    margin: 0;
+
+                    p {
+                        margin: 0 0 8px 0;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .wpcfto_auth_box__buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-left: 42px; // Align with text (icon width + gap)
+
+            .button {
+                margin: 0 !important;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 7px 18px;
+                font-size: 13px;
+                font-weight: 500;
+                line-height: 1.5;
+                border-radius: 3px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                box-shadow: none;
+                height: auto;
+
+                &:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+                }
+
+                &.button-primary {
+                    background-color: #2271b1;
+                    border: 1px solid #2271b1;
+                    color: #fff;
+                    box-shadow: none;
+
+                    &:hover,
+                    &:focus {
+                        background-color: #135e96;
+                        border-color: #135e96;
+                        color: #fff;
+                    }
+
+                    &:active {
+                        background-color: #0a4b78;
+                        border-color: #0a4b78;
+                    }
+                }
+
+                &.button-secondary {
+                    background-color: #f6f7f7;
+                    border: 1px solid #c3c4c7;
+                    color: #2c3338;
+                    box-shadow: none;
+
+                    &:hover,
+                    &:focus {
+                        background-color: #f0f0f1;
+                        border-color: #8c8f94;
+                        color: #1d2327;
+                    }
+
+                    &:active {
+                        background-color: #e9e9ea;
+                        border-color: #787c82;
+                    }
+                }
+            }
+        }
+    }
+}

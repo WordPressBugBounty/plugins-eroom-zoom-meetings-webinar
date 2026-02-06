@@ -350,8 +350,10 @@ function stm_eroom_generate_ics_calendar( $post_id = '' ) {
 	$zoom_data = get_post_meta( $post_id, 'stm_zoom_data', true );
 
 	if ( ! empty( $post_id ) && ! empty( $zoom_data ) && ! empty( $zoom_data['id'] ) ) {
+		$meeting_id    = sanitize_text_field( $zoom_data['id'] );
 		$title         = get_the_title( $post_id );
 		$agenda        = get_post_meta( $post_id, 'stm_agenda', true );
+		$password      = get_post_meta( $post_id, 'stm_password', true );
 		$duration      = get_post_meta( $post_id, 'stm_duration', true );
 		$start_time    = get_post_meta( $post_id, 'stm_time', true );
 		$timezone      = get_post_meta( $post_id, 'stm_timezone', true );
@@ -363,15 +365,19 @@ function stm_eroom_generate_ics_calendar( $post_id = '' ) {
 			$recurring_data = StmZoomRecurring::stm_product_recurring_meeting_data( $post_id, $zoom_data );
 		}
 
+		$description = StmZoom::build_calendar_description( $meeting_id, $zoom_data, $title, $agenda, $password );
+		$join_url    = ! empty( $zoom_data['join_url'] ) ? $zoom_data['join_url'] : 'https://zoom.us/j/' . $meeting_id;
+
 		$config_calendar = array(
 			'start'       => $meeting_start,
 			'allDay'      => isset( $zoom_data['type'] ) && in_array( $zoom_data['type'], StmZoomAPITypes::TYPES_NO_FIXED, true ),
 			'address'     => '',
 			'title'       => $title,
 			'duration'    => $duration,
-			'description' => $agenda,
+			'description' => $description,
 			'start_time'  => $start_time,
 			'timezone'    => $timezone,
+			'url'         => $join_url,
 		);
 
 		return stm_eroom_generate_ics_calendar_build( $config_calendar, $recurring_data );
@@ -380,6 +386,9 @@ function stm_eroom_generate_ics_calendar( $post_id = '' ) {
 
 
 function stm_eroom_generate_ics_calendar_build( $config, $recurring_data ) {
+	$description = stm_eroom_format_ics_description( $config['description'] );
+	$event_url   = ! empty( $config['url'] ) ? $config['url'] : '';
+
 	$ics_props = array(
 		'BEGIN:VCALENDAR',
 		'VERSION:2.0',
@@ -389,9 +398,12 @@ function stm_eroom_generate_ics_calendar_build( $config, $recurring_data ) {
 		'UID:eRoom-' . time(),
 		'SUMMARY:' . $config['title'],
 		'LOCATION:' . $config['address'],
-		'DESCRIPTION' . $config['description'],
-		'URL;VALUE=URI:https://wordpress.org/plugins/eroom-zoom-meetings-webinar/',
+		$description,
 	);
+
+	if ( ! empty( $event_url ) ) {
+		$ics_props[] = 'URL;VALUE=URI:' . $event_url;
+	}
 
 	$ics_props_param = stm_eroom_generate_calendar_params( $config, true );
 	$ics_props       = array_merge( $ics_props, $ics_props_param );
@@ -410,4 +422,47 @@ function stm_eroom_generate_ics_calendar_build( $config, $recurring_data ) {
 	$ics_props[] = 'END:VCALENDAR';
 
 	return implode( "\r\n", $ics_props );
+}
+
+if ( ! function_exists( 'stm_eroom_format_ics_description' ) ) {
+	/**
+	 * Format description for iCal with proper escaping and line folding
+	 *
+	 * @param string $description
+	 *
+	 * @return string
+	 */
+	function stm_eroom_format_ics_description( $description ) {
+		$description = str_replace( array( '<br>', '<br/>', '<br />' ), "\n", $description );
+		$description = strip_tags( $description );
+		$description = str_replace( "\\", "\\\\", $description );
+		$description = str_replace( ";", "\\;", $description );
+		$description = str_replace( ",", "\\,", $description );
+		$description = str_replace( array( "\r\n", "\r", "\n" ), "\\n", $description );
+
+		$full_line    = 'DESCRIPTION:' . $description;
+		$lines        = array();
+		$current_line = '';
+		$len          = strlen( $full_line );
+
+		for ( $i = 0; $i < $len; $i++ ) {
+			if ( strlen( $current_line ) >= 75 ) {
+				if ( $current_line[ strlen( $current_line ) - 1 ] === '\\' ) {
+					$lines[]      = substr( $current_line, 0, -1 );
+					$current_line = ' \\' . $full_line[ $i ];
+				} else {
+					$lines[]      = $current_line;
+					$current_line = ' ' . $full_line[ $i ];
+				}
+			} else {
+				$current_line .= $full_line[ $i ];
+			}
+		}
+
+		if ( strlen( $current_line ) > 0 ) {
+			$lines[] = $current_line;
+		}
+
+		return implode( "\r\n", $lines );
+	}
 }

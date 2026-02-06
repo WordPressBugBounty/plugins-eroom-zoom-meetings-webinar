@@ -147,6 +147,10 @@ class StmZoom {
 				'category'  => '',
 				'recurring' => '',
 				'post_type' => 'stm-zoom',
+				'order'     => 'DESC',
+				'orderby'   => 'date',
+				'meta_key'  => '',
+				'meta_type' => '',
 			),
 			$atts
 		);
@@ -154,6 +158,15 @@ class StmZoom {
 		$count     = intval( $atts['count'] );
 		$per_row   = ! empty( $atts['per_row'] ) ? intval( $atts['per_row'] ) : '';
 		$recurring = ! empty( $atts['recurring'] );
+		$order     = in_array( strtoupper( $atts['order'] ), array( 'ASC', 'DESC' ), true ) ? strtoupper( $atts['order'] ) : 'DESC';
+
+		$valid_orderby = array( 'none', 'ID', 'author', 'title', 'name', 'type', 'date', 'modified', 'parent', 'rand', 'comment_count', 'relevance', 'menu_order', 'meta_value', 'meta_value_num', 'post__in', 'post_name__in', 'post_parent__in' );
+		$orderby       = in_array( $atts['orderby'], $valid_orderby, true ) ? $atts['orderby'] : 'date';
+
+		$meta_key = sanitize_key( $atts['meta_key'] );
+
+		$valid_meta_types = array( 'NUMERIC', 'BINARY', 'CHAR', 'DATE', 'DATETIME', 'DECIMAL', 'SIGNED', 'TIME', 'UNSIGNED' );
+		$meta_type        = in_array( strtoupper( $atts['meta_type'] ), $valid_meta_types, true ) ? strtoupper( $atts['meta_type'] ) : '';
 
 		//clear all spaces
 		$post_type = preg_replace( '/\s+/', '', $atts['post_type'] );
@@ -177,8 +190,8 @@ class StmZoom {
 			if ( false !== $key ) {
 				unset( $post_type[ $key ] );
 			}
-		} else {
-			//remove meeting if has in product
+		} elseif ( in_array( 'product', $post_type, true ) ) {
+			//remove meeting if has in product - only when product is requested
 			$option_ids  = get_option( 'stm_wc_product_meeting_ids', array() );
 			$exclude_ids = array_keys( $option_ids );
 		}
@@ -188,6 +201,22 @@ class StmZoom {
 			'post_type'      => $post_type,
 			'post__not_in'   => $exclude_ids,
 		);
+
+		if ( ! empty( $atts['order'] ) ) {
+			$args['order'] = $order;
+		}
+
+		if ( ! empty( $atts['orderby'] ) ) {
+			$args['orderby'] = $orderby;
+		}
+
+		if ( ! empty( $meta_key ) ) {
+			$args['meta_key'] = $meta_key;
+		}
+
+		if ( ! empty( $meta_type ) ) {
+			$args['meta_type'] = $meta_type;
+		}
 
 		$sql_post_types = array_map(
 			function ( $item ) {
@@ -231,7 +260,8 @@ class StmZoom {
 					'(' . implode( ' ', $meta_sql ) . ')',
 				);
 			}
-		} elseif ( in_array( 'product', $post_type, true ) ) {
+		} elseif ( in_array( 'product', $post_type, true ) && count( $post_type ) === 1 ) {
+			// Only apply product meta filter when querying products alone.
 			$args['meta_query'] = array(
 				'relation' => 'OR',
 				array(
@@ -316,12 +346,12 @@ class StmZoom {
 		return $content;
 	}
 
-	public function posts_where() {
-		return $this->meeting_shortcode_sql['where'];
+	public function posts_where( $where ) {
+		return $where . $this->meeting_shortcode_sql['where'];
 	}
 
-	public function posts_join() {
-		return $this->meeting_shortcode_sql['join'];
+	public function posts_join( $join ) {
+		return $join . $this->meeting_shortcode_sql['join'];
 	}
 
 	/**
@@ -463,6 +493,7 @@ class StmZoom {
 			$time_zone   = get_post_meta( $post_id, 'stm_timezone', true );
 			$option_ids  = get_option( 'stm_wc_product_meeting_ids', array() );
 			$exclude_ids = array_keys( $option_ids );
+			$description = self::build_calendar_description( $meeting_id, $zoom_data, $title, $agenda, $password );
 
 			$config_calendar = array(
 				'start'       => $meeting_start,
@@ -470,7 +501,7 @@ class StmZoom {
 				'address'     => '',
 				'title'       => $title,
 				'duration'    => $duration,
-				'description' => $agenda,
+				'description' => $description,
 				'start_time'  => $start_time,
 				'timezone'    => $time_zone,
 			);
@@ -521,18 +552,46 @@ class StmZoom {
 						<?php } elseif ( ! empty( $meeting_start ) ) { ?>
 							<div class="date">
 								<span><?php ( $webinar ) ? esc_html_e( 'Webinar date', 'eroom-zoom-meetings-webinar' ) : esc_html_e( 'Meeting date', 'eroom-zoom-meetings-webinar' ); ?> </span>
-								<b>
-									<?php
-									$date           = new DateTime( $meeting_start );
-									$formatted_date = $date->format( 'F j, Y g:i a' );
-									echo esc_html( $formatted_date );
-									?>
-								</b>
+								<?php
+								$date            = new DateTime( $meeting_start, new DateTimeZone( $time_zone ) );
+								$formatted_date  = $date->format( 'F j, Y g:i A' );
+								$timezone_offset = $date->format( 'P' );
+								$timezone_display = TimezoneHelper::get_display( $time_zone, $timezone_offset );
+
+								// Build the complete date and timezone HTML
+								$date_timezone_html = sprintf(
+									'<b>%s<span class="timezone">%s</span></b>',
+									esc_html( $formatted_date ) . "\n\t\t\t\t\t\t\t\t\t",
+									esc_html( $timezone_display )
+								);
+
+								/**
+								 * Filter the complete date and timezone display HTML
+								 *
+								 * @param string $date_timezone_html The complete HTML for date and timezone display
+								 * @param string $formatted_date     The formatted date string (e.g., "December 27, 2025 10:28 PM")
+								 * @param string $timezone_display   The timezone display string (e.g., "(GMT-05:00) EST")
+								 * @param int    $post_id           The meeting/webinar post ID
+								 * @param object $date              DateTime object for the meeting start time
+								 * @param string $time_zone         The timezone identifier (e.g., "America/New_York")
+								 * @param bool   $webinar           Whether this is a webinar (true) or meeting (false)
+								 */
+								echo apply_filters(
+									'eroom_date_timezone_display',
+									$date_timezone_html,
+									$formatted_date,
+									$timezone_display,
+									$post_id,
+									$date,
+									$time_zone,
+									$webinar
+								);
+								?>
 							</div>
 						<?php } ?>
 						<div class="stm-calendar-links">
 							<span><?php echo esc_html__( 'Add to:', 'eroom-zoom-meetings-webinar' ); ?></span>
-							<a href="<?php echo esc_url( stm_eroom_generate_google_calendar( $config_calendar, $recurring_data ) ); ?>"><?php echo esc_html__( 'Google Calendar', 'eroom-zoom-meetings-webinar' ); ?></a>
+							<a href="<?php echo esc_url( stm_eroom_generate_google_calendar( $config_calendar, $recurring_data ) ); ?>" target="_blank"><?php echo esc_html__( 'Google Calendar', 'eroom-zoom-meetings-webinar' ); ?></a>
 							,
 							<a href="<?php echo esc_attr( add_query_arg( array( 'ical_export' => '1' ), get_permalink( $post_id ) ) ); ?>
 								" class="" target="_blank">
@@ -551,9 +610,14 @@ class StmZoom {
 								" class="btn stm-join-btn join_in_menu" target="_blank">
 								<?php esc_html_e( 'Join in browser', 'eroom-zoom-meetings-webinar' ); ?>
 							</a>
+							<?php
+							$hide_zoom_app_button = get_post_meta( $post_id, 'stm_hide_zoom_app_button', true );
+							if ( empty( $hide_zoom_app_button ) ) :
+							?>
 							<a href="https://zoom.us/j/<?php echo esc_attr( $meeting_id ); ?>" class="btn stm-join-btn outline" target="_blank">
 								<?php esc_html_e( 'Join in zoom app', 'eroom-zoom-meetings-webinar' ); ?>
 							</a>
+							<?php endif; ?>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -590,11 +654,21 @@ class StmZoom {
 
 		if ( empty( $users ) ) {
 			$users_list = self::stm_zoom_get_users_list( array( 'page_size' => 300 ) );
+
+			// Check if the API returned an error (e.g., missing scopes).
+			if ( ! empty( $users_list ) && isset( $users_list['code'] ) && isset( $users_list['message'] ) ) {
+				set_transient( 'stm_eroom_api_error', $users_list['message'], DAY_IN_SECONDS );
+				return array();
+			}
+			
 			if ( ! empty( $users_list ) && ! empty( $users_list['users'] ) ) {
 				$users = $users_list['users'];
 				set_transient( 'stm_zoom_users', $users, 36000 );
 			}
 		}
+
+		// Clear any previous error if the API call succeeded.
+		delete_transient( 'stm_eroom_api_error' );
 
 		return $users;
 	}
@@ -620,6 +694,10 @@ class StmZoom {
 	 */
 	public static function get_users_options() {
 		$users = self::stm_zoom_get_users();
+		$user_list = array(
+			'' => esc_html__( '— Select Meeting Host —', 'eroom-zoom-meetings-webinar' ),
+		);
+
 		if ( ! empty( $users ) ) {
 			foreach ( $users as $user ) {
 				$first_name       = $user['first_name'];
@@ -628,9 +706,8 @@ class StmZoom {
 				$id               = $user['id'];
 				$user_list[ $id ] = $first_name . ' ' . $last_name . ' (' . $email . ')';
 			}
-		} else {
-			return array();
 		}
+
 		return $user_list;
 	}
 
@@ -649,5 +726,98 @@ class StmZoom {
 			);
 		}
 		return $result;
+	}
+
+	/**
+	 * Build calendar description with Zoom invitation
+	 *
+	 * @param string $meeting_id
+	 * @param array  $zoom_data
+	 * @param string $title
+	 * @param string $agenda
+	 * @param string $password
+	 *
+	 * @return string
+	 */
+	public static function build_calendar_description( $meeting_id, $zoom_data, $title, $agenda, $password ) {
+		// Sanitize and validate input parameters
+		$meeting_id = ! empty( $meeting_id ) ? sanitize_text_field( $meeting_id ) : '';
+		$zoom_data  = is_array( $zoom_data ) ? $zoom_data : array();
+		$title      = ! empty( $title ) ? sanitize_text_field( $title ) : esc_html__( 'Zoom Meeting', 'eroom-zoom-meetings-webinar' );
+		$agenda     = ! empty( $agenda ) ? wp_kses_post( $agenda ) : '';
+		$password   = ! empty( $password ) ? sanitize_text_field( $password ) : '';
+
+		$description        = '';
+		$invitation_fetched = false;
+
+		// Add agenda if available
+		if ( ! empty( $agenda ) ) {
+			$description .= $agenda . '<br><br>';
+			$description .= '---<br><br>';
+		}
+
+		// Try to fetch invitation from Zoom API only if meeting_id is valid
+		if ( ! empty( $meeting_id ) ) {
+			try {
+				// Check if Zoom endpoint class exists and has invitation method
+				if ( class_exists( '\Zoom\Endpoint\Meetings' ) ) {
+					$zoom_endpoint = new \Zoom\Endpoint\Meetings();
+
+					// Verify the invitation method exists before calling
+					if ( method_exists( $zoom_endpoint, 'invitation' ) ) {
+						$invitation = $zoom_endpoint->invitation( $meeting_id );
+
+						if ( is_array( $invitation ) && ! empty( $invitation['invitation'] ) ) {
+							$description       .= str_replace( "\n", '<br>', $invitation['invitation'] );
+							$invitation_fetched = true;
+						} elseif ( is_array( $invitation ) && ! empty( $invitation['code'] ) && 4711 === $invitation['code'] ) {
+							set_transient( 'stm_zoom_missing_invitation_scope', true, DAY_IN_SECONDS );
+						}
+					} else {
+						error_log( 'Zoom Endpoint Meetings::invitation() method not found' );
+					}
+				} else {
+					error_log( 'Zoom Endpoint Meetings class not found' );
+				}
+			} catch ( \Exception $e ) {
+				error_log( 'Zoom invitation API error: ' . $e->getMessage() );
+			} catch ( \Error $e ) {
+				error_log( 'Zoom invitation fatal error: ' . $e->getMessage() );
+			} catch ( \Throwable $e ) {
+				error_log( 'Zoom invitation unexpected error: ' . $e->getMessage() );
+			}
+		}
+
+		// Fallback: Build basic invitation if API fetch failed or returned empty
+		if ( ! $invitation_fetched ) {
+			$meeting_link = '';
+
+			// Try to get join_url from zoom_data
+			if ( ! empty( $zoom_data['join_url'] ) ) {
+				$meeting_link = esc_url( $zoom_data['join_url'] );
+			} elseif ( ! empty( $meeting_id ) ) {
+				$meeting_link = 'https://zoom.us/j/' . $meeting_id;
+			}
+
+			if ( ! empty( $meeting_link ) ) {
+				$description .= $title . ' ' . esc_html__( 'is inviting you to a scheduled Zoom meeting.', 'eroom-zoom-meetings-webinar' ) . '<br><br>';
+				$description .= esc_html__( 'Join Zoom Meeting', 'eroom-zoom-meetings-webinar' ) . '<br>';
+				$description .= $meeting_link . '<br><br>';
+
+				if ( ! empty( $meeting_id ) ) {
+					$description .= esc_html__( 'Meeting ID: ', 'eroom-zoom-meetings-webinar' ) . $meeting_id . '<br>';
+				}
+
+				if ( ! empty( $password ) ) {
+					$description .= esc_html__( 'Passcode: ', 'eroom-zoom-meetings-webinar' ) . $password . '<br>';
+				}
+			} else {
+				// Ultimate fallback if no meeting information is available
+				$description .= $title . '<br>';
+				$description .= esc_html__( 'Zoom meeting details will be available soon.', 'eroom-zoom-meetings-webinar' );
+			}
+		}
+
+		return ! empty( $description ) ? $description : $title;
 	}
 }

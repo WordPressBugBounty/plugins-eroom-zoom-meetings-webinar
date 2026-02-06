@@ -695,8 +695,13 @@ body.post-type-stm-zoom-webinar #sync_meetings {
   background-image: url("../../images/report/google-meet-icon.svg");
 }
 
+.stm-microsoft-teams-icon {
+  background-image: url("../../images/report/microsoft-teams-icon.svg");
+}
+
 .stm-zoom-icon,
-.stm-google-meet-icon {
+.stm-google-meet-icon,
+.stm-microsoft-teams-icon {
   height: 24px;
   width: 24px;
   display: inline-block;
@@ -842,4 +847,75 @@ body.post-type-stm-zoom-webinar #sync_meetings {
 }
 .reports-table-wr table tbody td span.report-empty-field {
   color: #D8DFE7;
+}
+
+/** 
+  * Nuxy Overrides
+ */
+.wpcfto-tab-nav {
+  padding-bottom: 50px !important;
+  border-radius: 0 0 16px 16px;
+}
+
+.stm_metaboxes_grid__inner .container {
+  align-items: flex-start;
+}
+
+.wpcfto_generic_field_multiselect .multiselect .multiselect__input {
+  height: auto !important;
+  background: initial !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-block;
+  padding-top: 2px !important;
+  line-height: 18.5px !important;
+  min-height: unset !important;
+}
+
+/* Zoom Sync Dropdown */
+#zoom_sync_wrapper {
+  display: inline-block;
+  position: relative;
+  float: right;
+  margin-left: 10px;
+}
+
+#sync_with_zoom_btn {
+  cursor: pointer;
+  background: white;
+  color: #2271b1;
+  font-weight: 700;
+  border-color: #2271b1;
+  padding: 4px 12px;
+}
+
+#zoom_sync_dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 5px;
+  background: white;
+  border: 1px solid #ccd0d4;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+}
+#zoom_sync_dropdown a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #2c3338;
+  transition: background 0.2s;
+  font-weight: 500;
+}
+#zoom_sync_dropdown a:first-child {
+  border-bottom: 1px solid #f0f0f1;
+}
+#zoom_sync_dropdown a:hover {
+  background: #f6f7f7;
+}
+#zoom_sync_dropdown a span {
+  color: #2271b1;
 }

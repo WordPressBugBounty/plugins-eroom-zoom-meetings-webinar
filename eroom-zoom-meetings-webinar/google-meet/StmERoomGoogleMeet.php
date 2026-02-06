@@ -30,6 +30,7 @@ class StmERoomGoogleMeet {
 						'options' => array(
 							'zoom' => esc_html__( 'Zoom', 'eroom-zoom-meetings-webinar' ),
 							'gm'   => esc_html__( 'Google Meet', 'eroom-zoom-meetings-webinar' ) . "&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom-pricing' ) . "'><span>PRO</span></a>",
+							'mst'  => esc_html__( 'Microsoft Teams', 'eroom-zoom-meetings-webinar' ) . "&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom-pricing' ) . "'><span>PRO</span></a>",
 						),
 						'default' => 'zoom',
 						'disable' => 1,
@@ -48,6 +49,16 @@ class StmERoomGoogleMeet {
 				'go_pro' => array(
 					'type'  => 'notice_banner',
 					'label' => esc_html__( 'To use Google Meetings and other advanced features, upgrade to PRO plugin', 'eroom-zoom-meetings-webinar' ) .
+						"&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom-pricing' ) . "'><span>PRO</span></a>",
+				),
+			),
+		);
+		$setups['microsoft_teams_pro'] = array(
+			'name'   => esc_html__( 'Microsoft Teams', 'eroom-zoom-meetings-webinar' ),
+			'fields' => array(
+				'go_pro' => array(
+					'type'  => 'notice_banner',
+					'label' => esc_html__( 'To use Microsoft Teams and other advanced features, upgrade to PRO plugin', 'eroom-zoom-meetings-webinar' ) .
 						"&nbsp;<a target='_blank' class='go_to_pro_link' href='" . admin_url( 'admin.php?page=stm_zoom-pricing' ) . "'><span>PRO</span></a>",
 				),
 			),

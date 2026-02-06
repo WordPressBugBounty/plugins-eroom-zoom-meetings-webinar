@@ -1,22 +1,7 @@
 <?php
-$_post_id         = get_the_ID();
-$_post_type       = get_post_type( $_post_id );
-$assets           = trailingslashit( STM_ZOOM_URL ) . 'assets/';
-$meeting_data     = get_post_meta( $_post_id, 'stm_zoom_data', true );
-$meeting_password = get_post_meta( $_post_id, 'stm_password', true );
-$meeting_id       = '';
-$settings         = get_option( 'stm_zoom_settings', array() );
-$api_key          = ! empty( $settings['sdk_key'] ) ? $settings['sdk_key'] : '';
-$api_secret       = ! empty( $settings['sdk_secret'] ) ? $settings['sdk_secret'] : '';
-$enforce_login    = absint( ! empty( get_post_meta( $_post_id, 'stm_enforce_login', true ) ) );
-$tk               = '';
-
-if ( ! empty( $meeting_data ) ) {
-	$meeting_id = ! empty( $meeting_data['id'] ) ? $meeting_data['id'] : '';
-}
-
-$username = esc_attr__( 'Guest', 'eroom-zoom-meetings-webinar' );
-$email    = '';
+$_post_id   = get_the_ID();
+$_post_type = get_post_type( $_post_id );
+$assets     = trailingslashit( STM_ZOOM_URL ) . 'assets/';
 
 $lang              = 'en-US';
 $registration_form = false;
@@ -26,43 +11,12 @@ if ( 'stm-zoom-webinar' === $_post_type ) {
 
 	if ( isset( $_POST['user_name'] ) && isset( $_POST['user_email'] ) && isset( $_POST['user_lang'] ) ) {
 		$registration_form = false;
-		$username          = sanitize_text_field( $_POST['user_name'] );
-		$email             = sanitize_text_field( $_POST['user_email'] );
 		$lang              = sanitize_text_field( $_POST['user_lang'] );
 	}
 }
 
 if ( is_user_logged_in() ) {
 	$registration_form = false;
-	$user              = wp_get_current_user();
-	$username          = $user->user_login;
-	$email             = $user->user_email;
-}
-
-if ( $enforce_login ) {
-	if ( class_exists( '\Zoom\Endpoint\Users' ) ) {
-		$webinars_api_object = new \Zoom\Endpoint\Meetings();
-		$response            = $webinars_api_object->listRegistrants( $meeting_id );
-		if ( is_array( $response ) && 200 === $response['code'] && isset( $response['registrants'] ) ) {
-			$registrant = array_reduce(
-				$response['registrants'],
-				function ( $carry, $user ) use ( $email ) {
-					if ( $user['email'] === $email && 'approved' === $user['status'] ) {
-						$carry = $user;
-					}
-
-					return $carry;
-				},
-				false
-			);
-
-			if ( ! empty( $registrant ) ) {
-				$url_components = wp_parse_url( $registrant['join_url'] );
-				parse_str( $url_components['query'], $url_params );
-				$tk = $url_params['tk'];
-			}
-		}
-	}
 }
 
 ?>
@@ -170,18 +124,12 @@ if ( $enforce_login ) {
 	</div>
 <?php endif; ?>
 <script>
-	var API_KEY = '<?php echo esc_js( $api_key ); ?>';
-	var SECRET_KEY = '<?php echo esc_js( $api_secret ); ?>';
-	var leaveUrl = '<?php echo esc_url( get_home_url( '/' ) ); ?>';
-	var endpoint = '<?php echo esc_url( admin_url( 'admin-ajax.php?action=stm_zoom_meeting_sign' ) ); ?>';
-	var meeting_id = '<?php echo esc_js( $meeting_id ); ?>';
-	var meeting_password = '<?php echo esc_js( $meeting_password ); ?>';
-	var username = '<?php echo esc_js( $username ); ?>';
-	var email = '<?php echo esc_js( $email ); ?>';
-	var lang = '<?php echo esc_js( $lang ); ?>';
-	var role = 0;
-	var enforce_login = <?php echo esc_js( $enforce_login ); ?>;
-	var tk = '<?php echo esc_js( $tk ); ?>';
+	var stmZoomMeetingData = {
+		postId: <?php echo absint( $_post_id ); ?>,
+		endpoint: '<?php echo esc_url( admin_url( 'admin-ajax.php?action=stm_zoom_meeting_sign' ) ); ?>',
+		lang: '<?php echo esc_js( $lang ); ?>',
+		role: 0
+	};
 </script>
 
 <?php

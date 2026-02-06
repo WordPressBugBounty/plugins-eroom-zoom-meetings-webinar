@@ -153,4 +153,15 @@ class Meetings extends Request {
 		return $this->get( "past_meetings/{$meetingUUID}/participants", $query );
 	}
 
+	/**
+	 * Get Meeting Invitation
+	 *
+	 * @param $meetingId
+	 *
+	 * @return array|mixed
+	 */
+	public function invitation( string $meetingId ) {
+		return $this->get( "meetings/{$meetingId}/invitation" );
+	}
+
 }

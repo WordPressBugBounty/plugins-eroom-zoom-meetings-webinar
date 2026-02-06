@@ -132,10 +132,67 @@
 							}
 						});
 					}
-					
+
 					return false;
 				}
 			);
+
+		/**
+		 * Delete from Zoom button handler
+		 */
+		$( document ).on(
+			'click',
+			'#delete_from_zoom_btn',
+			function(e) {
+				e.preventDefault();
+
+				var $btn = $( this );
+				var meetingId = $btn.data( 'meeting-id' );
+				var postId = $btn.data( 'post-id' );
+				var isWebinar = $btn.data( 'type' ) === 'webinar';
+				var itemType = isWebinar ? 'webinar' : 'meeting';
+
+				if ( typeof zoom_sync === 'undefined' ) {
+					alert( 'Error: zoom_sync object not found. Please refresh the page.' );
+					return;
+				}
+
+				if ( confirm( 'Are you sure you want to permanently delete this ' + itemType + ' from Zoom API? This action cannot be undone.' ) ) {
+					$.ajax({
+						url: stm_zoom_ajaxurl,
+						method: 'post',
+						dataType: 'json',
+						data: {
+							action: 'stm_zoom_delete_from_api',
+							meeting_id: meetingId,
+							post_id: postId,
+							is_webinar: isWebinar,
+							nonce: zoom_sync.nonce
+						},
+						beforeSend: function() {
+							$btn.prop( 'disabled', true ).text( 'Deleting...' );
+						},
+						success: function(response) {
+							if ( response.success ) {
+								$btn.prop( 'disabled', false ).text( 'Delete from Zoom' );
+								$btn.closest( '.inside' ).prepend( '<div class="notice notice-success inline"><p>✅ ' + itemType.charAt(0).toUpperCase() + itemType.slice(1) + ' deleted from Zoom successfully!</p></div>' );
+								setTimeout( function() {
+									location.reload();
+								}, 1500 );
+							} else {
+								$btn.prop( 'disabled', false ).text( 'Delete from Zoom' );
+								var errorMsg = response.data ? response.data : 'Failed to delete from Zoom. Please try again.';
+								$btn.closest( '.inside' ).prepend( '<div class="notice notice-error inline"><p>❌ ' + errorMsg + '</p></div>' );
+							}
+						},
+						error: function(request, status, error) {
+							$btn.prop( 'disabled', false ).text( 'Delete from Zoom' );
+							$btn.closest( '.inside' ).prepend( '<div class="notice notice-error inline"><p>❌ Failed to delete from Zoom: ' + request.responseText + '</p></div>' );
+						}
+					});
+				}
+			}
+		);
 
 		}
 	);

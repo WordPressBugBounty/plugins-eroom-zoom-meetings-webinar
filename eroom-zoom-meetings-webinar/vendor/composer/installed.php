@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'eroom/eroom',
-        'pretty_version' => '1.5.2',
-        'version' => '1.5.2.0',
-        'reference' => '1a5b0cd45f7485ebdf191562ea869fa66ffb192e',
+        'pretty_version' => '1.6.4',
+        'version' => '1.6.4.0',
+        'reference' => '8164ec4306627cd533a42a8904c1da9f89a993d6',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,18 +11,18 @@
     ),
     'versions' => array(
         'eroom/eroom' => array(
-            'pretty_version' => '1.5.2',
-            'version' => '1.5.2.0',
-            'reference' => '1a5b0cd45f7485ebdf191562ea869fa66ffb192e',
+            'pretty_version' => '1.6.4',
+            'version' => '1.6.4.0',
+            'reference' => '8164ec4306627cd533a42a8904c1da9f89a993d6',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'freemius/wordpress-sdk' => array(
-            'pretty_version' => '2.12.2',
-            'version' => '2.12.2.0',
-            'reference' => '241fbfc91151f85d8ebeb75343caf29bda1d3208',
+            'pretty_version' => '2.13.0',
+            'version' => '2.13.0.0',
+            'reference' => '3cbe98b5bd0b0fb5ca4df97b8088592737ea4375',
             'type' => 'library',
             'install_path' => __DIR__ . '/../freemius/wordpress-sdk',
             'aliases' => array(),

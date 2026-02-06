@@ -35,8 +35,9 @@ class S2SOAuth {
 		$response         = wp_remote_post( $request_url, $args );
 		$responseCode     = wp_remote_retrieve_response_code( $response );
 		$response_message = wp_remote_retrieve_response_message( $response );
+		$responseBody     = wp_remote_retrieve_body( $response );
+
 		if ( 200 == $responseCode && 'ok' == strtolower( $response_message ) ) {
-			$responseBody          = wp_remote_retrieve_body( $response );
 			$decoded_response_body = json_decode( $responseBody );
 			if ( isset( $decoded_response_body->access_token ) && ! empty( $decoded_response_body->access_token ) ) {
 				$result = $decoded_response_body;
@@ -44,7 +45,16 @@ class S2SOAuth {
 				$result = new \WP_Error( $decoded_response_body->errorCode, $decoded_response_body->errorMessage );
 			}
 		} else {
-			$result = new \WP_Error( $responseCode, $response_message );
+			$decoded_response_body = json_decode( $responseBody );
+			if ( ! empty( $decoded_response_body->reason ) ) {
+				$result = new \WP_Error( $responseCode, $decoded_response_body->reason );
+			} elseif ( ! empty( $decoded_response_body->error_description ) ) {
+				$result = new \WP_Error( $decoded_response_body->error ?? $responseCode, $decoded_response_body->error_description );
+			} elseif ( ! empty( $decoded_response_body->message ) ) {
+				$result = new \WP_Error( $responseCode, $decoded_response_body->message );
+			} else {
+				$result = new \WP_Error( $responseCode, $response_message . ( ! empty( $responseBody ) ? ': ' . $responseBody : '' ) );
+			}
 		}
 
 		return $result;
@@ -53,7 +63,8 @@ class S2SOAuth {
 
 	public function generateAndSaveAccessToken( $account_id, $client_id, $client_secret ) {
 		$token = get_transient( 'stm_eroom_global_oauth_data' );
-		if ( empty( $token ) && ! empty( $account_id ) && ! empty( $client_id ) & ! empty( $client_secret ) ) {
+
+		if ( empty( $token ) && ! empty( $account_id ) && ! empty( $client_id ) && ! empty( $client_secret ) ) {
 			$token = $this->generateAccessToken( $account_id, $client_id, $client_secret );
 			set_transient( 'stm_eroom_global_oauth_data', $token, 60 * 60 );
 		}

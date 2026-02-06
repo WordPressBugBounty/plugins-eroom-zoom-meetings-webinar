@@ -348,6 +348,7 @@ class STM_Metaboxes {
 			'notice',
 			'notice_banner',
 			'notification_message',
+			'auth_box',
 			'button_group',
 			'button_list',
 			'image_select',
@@ -640,10 +641,14 @@ function wpcfto_metaboxes_deps( $field, $section_name ) {
 function wpcfto_metaboxes_generate_deps( $section_name, $dep ) {
 	$key     = $dep['key'];
 	$compare = $dep['value'];
+
+	// If the field doesn't exist, the expression returns undefined which is falsy
+	$field_access = "data['{$section_name}']?.fields?.['{$key}']?.value";
+
 	if ( 'not_empty' === $compare ) {
-		$dependency = "data['{$section_name}']['fields']['{$key}']['value']";
+		$dependency = $field_access;
 	} elseif ( 'empty' === $compare ) {
-		$dependency = "!data['{$section_name}']['fields']['{$key}']['value']";
+		$dependency = "!{$field_access}";
 	} elseif ( ! empty( $compare ) && strpos( $compare, '||' ) ) {
 		$compare    = preg_replace( '/\s+/', '', $compare );
 		$compares   = explode( '||', $compare );
@@ -652,14 +657,14 @@ function wpcfto_metaboxes_generate_deps( $section_name, $dep ) {
 		$dependency = '(';
 		foreach ( $compares as $compare ) {
 			$i ++;
-			$dependency .= "data['{$section_name}']['fields']['{$key}']['value'] === '{$compare}'";
+			$dependency .= "{$field_access} === '{$compare}'";
 			if ( $i !== $length ) {
 				$dependency .= ' || ';
 			}
 		}
 		$dependency .= ')';
 	} else {
-		$dependency = "data['{$section_name}']['fields']['{$key}']['value'] === '{$compare}'";
+		$dependency = "{$field_access} === '{$compare}'";
 	}
 
 	return $dependency;

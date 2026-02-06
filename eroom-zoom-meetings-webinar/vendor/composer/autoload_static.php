@@ -11,7 +11,7 @@ class ComposerStaticInitf68aa1759f406e3982963dfdd7103ba2
     );
 
     public static $prefixLengthsPsr4 = array (
-        'E' => 
+        'E' =>
         array (
             'Eroom_Pro\\' => 10,
             'Eroom\\' => 6,
@@ -19,11 +19,11 @@ class ComposerStaticInitf68aa1759f406e3982963dfdd7103ba2
     );
 
     public static $prefixDirsPsr4 = array (
-        'Eroom_Pro\\' => 
+        'Eroom_Pro\\' =>
         array (
             0 => __DIR__ . '/../..' . '/pro/includes',
         ),
-        'Eroom\\' => 
+        'Eroom\\' =>
         array (
             0 => __DIR__ . '/../..' . '/includes',
         ),

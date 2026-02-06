@@ -103,7 +103,7 @@
 			<div class="stm_zoom_nonce error">
 				<p>
 					<?php
-					if ( array_key_exists( 'code', $reports ) && 4700 === $reports['code'] ) {
+					if ( str_contains( $reports['message'], 'Paid' ) ) {
 						echo sprintf( '%1s <a href="https://zoom.us/pricing" target="_blank">%2s</a>', esc_html__( 'To view the following reports and other advanced features, upgrade to', 'eroom-zoom-meetings-webinar' ), esc_html__( 'Zoom Pro plan.', 'eroom-zoom-meetings-webinar' ) );
 					} else {
 						echo esc_html( $reports['message'] );

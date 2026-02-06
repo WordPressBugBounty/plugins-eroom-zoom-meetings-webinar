@@ -64,14 +64,14 @@ class Request {
 	 * @return string
 	 */
 	private function getBearerToken() {
-
 		$OauthData = get_transient( 'stm_eroom_global_oauth_data' );
-		if ( empty( $OauthData ) && ! empty( $account_id ) && ! empty( $client_id ) & ! empty( $client_secret ) ) {
+
+		if ( empty( $OauthData ) && ! empty( $this->accountID ) && ! empty( $this->clientID ) && ! empty( $this->clientSecret ) ) {
 			$result = \Zoom\Interfaces\S2SOAuth::get_instance()->regenerateAccessTokenAndSave();
 			set_transient( 'stm_eroom_global_oauth_data', $result, 60 * 60 );
 		}
-		return ( ! is_wp_error( $OauthData ) && ! empty( $OauthData ) ) ? 'Bearer ' . $this->getAccessToken() : '';
 
+		return ( ! is_wp_error( $OauthData ) && ! empty( $OauthData ) ) ? 'Bearer ' . $this->getAccessToken() : '';
 	}
 
 	/**

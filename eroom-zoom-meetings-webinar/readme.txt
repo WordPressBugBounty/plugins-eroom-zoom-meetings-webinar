@@ -1,14 +1,14 @@
-=== eRoom - Zoom Meetings & Webinars ===
-Contributors: wpcenter, cagdasdag, orkunaybek
+=== eRoom - Webinar & Meeting Plugin for Zoom, Google Meet, Microsoft Teams ===
+Contributors: wpcenter, cagdasdag, orkunaybek, freemius
 Plugin link: https://eroomwp.com
-Tags: zoom, video conference, zoom conference, google meet, webinar
+Tags: zoom, video conference, google meet, webinar, microsoft teams
 Requires at least: 5.8
-Tested up to: 6.8.2
-Stable tag: 1.5.2
+Tested up to: 6.9
+Stable tag: 1.6.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-eRoom is the best WordPress Zoom Meeting and Webinar Plugin. eRoom Zoom WordPress plugin enables direct integration with Zoom and Google Meet. 
+eRoom is the best WordPress Zoom Meeting and Webinar Plugin. eRoom Zoom WordPress plugin enables integration with Zoom, Google Meet, Microsoft Teams.
 
 == Description ==
 
@@ -77,7 +77,7 @@ Features:
 ## Syncing meetings with Google Calendar
 eRoom allows syncing meetings with calendars. You can easily import the meeting file to iCal or duplicate the information to Google Calendar. The only thing you have to do is save the event and set the reminder if you want. This feature is especially useful for those who have lots of appointments, making it easier to keep track and access meetings from their calendar.
 
-## GOOGLE MEET ADDON: INTERACTIVE LIVE MEETINGS, CONFERENCES, SESSIONS & CALLS
+### Google Meet Integration ([Pro Feature ⭐](https://eroomwp.com/pricing/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page))
 
 In eRoom Pro, you can also use a Google Meet addon to connect and use Google Meet for planning and making calls, video lessons, meetings, discussions, and many more live activities.
 
@@ -86,6 +86,16 @@ On top of that, with Google Meet integration in eRoom you can run your planned l
 Creating Google Meet meetings within your WordPress website with eRoom is super easy and effortless.
 
 Plan and participate in Google Meet sessions within your WordPress dashboard. Get rid of the need to switch between platforms. You can plan the meetings in one place and manage the participants.
+
+### Microsoft Teams Integration ([Pro Feature ⭐](https://eroomwp.com/pricing//?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page))
+
+Take your online meetings to the next level with the Microsoft Teams integration for eRoom Pro. This powerful addon lets you connect your WordPress website with Microsoft Teams to create, schedule, and manage live video meetings — all without leaving your dashboard.
+
+Whether you're hosting online classes, business meetings, coaching sessions, or community discussions, eRoom makes it easy to organize and run them seamlessly.
+
+Start and join Teams meetings right from your WordPress site, manage participants, and keep all your live events in one place. No more switching between tabs or juggling multiple platforms — everything happens inside WordPress.
+
+Bring professional communication tools to your website with the Microsoft Teams addon and deliver interactive, high-quality virtual experiences to your audience.
 
 ## eRoom purchasable meetings
 For those who want to monetize the meetings or offer the customers something new, you can always upgrade eRoom plugin with the paid addon — [eRoom purchasable meetings](https://eroomwp.com/).
@@ -180,6 +190,68 @@ You can do it, just use the URL link of the video, so users could watch it later
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/vdp/eroom-zoom-meetings-webinar). 
 
 == Changelog ==
+
+= 1.6.4 =
+* Update: Order parameter added to list shortcodes
+* Fix: Meeting Host is empty due to scopes
+* Fix: WooCommerce related deprecation message
+* Fix: Meeting settings is not visible
+* Fix: Purchasable product add to cart link issue
+
+= 1.6.3 =
+* Fix: Encoding issue for agenda field
+
+= 1.6.2 =
+* Enhancement: Automatically clear cached credentials when Zoom settings are updated
+* Enhancement: Added user-friendly error notification when Zoom credentials are invalid
+
+= 1.6.1 =
+* New: Added sync with Zoom functionality - Push to Zoom and Pull from Zoom
+* New: Added "Delete from Zoom" button for explicit control over Zoom API deletions
+* Enhancement: Improved sync button UI with white background, blue color, and bold text
+* Fix: WordPress post deletion no longer automatically deletes meeting/webinar from Zoom API
+
+= 1.6.0 =
+* Enhancement: We added timezone display options and also filter
+
+= 1.5.9.4 =
+* Fixed: Recurring meeting missing field issue 
+
+= 1.5.9.3 =
+* Fixed: Missing Zoom Library issue 
+
+= 1.5.9.2 =
+* Fixed: iCal calendar export issue fixed
+* Fixed: Google calendar links open in new tab
+
+= 1.5.9.1 =
+* Fixed: Adding google meet error
+* Fixed: Enabling microsoft teams removing fields from google meet
+* Fixed: Added timezone to meeting time
+
+= 1.5.9 =
+* Fixed: Google calendar description field issue
+
+= 1.5.8 =
+* Fixed: Missing alert for host missing input
+* Fixed: Check required fields and prevent saving
+
+= 1.5.7 =
+* Fixed: Security fix
+
+= 1.5.6 =
+* New: Settings for allowing user roles to manage meetings added
+
+= 1.5.5 =
+* Fixed: Invalid signature and sync error fixes
+
+= 1.5.4 =
+* New: Microsoft Teams integration added!
+* Fixed: Multiple bugs for Google Meets Integration
+
+= 1.5.3 =
+* Fixed: Showing zoom api responses on the admin
+
 = 1.5.2 =
 * Enhancement: Feature request button added
 * Enhancement: Review notification added

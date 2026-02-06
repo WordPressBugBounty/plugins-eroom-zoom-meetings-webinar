@@ -8,7 +8,7 @@
  * Text Domain: eroom-zoom-meetings-webinar
  * Author: WPCenter
  * Author URI: https://profiles.wordpress.org/wpcenter/
- * Version:         1.5.2
+ * Version:         1.6.4
  * Requires at least: 5.8
  * Requires PHP:      7.4
  *
@@ -36,7 +36,7 @@ if ( !function_exists( 'eroom_fs' ) ) {
                 'has_paid_plans' => true,
                 'menu'           => [
                     'slug'       => 'stm_zoom',
-                    'first-path' => 'admin.php?page=stm_zoom_settings',
+                    'first-path' => 'admin.php?page=stm-settings',
                     'support'    => false,
                     'contact'    => true,
                     'pricing'    => true,
@@ -52,7 +52,7 @@ if ( !function_exists( 'eroom_fs' ) ) {
     // Signal that SDK was initiated.
     do_action( 'eroom_fs_loaded' );
     if ( !defined( 'STM_ZOOM_VERSION' ) ) {
-        define( 'STM_ZOOM_VERSION', '1.5.2' );
+        define( 'STM_ZOOM_VERSION', '1.6.4' );
     }
     if ( !defined( 'STM_ZOOM_FILE' ) ) {
         define( 'STM_ZOOM_FILE', __FILE__ );
@@ -95,5 +95,9 @@ if ( !function_exists( 'eroom_fs' ) ) {
         // Load notification system
         require_once STM_ZOOM_PATH . '/includes/notice/NoticeHandler.php';
         new StmERoomGoogleMeet();
+    }
+    // Load WP-CLI commands if WP-CLI is available
+    if ( defined( 'WP_CLI' ) && WP_CLI ) {
+        require_once STM_ZOOM_PATH . '/includes/cli/class-eroom-cli.php';
     }
 }

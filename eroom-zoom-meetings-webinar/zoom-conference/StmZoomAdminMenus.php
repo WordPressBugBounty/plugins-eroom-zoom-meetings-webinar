@@ -9,12 +9,13 @@ class StmZoomAdminMenus {
 		add_action(
 			'admin_menu',
 			function () {
-				add_menu_page( 'eRoom', 'eRoom', 'manage_options', 'stm_zoom', 'admin_pages', 'dashicons-video-alt2', 40 );
+				$menu_capability = PostTypeCapabilities::get_required_capability();
+				add_menu_page( 'eRoom', 'eRoom', $menu_capability, 'stm_zoom', 'admin_pages', 'dashicons-video-alt2', 40 );
 				self::admin_submenu_pages();
 			},
 			100
 		);
-		
+
 		if ( is_admin() ) {
 			self::admin_settings_page();
 			add_filter(
@@ -34,6 +35,8 @@ class StmZoomAdminMenus {
 		add_filter( 'plugin_action_links_' . plugin_basename( STM_ZOOM_FILE ), array( $this, 'plugin_action_links' ) );
 
 		add_action( 'admin_head-edit.php', array( $this, 'admin_meetings_webinars_scripts' ) );
+		add_action( 'wpcfto_settings_saved', array( $this, 'clear_zoom_cache_on_credentials_change' ), 10, 2 );
+		add_action( 'admin_notices', array( $this, 'show_invalid_credentials_notice' ) );
 	}
 
 	/**
@@ -59,6 +62,9 @@ class StmZoomAdminMenus {
 	 * Creating Submenu Pages under Zoom menu
 	 */
 	public static function admin_submenu_pages() {
+		// Get required capability for menu access
+		$menu_capability = PostTypeCapabilities::get_required_capability();
+
 		$pages = array(
 			array(
 				'slug'      => 'stm_zoom_users',
@@ -89,7 +95,7 @@ class StmZoomAdminMenus {
 			'stm_zoom',
 			esc_html__( 'Webinars', 'eroom-zoom-meetings-webinar' ),
 			esc_html__( 'Webinars', 'eroom-zoom-meetings-webinar' ),
-			'manage_options',
+			$menu_capability,
 			'edit.php?post_type=stm-zoom-webinar',
 			false
 		);
@@ -100,7 +106,7 @@ class StmZoomAdminMenus {
 				isset( $page['hidden'] ) && $page['hidden'] ? '' : 'stm_zoom',
 				$page['label'],
 				$page['label'],
-				'manage_options',
+				$menu_capability,
 				$page['menu_slug'],
 				'admin_pages'
 			);
@@ -120,8 +126,31 @@ class StmZoomAdminMenus {
 			'wpcfto_options_page_setup',
 			function ( $setup ) {
 				$fields = array(
+					'general_settings' => array(
+						'name'   => esc_html__( 'General Settings', 'eroom-zoom-meetings-webinar' ),
+						'fields' => array(
+							'allowed_roles' => array(
+								'type'        => 'multiselect',
+								'label'       => esc_html__( 'Allowed User Roles', 'eroom-zoom-meetings-webinar' ),
+								'value'       => array(),
+								'options'     => PostTypeCapabilities::get_user_roles_options(),
+								'description' => esc_html__( 'Select which user roles can create and manage meetings and webinars. Administrators always have full access. Selected roles will not have access to the Settings page.', 'eroom-zoom-meetings-webinar' ),
+							),
+							'timezone_display_format' => array(
+								'type'        => 'select',
+								'label'       => esc_html__( 'Timezone Display Format', 'eroom-zoom-meetings-webinar' ),
+								'value'       => 'offset_only',
+								'options'     => array(
+									'offset_only'  => '(GMT-05:00)',
+									'offset_short' => '(GMT-05:00) EST',
+									'offset_full'  => '(GMT-05:00) Eastern Time (US and Canada)',
+								),
+								'description' => esc_html__( 'Choose how timezone information is displayed on the frontend', 'eroom-zoom-meetings-webinar' ),
+							),
+						),
+					),
 					'tab_1'      => array(
-						'name'   => esc_html__( 'Main settings', 'eroom-zoom-meetings-webinar' ),
+						'name'   => esc_html__( 'Zoom', 'eroom-zoom-meetings-webinar' ),
 						'fields' => array(
 							'auth_account_id'    => array(
 								'type'        => 'text',
@@ -168,10 +197,12 @@ class StmZoomAdminMenus {
 						'name'   => esc_html__( 'Shortcodes', 'eroom-zoom-meetings-webinar' ),
 						'fields' => array(
 							'sc_meeting'                  => array(
-								'label'    => esc_html__( 'Single Meeting', 'eroom-zoom-meetings-webinar' ),
-								'type'     => 'text',
-								'readonly' => 'false',
-								'value'    => '[stm_zoom_conference post_id="{post_id}"]',
+								'label'       => esc_html__( 'Single Meeting', 'eroom-zoom-meetings-webinar' ),
+								'type'        => 'text',
+								'readonly'    => 'false',
+								'value'       => '[stm_zoom_conference post_id="{post_id}"]',
+								'group_title' => esc_html__( 'Zoom', 'eroom-zoom-meetings-webinar' ),
+								'group'       => 'started',
 							),
 							'sc_webinar'                  => array(
 								'label'    => esc_html__( 'Single Webinar', 'eroom-zoom-meetings-webinar' ),
@@ -214,6 +245,7 @@ class StmZoomAdminMenus {
 								'type'     => 'text',
 								'readonly' => 'false',
 								'value'    => '[stm_zoom_conference_grid post_type="stm-zoom, stm-zoom-webinar, product" count="3" per_row="3"]',
+								'group'    => 'ended',
 							),
 						),
 					),
@@ -231,9 +263,9 @@ class StmZoomAdminMenus {
 				$setup[] = array(
 					'option_name' => 'stm_zoom_settings',
 					'page'        => array(
-						'page_title'  => 'Zoom Settings',
-						'menu_title'  => 'Zoom Settings',
-						'menu_slug'   => 'stm_zoom_settings',
+						'page_title'  => 'Settings',
+						'menu_title'  => 'Settings',
+						'menu_slug'   => 'stm-settings',
 						'icon'        => 'dashicons-video-alt2',
 						'position'    => 40,
 						'parent_slug' => 'stm_zoom',
@@ -262,6 +294,13 @@ class StmZoomAdminMenus {
 		}
 
 		wp_enqueue_script( 'stm_zoom_admin', STM_ZOOM_URL . 'assets/js/admin/main.js', array( 'jquery' ), STM_ZOOM_VERSION, false );
+		wp_localize_script(
+			'stm_zoom_admin',
+			'zoom_sync',
+			array(
+				'nonce' => wp_create_nonce( 'zoom-sync-nonce' ),
+			)
+		);
 	}
 
 	/**
@@ -283,7 +322,7 @@ class StmZoomAdminMenus {
 	 * @return mixed
 	 */
 	public function plugin_action_links( $links ) {
-		$settings_link = sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'admin.php?page=stm_zoom_settings' ), esc_html__( 'Settings', 'eroom-zoom-meetings-webinar' ) );
+		$settings_link = sprintf( '<a href="%1$s">%2$s</a>', admin_url( 'admin.php?page=stm-settings' ), esc_html__( 'Settings', 'eroom-zoom-meetings-webinar' ) );
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -308,4 +347,70 @@ class StmZoomAdminMenus {
 			)
 		);
 	}
+
+	public function show_invalid_credentials_notice() {
+		$oauth_data = get_transient( 'stm_eroom_global_oauth_data' );
+
+		if ( is_wp_error( $oauth_data ) ) {
+			$screen = get_current_screen();
+
+			if ( ! $screen || strpos( $screen->id, 'stm_zoom' ) === false && strpos( $screen->post_type ?? '', 'stm-zoom' ) === false ) {
+				return;
+			}
+
+			$error_code    = $oauth_data->get_error_code();
+			$error_message = $oauth_data->get_error_message();
+			?>
+			<div class="notice notice-error">
+				<p>
+					<strong>
+					<?php
+					printf(
+						esc_html__( 'Zoom API Error: %s - %s', 'eroom-zoom-meetings-webinar' ),
+						esc_html( $error_code ),
+						esc_html( $error_message )
+					);
+					?>
+					</strong>
+				</p>
+				<p>
+					<?php
+					printf(
+						esc_html__( 'Looks like your Zoom API credentials not correct, please update your credentials in %1$s or see %2$s for help.', 'eroom-zoom-meetings-webinar' ),
+						'<a href="' . esc_url( admin_url( 'admin.php?page=stm-settings' ) ) . '">' . esc_html__( 'settings', 'eroom-zoom-meetings-webinar' ) . '</a>',
+						'<a href="https://eroomwp.com/docs/how-to-obtain-apis/" target="_blank">' . esc_html__( 'documentation', 'eroom-zoom-meetings-webinar' ) . '</a>'
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	}
+
+	public function clear_zoom_cache_on_credentials_change( $option_name, $settings ) {
+		if ( 'stm_zoom_settings' !== $option_name ) {
+			return;
+		}
+
+		$old_settings        = get_option( 'stm_zoom_settings', array() );
+		$credentials_changed = false;
+		$credential_keys     = array( 'auth_account_id', 'auth_client_id', 'auth_client_secret' );
+
+		foreach ( $credential_keys as $key ) {
+			$old_value = $old_settings[ $key ] ?? '';
+			$new_value = $settings[ $key ] ?? '';
+
+			if ( $old_value !== $new_value ) {
+				$credentials_changed = true;
+				break;
+			}
+		}
+
+		if ( $credentials_changed ) {
+			delete_transient( 'stm_eroom_global_oauth_data' );
+			delete_transient( 'stm_zoom_users' );
+			delete_transient( 'stm_eroom_api_error' );
+		}
+	}
+
 }
