@@ -8,7 +8,7 @@
  * Text Domain: eroom-zoom-meetings-webinar
  * Author: WPCenter
  * Author URI: https://profiles.wordpress.org/wpcenter/
- * Version:         1.6.4
+ * Version:         1.6.5
  * Requires at least: 5.8
  * Requires PHP:      7.4
  *
@@ -25,23 +25,24 @@ if ( !function_exists( 'eroom_fs' ) ) {
             // Include Freemius SDK.
             require_once dirname( __FILE__ ) . '/vendor/freemius/wordpress-sdk/start.php';
             $eroom_fs = fs_dynamic_init( array(
-                'id'             => '6034',
-                'slug'           => 'eroom-zoom-meetings-webinar',
-                'premium_slug'   => 'eroom-zoom-meetings-webinar-pro',
-                'type'           => 'plugin',
-                'public_key'     => 'pk_91f2676674910675990e30b3fa84e',
-                'is_premium'     => false,
-                'premium_suffix' => 'pro',
-                'has_addons'     => false,
-                'has_paid_plans' => true,
-                'menu'           => [
+                'id'               => '6034',
+                'slug'             => 'eroom-zoom-meetings-webinar',
+                'premium_slug'     => 'eroom-zoom-meetings-webinar-pro',
+                'type'             => 'plugin',
+                'public_key'       => 'pk_91f2676674910675990e30b3fa84e',
+                'is_premium'       => false,
+                'premium_suffix'   => 'pro',
+                'has_addons'       => false,
+                'has_paid_plans'   => true,
+                'menu'             => [
                     'slug'       => 'stm_zoom',
                     'first-path' => 'admin.php?page=stm-settings',
                     'support'    => false,
                     'contact'    => true,
                     'pricing'    => true,
                 ],
-                'is_live'        => true,
+                'is_live'          => true,
+                'is_org_compliant' => true,
             ) );
         }
         return $eroom_fs;
@@ -52,7 +53,7 @@ if ( !function_exists( 'eroom_fs' ) ) {
     // Signal that SDK was initiated.
     do_action( 'eroom_fs_loaded' );
     if ( !defined( 'STM_ZOOM_VERSION' ) ) {
-        define( 'STM_ZOOM_VERSION', '1.6.4' );
+        define( 'STM_ZOOM_VERSION', '1.6.5' );
     }
     if ( !defined( 'STM_ZOOM_FILE' ) ) {
         define( 'STM_ZOOM_FILE', __FILE__ );

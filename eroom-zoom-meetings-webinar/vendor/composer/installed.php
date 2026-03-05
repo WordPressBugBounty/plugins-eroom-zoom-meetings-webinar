@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
         'name' => 'eroom/eroom',
-        'pretty_version' => '1.6.4',
-        'version' => '1.6.4.0',
-        'reference' => '8164ec4306627cd533a42a8904c1da9f89a993d6',
+        'pretty_version' => '1.6.5',
+        'version' => '1.6.5.0',
+        'reference' => '87fc762dfedab12fcf172f251dd0d3045594a3db',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
         'eroom/eroom' => array(
-            'pretty_version' => '1.6.4',
-            'version' => '1.6.4.0',
-            'reference' => '8164ec4306627cd533a42a8904c1da9f89a993d6',
+            'pretty_version' => '1.6.5',
+            'version' => '1.6.5.0',
+            'reference' => '87fc762dfedab12fcf172f251dd0d3045594a3db',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -32,7 +32,7 @@ class StmZoomPostTypes {
 
 		add_action( 'before_delete_post', array( $this, 'stm_zoom_delete_meeting' ), 10 );
 
-		add_filter( 'wp_ajax_stm_zoom_sync_meetings_webinars', array( $this, 'stm_zoom_sync_meetings_webinars' ) );
+		add_action( 'wp_ajax_stm_zoom_sync_meetings_webinars', array( $this, 'stm_zoom_sync_meetings_webinars' ) );
 
 		add_action( 'wp_ajax_stm_zoom_delete_from_api', array( $this, 'stm_zoom_delete_from_api' ) );
 
@@ -615,6 +615,8 @@ class StmZoomPostTypes {
 			$html .= '<hr style="margin: 15px 0;">';
 			$html .= '<p><button type="button" class="button button-secondary" id="delete_from_zoom_btn" data-meeting-id="' . esc_attr( $meeting_data['id'] ) . '" data-post-id="' . esc_attr( $post->ID ) . '">' . esc_html__( 'Delete from Zoom', 'eroom-zoom-meetings-webinar' ) . '</button></p>';
 			$html .= '<p style="color: #666; font-size: 12px;">' . esc_html__( 'This will permanently delete the meeting from Zoom API.', 'eroom-zoom-meetings-webinar' ) . '</p>';
+		} else {
+			$html .= '<p style="color: #666;">' . __( 'No meeting info available.', 'eroom-zoom-meetings-webinar' ) . '</p>';
 		}
 		echo wp_kses_post( apply_filters( 'stm_add_zoom_recurring_meeting_data_occurrences_html', $html, $post ) );
 		do_action( 'stm_add_zoom_recurring_meeting_data_occurrences', $meeting_data );
@@ -640,6 +642,8 @@ class StmZoomPostTypes {
 			$html .= '<p><strong style="color: #f00;">';
 			$html .= wp_kses_post( apply_filters( 'stm_zoom_escape_output', $webinar_data['message'] ) );
 			$html .= '</strong></p>';
+		} else {
+			$html .= '<p style="color: #666;">' . __( 'No webinar info available.', 'eroom-zoom-meetings-webinar' ) . '</p>';
 		}
 
 		echo wp_kses_post( apply_filters( 'stm_add_webinar_recurring_meeting_data_occurrences_html', $html, $post ) );
@@ -795,9 +799,12 @@ class StmZoomPostTypes {
 					}
 
 					if ( ! empty( $customer->email ) ) {
+						// Use join_url from new meeting or existing meeting data, fallback to basic URL.
+						$join_url = ! empty( $new_meeting['join_url'] ) ? $new_meeting['join_url'] : ( ! empty( $meeting_data['join_url'] ) ? $meeting_data['join_url'] : 'https://zoom.us/j/' . $meeting_id );
+
 						$message  = sprintf( /* translators: %s: string, number */ esc_html__( 'Hello, your meeting will begin at: %1$s, %2$s', 'eroom-zoom-meetings-webinar' ), $meeting['meta_input']['stm_time'], gmdate( 'F j, Y', $appointment->date_timestamp ) ) . '<br>';
 						$message .= esc_html__( 'Your meeting url: ', 'eroom-zoom-meetings-webinar' );
-						$message .= '<a href="https://zoom.us/j/' . esc_attr( $meeting_id ) . '" >' . esc_html( 'https://zoom.us/j/' . $meeting_id ) . '</a><br>';
+						$message .= '<a href="' . esc_url( $join_url ) . '" >' . esc_html( $join_url ) . '</a><br>';
 						$message .= sprintf( /* translators: %s: string */ esc_html__( 'Your meeting password: %s', 'eroom-zoom-meetings-webinar' ), $password );
 
 						$headers[] = 'Content-Type: text/html; charset=UTF-8';
@@ -805,9 +812,11 @@ class StmZoomPostTypes {
 						wp_mail( $customer->email, sprintf( /* translators: %s: string */ esc_html__( 'Meeting Notification: %s', 'eroom-zoom-meetings-webinar' ), $title ), $message, $headers );
 					}
 					if ( ! empty( $new_meeting['host_email'] ) ) {
+						$host_join_url = ! empty( $new_meeting['join_url'] ) ? $new_meeting['join_url'] : 'https://zoom.us/j/' . $meeting_id;
+
 						$message  = sprintf( /* translators: %s: string */ esc_html__( 'Hello, new meeting will begin at: %1$s, %2$s', 'eroom-zoom-meetings-webinar' ), $meeting['meta_input']['stm_time'], gmdate( 'F j, Y', $appointment->date_timestamp ) ) . '<br>';
 						$message .= esc_html__( 'Meeting url: ', 'eroom-zoom-meetings-webinar' );
-						$message .= '<a href="https://zoom.us/j/' . esc_attr( $meeting_id ) . '" >' . esc_html( 'https://zoom.us/j/' . $meeting_id ) . '</a><br>';
+						$message .= '<a href="' . esc_url( $host_join_url ) . '" >' . esc_html( $host_join_url ) . '</a><br>';
 						$message .= sprintf( /* translators: %s: string */ esc_html__( 'Meeting password: %s', 'eroom-zoom-meetings-webinar' ), $password );
 
 						$headers[] = 'Content-Type: text/html; charset=UTF-8';

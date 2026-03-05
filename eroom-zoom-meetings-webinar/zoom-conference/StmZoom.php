@@ -494,16 +494,18 @@ class StmZoom {
 			$option_ids  = get_option( 'stm_wc_product_meeting_ids', array() );
 			$exclude_ids = array_keys( $option_ids );
 			$description = self::build_calendar_description( $meeting_id, $zoom_data, $title, $agenda, $password );
+			$join_url    = ! empty( $zoom_data['join_url'] ) ? $zoom_data['join_url'] : 'https://zoom.us/j/' . $meeting_id;
 
 			$config_calendar = array(
 				'start'       => $meeting_start,
 				'allDay'      => isset( $zoom_data['type'] ) && in_array( strval( $zoom_data['type'] ), StmZoomAPITypes::TYPES_NO_FIXED, true ),
-				'address'     => '',
+				'address'     => 'Zoom',
 				'title'       => $title,
 				'duration'    => $duration,
 				'description' => $description,
 				'start_time'  => $start_time,
 				'timezone'    => $time_zone,
+				'url'         => $join_url,
 			);
 
 			$date_format = get_option( 'date_format' );
@@ -613,8 +615,9 @@ class StmZoom {
 							<?php
 							$hide_zoom_app_button = get_post_meta( $post_id, 'stm_hide_zoom_app_button', true );
 							if ( empty( $hide_zoom_app_button ) ) :
+								$join_url = ! empty( $zoom_data['join_url'] ) ? $zoom_data['join_url'] : 'https://zoom.us/j/' . $meeting_id;
 							?>
-							<a href="https://zoom.us/j/<?php echo esc_attr( $meeting_id ); ?>" class="btn stm-join-btn outline" target="_blank">
+							<a href="<?php echo esc_url( $join_url ); ?>" class="btn stm-join-btn outline" target="_blank">
 								<?php esc_html_e( 'Join in zoom app', 'eroom-zoom-meetings-webinar' ); ?>
 							</a>
 							<?php endif; ?>

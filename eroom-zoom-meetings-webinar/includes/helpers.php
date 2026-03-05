@@ -371,7 +371,7 @@ function stm_eroom_generate_ics_calendar( $post_id = '' ) {
 		$config_calendar = array(
 			'start'       => $meeting_start,
 			'allDay'      => isset( $zoom_data['type'] ) && in_array( $zoom_data['type'], StmZoomAPITypes::TYPES_NO_FIXED, true ),
-			'address'     => '',
+			'address'     => 'Zoom',
 			'title'       => $title,
 			'duration'    => $duration,
 			'description' => $description,
@@ -381,6 +381,68 @@ function stm_eroom_generate_ics_calendar( $post_id = '' ) {
 		);
 
 		return stm_eroom_generate_ics_calendar_build( $config_calendar, $recurring_data );
+	}
+
+	// Handle non-Zoom providers (Google Meet, Microsoft Teams).
+	if ( ! empty( $post_id ) ) {
+		$provider = get_post_meta( $post_id, 'stm_select_gm_zoom', true );
+
+		if ( in_array( $provider, array( 'gm', 'mst' ), true ) ) {
+			$title      = get_the_title( $post_id );
+			$agenda     = get_post_meta( $post_id, 'stm_agenda', true );
+			$duration   = get_post_meta( $post_id, 'stm_duration', true );
+			$start_time = get_post_meta( $post_id, 'stm_start_time', true );
+			$timezone   = get_post_meta( $post_id, 'stm_timezone', true );
+			$start_date = get_post_meta( $post_id, 'stm_start_date', true );
+
+			if ( ! empty( $start_date ) ) {
+				$meeting_start = strtotime( 'today', ( apply_filters( 'eroom_sanitize_stm_start_date', $start_date ) / 1000 ) );
+			} else {
+				$meeting_start = time();
+			}
+
+			if ( ! empty( $start_time ) ) {
+				$time_parts = explode( ':', $start_time );
+				if ( is_array( $time_parts ) && count( $time_parts ) === 2 ) {
+					$meeting_start = strtotime( "+{$time_parts[0]} hours +{$time_parts[1]} minutes", $meeting_start );
+				}
+			}
+
+			$meeting_start = gmdate( 'Y-m-d H:i:s', $meeting_start );
+
+			$join_url          = '';
+			$calendar_location = '';
+			$calendar_description = '';
+
+			if ( 'gm' === $provider ) {
+				$join_url          = get_post_meta( $post_id, 'google_meet_link', true );
+				$calendar_location = 'Google Meet';
+			} elseif ( 'mst' === $provider ) {
+				$join_url          = get_post_meta( $post_id, 'microsoft_teams_link', true );
+				$calendar_location = 'Microsoft Teams';
+			}
+
+			if ( ! empty( $agenda ) ) {
+				$calendar_description .= $agenda . '<br><br>---<br><br>';
+			}
+			if ( ! empty( $join_url ) ) {
+				$calendar_description .= esc_html__( 'Join', 'eroom-zoom-meetings-webinar' ) . ' ' . esc_html( $calendar_location ) . '<br>' . esc_url( $join_url );
+			}
+
+			$config_calendar = array(
+				'start'       => $meeting_start,
+				'allDay'      => false,
+				'address'     => $calendar_location,
+				'title'       => $title,
+				'duration'    => $duration,
+				'description' => $calendar_description,
+				'start_time'  => $start_time,
+				'timezone'    => $timezone,
+				'url'         => $join_url,
+			);
+
+			return stm_eroom_generate_ics_calendar_build( $config_calendar, array() );
+		}
 	}
 }
 
@@ -414,8 +476,9 @@ function stm_eroom_generate_ics_calendar_build( $config, $recurring_data ) {
 
 	$ics_props[] = 'BEGIN:VALARM';
 	$ics_props[] = 'ACTION:DISPLAY';
-	$ics_props[] = 'RIGGER;RELATED=START:-PT00H15M00S';
-	$ics_props[] = 'BEGIN:VALARM';
+	$ics_props[] = 'DESCRIPTION:Reminder';
+	$ics_props[] = 'TRIGGER;RELATED=START:-PT15M';
+	$ics_props[] = 'END:VALARM';
 
 	// Build ICS properties - add footer
 	$ics_props[] = 'END:VEVENT';
