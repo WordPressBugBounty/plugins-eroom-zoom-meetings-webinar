@@ -169,6 +169,21 @@ function admin_pages() {
 }
 
 /**
+ * PRO Addons locked page (shown in free version)
+ */
+function stm_zoom_pro_addons_locked_page() {
+	require_once STM_ZOOM_PATH . '/admin_templates/pro_addons_locked.php';
+}
+
+/**
+ * Custom upgrade/pricing page (replaces Freemius pricing page)
+ */
+function stm_zoom_upgrade_page() {
+	require_once STM_ZOOM_PATH . '/admin_templates/upgrade.php';
+}
+
+
+/**
  * Get All Meetings
  * @return array
  */

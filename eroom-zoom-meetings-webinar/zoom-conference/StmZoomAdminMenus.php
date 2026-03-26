@@ -6,8 +6,7 @@ class StmZoomAdminMenus {
 	 * @return StmZoomAdminMenus constructor.
 	 */
 	public function __construct() {
-		add_action(
-			'admin_menu',
+		add_action( 'admin_menu',
 			function () {
 				$menu_capability = PostTypeCapabilities::get_required_capability();
 				add_menu_page( 'eRoom', 'eRoom', $menu_capability, 'stm_zoom', 'admin_pages', 'dashicons-video-alt2', 40 );
@@ -15,6 +14,31 @@ class StmZoomAdminMenus {
 			},
 			100
 		);
+
+		// Register our custom pricing/upgrade page early so the hook exists
+		add_action( 'admin_menu', function () {
+			add_submenu_page(
+				'', // hidden - Freemius already adds the visible "Upgrade" link
+				esc_html__( 'Upgrade to eRoom PRO', 'eroom-zoom-meetings-webinar' ),
+				esc_html__( 'Upgrade', 'eroom-zoom-meetings-webinar' ),
+				'manage_options',
+				'stm_zoom_upgrade',
+				'stm_zoom_upgrade_page'
+			);
+		}, 101 );
+
+		// Tell Freemius to point the "Upgrade" menu link to our custom page
+		add_filter( 'fs_pricing_url_eroom-zoom-meetings-webinar', function () {
+			return admin_url( 'admin.php?page=stm_zoom_upgrade' );
+		} );
+
+		// Catch anyone navigating directly to the old Freemius pricing URL
+		add_action( 'admin_init', function () {
+			if ( isset( $_GET['page'] ) && $_GET['page'] === 'stm_zoom-pricing' ) { // phpcs:ignore WordPress.Security.NonceVerification
+				wp_safe_redirect( admin_url( 'admin.php?page=stm_zoom_upgrade' ) );
+				exit;
+			}
+		} );
 
 		if ( is_admin() ) {
 			self::admin_settings_page();
@@ -31,6 +55,7 @@ class StmZoomAdminMenus {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue' ), 100 );
 
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
+		add_action( 'admin_footer', array( $this, 'override_contact_link' ) );
 
 		add_filter( 'plugin_action_links_' . plugin_basename( STM_ZOOM_FILE ), array( $this, 'plugin_action_links' ) );
 
@@ -56,6 +81,28 @@ class StmZoomAdminMenus {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Show a persistent upgrade notice at the top of eRoom admin pages
+	 */
+	public function show_upgrade_to_pro_notice() {
+		// Don't show if PRO is active
+		if ( defined( 'STM_ZOOM_PRO_PATH' ) ) {
+			return;
+		}
+		?>
+		<div class="notice notice-info eroom-upgrade-notice" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-left-color:#157ffc;">
+			<img src="<?php echo esc_url( STM_ZOOM_URL . 'assets/images/zoom_icon.png' ); ?>" width="32" height="32" alt="eRoom" style="flex-shrink:0;">
+			<p style="margin:0;font-size:14px;">
+				<strong><?php esc_html_e( '🔓 Unlock Premium Features with eRoom PRO!', 'eroom-zoom-meetings-webinar' ); ?></strong>
+				<?php esc_html_e( 'Get Purchasable Meetings, Recurring Meetings, Google Meet, Microsoft Teams integration, and more.', 'eroom-zoom-meetings-webinar' ); ?>
+				&nbsp;<a href="https://eroomwp.com/" target="_blank" style="color:#157ffc;font-weight:600;text-decoration:none;">
+					<?php esc_html_e( '→ Get eRoom PRO at eroomwp.com', 'eroom-zoom-meetings-webinar' ); ?>
+				</a>
+			</p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -114,6 +161,18 @@ class StmZoomAdminMenus {
 
 		/* Remove original Submenu */
 		remove_submenu_page( 'stm_zoom', 'stm_zoom' );
+
+		// Add "eRoom PRO Addons" submenu (locked in free version)
+		if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
+			add_submenu_page(
+				'stm_zoom',
+				esc_html__( 'eRoom PRO Addons', 'eroom-zoom-meetings-webinar' ),
+				esc_html__( 'eRoom PRO Addons', 'eroom-zoom-meetings-webinar' ),
+				'manage_options',
+				'stm_zoom_pro',
+				'stm_zoom_pro_addons_locked_page'
+			);
+		}
 
 		do_action( 'stm_zoom_admin_submenu_pages' );
 	}
@@ -310,6 +369,23 @@ class StmZoomAdminMenus {
 		<script type="text/javascript">
 			var stm_zoom_ajaxurl = "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>";
 			var eroom_notice_nonce = "<?php echo wp_create_nonce( 'eroom_ajax_nonce' ); ?>";
+		</script>
+		<?php
+	}
+
+	/**
+	 * Override the Freemius "Contact Us" menu link to use our own support email.
+	 * Runs in admin_footer so it executes after Freemius JS sets data-fs-external-url hrefs.
+	 */
+	public function override_contact_link() { ?>
+		<script type="text/javascript">
+			(function ($) {
+				$(document).ready(function () {
+					$('.fs-submenu-item.eroom-zoom-meetings-webinar.contact').each(function () {
+						$(this).parent('a').attr('href', 'mailto:support@eroomwp.com').removeAttr('target rel');
+					});
+				});
+			})(jQuery);
 		</script>
 		<?php
 	}

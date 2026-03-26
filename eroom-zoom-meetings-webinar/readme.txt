@@ -1,10 +1,10 @@
 === eRoom - Webinar & Meeting Plugin for Zoom, Google Meet, Microsoft Teams ===
-Contributors: wpcenter, cagdasdag, orkunaybek
+Contributors: ympno
 Plugin link: https://eroomwp.com
 Tags: zoom, video conference, google meet, webinar, microsoft teams
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 1.6.5
+Stable tag: 1.6.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,7 +25,7 @@ To make the process even more convenient, WPCenter developed eRoom - Zoom Meetin
 ## Introducing eRoom - Zoom Meetings & Webinar WordPress Plugin
 
 eRoom - Zoom Meetings & Webinar WordPress Plugin provides you with great functionality of managing Zoom meetings, scheduling options, and users directly from your WordPress dashboard.
-The plugin is a free yet robust and reliable extension that enables direct integration of the world’s leading video conferencing tool Zoom with your WordPress website.
+The plugin is a free yet robust and reliable extension that enables direct integration of the world's leading video conferencing tool Zoom with your WordPress website.
 
 With the help of the plugin, you will be able to create and manage meetings making it easier for every user to participate.
 
@@ -190,6 +190,16 @@ You can do it, just use the URL link of the video, so users could watch it later
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/vdp/eroom-zoom-meetings-webinar). 
 
 == Changelog ==
+
+= 1.6.7 =
+* New: Upgrade to PRO banner shown across all WP admin pages
+* New: eRoom PRO Addons submenu with locked feature cards
+* New: Custom pricing page with monthly/annual/lifetime plans
+* Fix: Meeting countdown not showing for past meetings
+
+= 1.6.6 =
+* Updated: Contributor to ympno
+* Tested up to WordPress 6.9
 
 = 1.6.5 =
 * Fix: Empty info box issue

@@ -388,6 +388,8 @@ class StmZoom {
 					$content = self::countdown( $recurring_data['next_meeting_start'], false, $webinar );
 				} else {
 					$hide_content_before_start = '';
+					// Meeting already passed: still render the countdown div so JS shows zeroes + message
+					$content = self::countdown( $meeting_date, false, $webinar );
 				}
 
 				if ( empty( $hide_content_before_start ) ) {
