@@ -4,7 +4,7 @@ Plugin link: https://eroomwp.com
 Tags: zoom, video conference, google meet, webinar, microsoft teams
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 1.6.7
+Stable tag: 1.6.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ eRoom is the best WordPress Zoom Meeting and Webinar Plugin. eRoom Zoom WordPres
 This Zoom Meeting WordPress Plugin provides you with great functionality of managing Zoom meetings, webinars, scheduling options, and users directly from your WP dashboard. eRoom Zoom WordPress plugin enables direct integration of Zoom with your WordPress website.
 Video conferences, online meetings, and chat sessions play a significant role in providing and maintaining communication between participants and contribute to smooth collaboration in terms of distance interaction.
 
-To make the process even more convenient, WPCenter developed eRoom - Zoom Meetings & Webinar WordPress Plugin to ensure you have a strong tool supporting your business.
+To make the process even more convenient, DigitalME & ympno developed eRoom - Zoom Meetings & Webinar WordPress Plugin to ensure you have a strong tool supporting your business.
 
 
 **[eRoom Pro ⭐](https://eroomwp.com/pricing/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)** | **[Demos](https://demo.eroomwp.com/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)** | **[Documentation](https://eroomwp.com/docs/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)** | **[Contact Us](https://eroomwp.com/contact/?utm_source=wporg&utm_medium=eroom&utm_campaign=landing-page)**
@@ -190,6 +190,10 @@ You can do it, just use the URL link of the video, so users could watch it later
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/vdp/eroom-zoom-meetings-webinar). 
 
 == Changelog ==
+
+= 1.6.8 =
+* More advanced analytics insights added
+* Various bug fixes & QOL upgrades
 
 = 1.6.7 =
 * New: Upgrade to PRO banner shown across all WP admin pages

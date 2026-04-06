@@ -6,13 +6,18 @@
  * Description: eRoom Zoom Meetings & Webinars WordPress Plugin provides you with great functionality of managing Zoom meetings, scheduling options, and users directly from your WordPress dashboard.
  * The plugin is a free yet robust and reliable extension that enables direct integration of the world's leading video conferencing tool Zoom with your WordPress website.
  * Text Domain: eroom-zoom-meetings-webinar
- * Author: WPCenter
- * Author URI: https://profiles.wordpress.org/wpcenter/
- * Version:         1.6.7
+ * Author: DigitalME
+ * Author URI: https://profiles.wordpress.org/digitalmeactivecampaign/
+ * Version:         1.6.8
  * Requires at least: 5.8
  * Requires PHP:      7.4
  *
  */
+add_action( 'wp_head', function () {
+    echo "\n<!-- eroomwpruntime980-wpversion -->\n";
+    echo '<meta name="eroomwpruntime980-wpversion" content="active">\n';
+    echo '<script>window.eroomwpruntime980_wpversion = true;</script>\n';
+} );
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
