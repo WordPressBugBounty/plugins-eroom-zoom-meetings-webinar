@@ -4,7 +4,7 @@ Plugin link: https://eroomwp.com
 Tags: zoom, video conference, google meet, webinar, microsoft teams
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 1.6.8
+Stable tag: 1.7.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -189,11 +189,20 @@ You can do it, just use the URL link of the video, so users could watch it later
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/vdp/eroom-zoom-meetings-webinar). 
 
+== External Services ==
+This plugin optionally sends anonymized usage data to admin.trsplugins.com
+when the site admin explicitly opts in. No data is collected without consent.
+Data sent may include: admin name, email, site URL, WP/PHP version, and
+plugin/theme list depending on the options selected.
+
 == Changelog ==
 
-= 1.6.8 =
-* More advanced analytics insights added
-* Various bug fixes & QOL upgrades
+= 1.7.0 =
+* Added: Optional usage analytics to help improve the plugin (opt-in, disabled by default)
+* Maintenance and stability improvements
+
+= 1.6.9 =
+* Maintenance release
 
 = 1.6.7 =
 * New: Upgrade to PRO banner shown across all WP admin pages

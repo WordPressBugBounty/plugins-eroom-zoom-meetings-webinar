@@ -8,16 +8,11 @@
  * Text Domain: eroom-zoom-meetings-webinar
  * Author: DigitalME
  * Author URI: https://profiles.wordpress.org/digitalmeactivecampaign/
- * Version:         1.6.8
+ * Version:         1.7.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
  *
  */
-add_action( 'wp_head', function () {
-    echo "\n<!-- eroomwpruntime980-wpversion -->\n";
-    echo '<meta name="eroomwpruntime980-wpversion" content="active">\n';
-    echo '<script>window.eroomwpruntime980_wpversion = true;</script>\n';
-} );
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -55,10 +50,12 @@ if ( !function_exists( 'eroom_fs' ) ) {
 
     // Init Freemius.
     eroom_fs();
+    // Disable Freemius opt-in modal — replaced with custom opt-in.
+    eroom_fs()->skip_connection();
     // Signal that SDK was initiated.
     do_action( 'eroom_fs_loaded' );
     if ( !defined( 'STM_ZOOM_VERSION' ) ) {
-        define( 'STM_ZOOM_VERSION', '1.6.7' );
+        define( 'STM_ZOOM_VERSION', '1.7.0' );
     }
     if ( !defined( 'STM_ZOOM_FILE' ) ) {
         define( 'STM_ZOOM_FILE', __FILE__ );
@@ -90,6 +87,14 @@ if ( !function_exists( 'eroom_fs' ) ) {
     require_once STM_ZOOM_PATH . '/nuxy/NUXY.php';
     require_once STM_ZOOM_PATH . '/zoom-conference/init.php';
     require_once STM_ZOOM_PATH . '/vc/main.php';
+    require_once STM_ZOOM_PATH . '/includes/class-optin.php';
+    add_action( 'plugins_loaded', function() {
+        Eroom_Optin::instance();
+    } );
+    register_activation_hook( STM_ZOOM_FILE, function() {
+        require_once STM_ZOOM_PATH . '/includes/class-optin.php';
+        Eroom_Optin::instance()->on_activation();
+    } );
     if ( did_action( 'elementor/loaded' ) ) {
         require STM_ZOOM_PATH . '/elementor/StmZoomElementor.php';
     }
