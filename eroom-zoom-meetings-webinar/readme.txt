@@ -4,7 +4,7 @@ Plugin link: https://eroomwp.com
 Tags: zoom, video conference, google meet, webinar, microsoft teams
 Requires at least: 5.8
 Tested up to: 6.9
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -190,12 +190,17 @@ You can do it, just use the URL link of the video, so users could watch it later
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability](https://patchstack.com/database/vdp/eroom-zoom-meetings-webinar). 
 
 == External Services ==
-This plugin optionally sends anonymized usage data to admin.trsplugins.com
+This plugin optionally sends usage data to TRS Plugins
 when the site admin explicitly opts in. No data is collected without consent.
 Data sent may include: admin name, email, site URL, WP/PHP version, and
 plugin/theme list depending on the options selected.
+Privacy policy: https://trsplugins.com/privacy-policy/
 
 == Changelog ==
+
+= 1.7.1 =
+* Updated: Privacy policy link added
+* Maintenance and stability improvements
 
 = 1.7.0 =
 * Added: Optional usage analytics to help improve the plugin (opt-in, disabled by default)
@@ -244,10 +249,10 @@ plugin/theme list depending on the options selected.
 * Enhancement: We added timezone display options and also filter
 
 = 1.5.9.4 =
-* Fixed: Recurring meeting missing field issue 
+* Fixed: Recurring meeting missing field issue
 
 = 1.5.9.3 =
-* Fixed: Missing Zoom Library issue 
+* Fixed: Missing Zoom Library issue
 
 = 1.5.9.2 =
 * Fixed: iCal calendar export issue fixed

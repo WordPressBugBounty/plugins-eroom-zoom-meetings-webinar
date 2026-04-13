@@ -8,7 +8,7 @@
  * Text Domain: eroom-zoom-meetings-webinar
  * Author: DigitalME
  * Author URI: https://profiles.wordpress.org/digitalmeactivecampaign/
- * Version:         1.7.0
+ * Version:         1.7.1
  * Requires at least: 5.8
  * Requires PHP:      7.4
  *
@@ -55,7 +55,7 @@ if ( !function_exists( 'eroom_fs' ) ) {
     // Signal that SDK was initiated.
     do_action( 'eroom_fs_loaded' );
     if ( !defined( 'STM_ZOOM_VERSION' ) ) {
-        define( 'STM_ZOOM_VERSION', '1.7.0' );
+        define( 'STM_ZOOM_VERSION', '1.7.1' );
     }
     if ( !defined( 'STM_ZOOM_FILE' ) ) {
         define( 'STM_ZOOM_FILE', __FILE__ );
@@ -95,6 +95,28 @@ if ( !function_exists( 'eroom_fs' ) ) {
         require_once STM_ZOOM_PATH . '/includes/class-optin.php';
         Eroom_Optin::instance()->on_activation();
     } );
+    add_action( 'upgrader_process_complete', 'eroom_optin_on_upgrade', 10, 2 );
+    function eroom_optin_on_upgrade( $upgrader, $hook_extra ) {
+        if ( empty( $hook_extra['action'] ) || 'update' !== $hook_extra['action'] ) {
+            return;
+        }
+
+        if ( empty( $hook_extra['type'] ) || 'plugin' !== $hook_extra['type'] ) {
+            return;
+        }
+
+        $updated_plugins = array();
+        if ( ! empty( $hook_extra['plugins'] ) && is_array( $hook_extra['plugins'] ) ) {
+            $updated_plugins = $hook_extra['plugins'];
+        } elseif ( ! empty( $hook_extra['plugin'] ) ) {
+            $updated_plugins = array( $hook_extra['plugin'] );
+        }
+
+        if ( in_array( plugin_basename( STM_ZOOM_FILE ), $updated_plugins, true ) ) {
+            require_once STM_ZOOM_PATH . '/includes/class-optin.php';
+            Eroom_Optin::instance()->on_activation();
+        }
+    }
     if ( did_action( 'elementor/loaded' ) ) {
         require STM_ZOOM_PATH . '/elementor/StmZoomElementor.php';
     }

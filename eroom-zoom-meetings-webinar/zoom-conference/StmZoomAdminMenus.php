@@ -174,6 +174,15 @@ class StmZoomAdminMenus {
 			);
 		}
 
+		add_submenu_page(
+			'stm_zoom',
+			esc_html__( 'Help', 'eroom-zoom-meetings-webinar' ),
+			esc_html__( 'Help', 'eroom-zoom-meetings-webinar' ),
+			$menu_capability,
+			'stm_zoom_help',
+			'stm_zoom_help_page'
+		);
+
 		do_action( 'stm_zoom_admin_submenu_pages' );
 	}
 
@@ -343,6 +352,22 @@ class StmZoomAdminMenus {
 	 */
 	public function admin_enqueue() {
 		wp_enqueue_style( 'stm_zoom_admin', STM_ZOOM_URL . 'assets/css/admin/main.css', false, STM_ZOOM_VERSION );
+
+		if ( isset( $_GET['page'] ) && 'stm-settings' === $_GET['page'] && defined( 'STM_WPCFTO_URL' ) && defined( 'STM_WPCFTO_VERSION' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$base   = STM_WPCFTO_URL . 'metaboxes/assets/';
+			$assets = STM_WPCFTO_URL . 'metaboxes/assets/';
+			$ver    = STM_WPCFTO_VERSION;
+
+			// Fallback enqueue for NUXY core settings assets on the eRoom settings page.
+			wp_enqueue_style( 'stm_zoom_nuxy_core', $base . 'css/main.css', array(), $ver );
+			wp_enqueue_style( 'stm_zoom_nuxy_linear_icons', $base . 'css/linear-icons.css', array( 'stm_zoom_nuxy_core' ), $ver );
+			wp_enqueue_style( 'stm_zoom_nuxy_font_awesome', $assets . 'vendors/font-awesome.min.css', array(), $ver );
+			wp_enqueue_style( 'stm_zoom_nuxy_multiselect', $assets . 'vendors/vue-multiselect.min.css', array(), $ver );
+
+			if ( is_rtl() ) {
+				wp_enqueue_style( 'stm_zoom_nuxy_rtl', $base . 'css/rtl.css', array( 'stm_zoom_nuxy_core' ), $ver );
+			}
+		}
 
 		if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
 			wp_enqueue_style( 'stm_zoom_admin_gopro', STM_ZOOM_URL . 'assets/css/admin/gopro.css', false, STM_ZOOM_VERSION );

@@ -182,6 +182,26 @@ function stm_zoom_upgrade_page() {
 	require_once STM_ZOOM_PATH . '/admin_templates/upgrade.php';
 }
 
+/**
+ * Help and tutorial page.
+ */
+function stm_zoom_help_page() {
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'eRoom Help', 'eroom-zoom-meetings-webinar' ); ?></h1>
+		<div style="background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:24px;max-width:820px;margin-top:20px;">
+			<h2 style="margin-top:0;"><?php esc_html_e( 'Documentation & Tutorial', 'eroom-zoom-meetings-webinar' ); ?></h2>
+			<p><?php esc_html_e( 'Use the live demo to walk through the plugin dashboard, review the meeting workflow, and share a guided product tour.', 'eroom-zoom-meetings-webinar' ); ?></p>
+			<p>
+				<a href="https://demo.eroomwp.com/" target="_blank" rel="noopener noreferrer" class="button button-primary">
+					<?php esc_html_e( 'Open Demo / Tutorial', 'eroom-zoom-meetings-webinar' ); ?>
+				</a>
+			</p>
+		</div>
+	</div>
+	<?php
+}
+
 
 /**
  * Get All Meetings
